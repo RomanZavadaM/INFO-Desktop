@@ -1,51 +1,15 @@
 # PROJECT_RULES — постійні правила INFO Desktop
 
-## 1. Окремий продукт
-INFO Desktop має власні версії, releases, документацію, CI, локалізації та життєвий цикл. Він не є папкою всередині серверного INFO.
-
-## 2. Універсальність
-Клієнт не повинен бути жорстко прив'язаний до конкретного newsroom, домену, Telegram-мережі чи бази. Взаємодія відбувається через версійований INFO Desktop Protocol.
-
-## 3. Сервер — джерело правди
-Desktop не дублює бізнес-логіку сервера. Черга, routing, permissions, publication rules, translations та інші редакційні рішення залишаються серверними.
-
-## 4. Реальні дані з першого прототипу
-Для read-only перевірки використовуються реальні тексти, медіа, розміри, канали та поточна черга сумісного сервера. Вигадані дані не є основним acceptance-тестом.
-
-## 5. Безпека
-- production secrets не потрапляють у Git;
-- Telegram token, SSH credentials, Storage Box credentials, DB copies та sessions не входять у Desktop package;
-- клієнт не підключається прямо до SQLite;
-- транспорт клієнт↔сервер має бути формально описаний і автентифікований;
-- write actions додаються тільки після окремого рішення власника.
-
-## 6. Telegram — паралельний інтерфейс
-Telegram INFO залишається працездатною паралельною гілкою продукту. Desktop не має права вимагати його вимкнення або урізання.
-
-## 7. Платформи і пакети
-Орієнтир Taxo:
-- Windows 10/11 x64: Setup + Portable;
-- Windows 7 SP1 x64: окрема compatibility Portable;
-- macOS ARM64;
-- macOS Intel x86_64.
-Підтримка вважається підтвердженою лише після фактичної збірки/перевірки.
-
-## 8. Локалізація
-Базовий набір документаційних мов як у Taxo:
-Українська, English, Deutsch, Español, Français, 한국어, 日本語.
-
-Усі рядки UI мають бути винесені з коду. Мова Desktop UI, мова server instance, мова каналу і мова контенту — різні поняття.
-
-## 9. Версії
-Desktop використовує product versioning: `0.1.0`, `0.2.0` ... `1.0.0`.
-Видану версію не перевикористовувати.
-
-## 10. Git workflow
-- `main` — працездатний інтегрований стан;
-- розробка — в окремих читабельних гілках;
-- зміни проходять CI перед інтеграцією;
-- release immutable;
-- документація синхронізується разом із продуктом.
-
-## 11. Ліцензія
-Модель ліцензування така сама, як у Taxo: proprietary software / All rights reserved. Public repository не означає open source.
+1. **Окремий продукт.** Власні версії, releases, документація, CI, локалізації та життєвий цикл.
+2. **Універсальність.** Немає жорсткої прив'язки до newsroom/domain/Telegram/database; взаємодія через versioned INFO Desktop Protocol.
+3. **Сервер — джерело правди.** Desktop не дублює routing, permissions, publication rules, translations чи редакційні рішення.
+4. **Реальні дані.** Read-only acceptance проходить на реальних текстах, медіа, каналах і живій черзі.
+5. **Безпека.** Secrets не входять у Git/release; немає прямого SQLite/SSH; перша native transport surface фізично GET-only.
+6. **Telegram паралельний.** Чинний Telegram INFO не вимикається і не урізається через Desktop.
+7. **Платформи.** Windows 10/11 x64, macOS ARM64, macOS Intel x86_64, Linux x64. Windows 7 — лише можливий окремий legacy напрям пізніше.
+8. **Стек.** Tauri 2 + TypeScript + React.
+9. **Суттєві рішення.** Зміна основного стеку, матриці ОС, storage/security/protocol architecture спершу обговорюється з власником.
+10. **Локалізація.** Українська, English, Deutsch, Español, Français, 한국어, 日本語; UI language, server language, channel language і content language — різні поняття.
+11. **Версії.** Product versioning 0.1.0 → 1.0.0; видані версії не перевикористовувати.
+12. **Git.** main — працездатний інтегрований стан; development branches + CI; releases immutable.
+13. **Ліцензія.** Taxo model: proprietary / All rights reserved; public repository ≠ open source.

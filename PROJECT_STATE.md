@@ -1,34 +1,28 @@
 # PROJECT_STATE — INFO Desktop
 
-## Стан 2026-10-20
+## 2026-10-20
+- Repository: `RomanZavadaM/INFO-Desktop` (public)
+- main: initial repository only
+- active branch: `prototype/read-only-client`
+- active PR: #1 draft
+- product version: `0.1.0-dev`
+- release/stable: none
 
-- Repository: `RomanZavadaM/INFO-Desktop`
-- Visibility: public
-- Main initial commit: `146b69c3cd8e7d80b4ef1b8aed3dd6688b543baf`
-- Active development branch: `prototype/read-only-client`
-- Product version: `0.1.0-dev`
-- Stage: architecture/bootstrap
-- Release: none
-- Stable: none
+## Decisions
+- Separate universal product.
+- Existing server INFO and Telegram stay untouched during bootstrap.
+- First prototype is strictly read-only, accepted on real queue/text/media.
+- Protocol: `info-desktop-protocol/1`.
+- Taxo i18n/license/release discipline.
+- Technology: Tauri 2 + TypeScript + React.
+- Required targets: Windows 10/11 x64, macOS arm64, macOS Intel, Linux x64.
+- Windows 7 removed from required matrix by owner decision; legacy support may be revisited separately.
 
-## Прийняті рішення
+## Current safety boundary
+Native transport exposes only GET for http/https. No queue mutation path exists.
 
-- Desktop — окремий продукт.
-- Серверний INFO і Telegram не чіпаємо під час bootstrap.
-- Перший прототип працює тільки read-only.
-- Перший acceptance — на реальній черзі, текстах і медіа.
-- Взаємодія універсальна через версійований protocol/capabilities.
-- Platform/release/i18n model орієнтується на Taxo.
-- License model — Taxo proprietary / All rights reserved.
-
-## Що вже є
-
-- public repository;
-- development branch;
-- LICENSE.md;
-- COPYRIGHT.md;
-- THIRD_PARTY_NOTICES.md.
-
-## Наступна ціль
-
-Зафіксувати protocol v1 read-only, після чого створити мінімальний desktop-клієнт, який підключається до реального сумісного сервера та показує живу редакційну чергу без будь-яких змін серверного стану.
+## Next
+1. Get CI/build matrix green.
+2. Reconcile protocol v1 fields with real INFO data.
+3. Only then add a minimal read-only endpoint to private INFO.
+4. Connect Desktop to LIVE queue/media without mutation.

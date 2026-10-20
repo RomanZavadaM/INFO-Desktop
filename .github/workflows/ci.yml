@@ -1,34 +1,33 @@
 name: INFO Desktop checks
-
 on:
   pull_request:
   push:
-    branches:
-      - main
-      - prototype/read-only-client
-
-permissions:
-  contents: read
-
+    branches: [main, prototype/read-only-client]
+permissions: {contents: read}
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true
-
 jobs:
-  test:
+  frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-      - name: Compile source
-        run: |
-          PYTHONPATH=src python -m py_compile main.py src/info_desktop/*.py
-      - name: Run tests
-        run: |
-          PYTHONPATH=src python -m unittest discover -s tests -v
-      - name: Verify multilingual docs
-        run: |
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install
+      - run: npm run build
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - working-directory: src-tauri
+        run: cargo check
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
           test -f README.md
           for f in en de es fr ko ja; do test -f "docs/i18n/README.$f.md"; done
+          for f in uk en de es fr ko ja; do test -f "src/locales/$f.json"; done

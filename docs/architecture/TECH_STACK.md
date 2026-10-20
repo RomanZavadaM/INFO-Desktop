@@ -1,28 +1,25 @@
 # INFO Desktop — technology choice
 
-## Decision
+## Current decision
+Primary implementation: **Tauri 2 + TypeScript + React**.
 
-Primary implementation: **Python native desktop UI (Tk/ttk), one codebase**.
+This decision was made after an explicit owner discussion on 2026-10-20.
 
-Rationale:
-- preserves the Taxo-style platform matrix without requiring a browser engine;
-- allows a separate Windows 7 compatibility build with Python 3.8.x;
-- supports current Windows and macOS with a modern Python runtime;
-- keeps the first client small and easy to package;
-- protocol/network layer uses standard HTTP/JSON and is independent from the UI toolkit.
+## Supported product line
+Primary targets:
+- Windows 10/11 x64;
+- macOS Apple Silicon / arm64;
+- macOS Intel / x86_64;
+- Linux x64.
 
-## Why not Tauri 2
+Windows 7 is **not a required target**. It may be reconsidered later as a separate legacy client only if there is a real operational need.
 
-As of 2026-09, current Tauri 2 dropped official Windows 7 support because the current WebView2 installer no longer runs there. Microsoft also no longer supports current WebView2 on Windows 7.
+## Why
+INFO Desktop is intended as a long-lived high-volume newsroom workstation: large queues, filters/sorting, multi-pane work, media, later bulk actions, keyboard-first work and future updater support.
 
-INFO Desktop therefore avoids making an unsupported frozen browser runtime a core dependency.
+## Read-only network boundary
+The first native layer exposes one narrow command: `readonly_get`.
+It accepts only http/https, always performs GET, may attach a bearer token, and cannot publish or mutate server state.
 
-## Build model
-
-Target:
-- Windows 10/11 x64: Setup + Portable;
-- Windows 7 SP1 x64: separate compatibility Portable;
-- macOS arm64;
-- macOS x86_64.
-
-The exact Python/package pins for each target will be fixed only after CI builds pass.
+## Significant-decision rule
+Future choices that materially affect supported operating systems, product architecture, server protocol, storage, security or compatibility must be discussed with the owner before becoming project policy.

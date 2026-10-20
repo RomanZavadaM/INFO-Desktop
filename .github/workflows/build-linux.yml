@@ -1,0 +1,26 @@
+name: Build INFO Desktop Linux
+on:
+  workflow_dispatch:
+  pull_request:
+    paths: ['src/**','src-tauri/**','package.json','tsconfig.json','vite.config.ts','VERSION.txt','.github/workflows/build-linux.yml']
+permissions: {contents: read}
+jobs:
+  build-linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: dtolnay/rust-toolchain@stable
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      - run: npm install
+      - run: npm run tauri build
+      - run: |
+          mkdir artifact
+          find src-tauri/target/release/bundle -type f \( -name '*.AppImage' -o -name '*.deb' \) -exec cp {} artifact/ \;
+          test -n "$(find artifact -type f -print -quit)"
+          sha256sum artifact/* > artifact/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: INFO-Desktop-0.1.0-dev-Linux-x64, path: 'artifact/', retention-days: 14}

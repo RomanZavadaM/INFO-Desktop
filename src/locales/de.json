@@ -1,0 +1,22 @@
+{
+  "app.read_only": "nur lesen",
+  "server.address": "INFO-Serveradresse",
+  "server.token": "Zugriffsschlüssel",
+  "server.connect": "Verbinden",
+  "status.disconnected": "Nicht verbunden",
+  "status.connecting": "Verbindung…",
+  "language.label": "Sprache der Oberfläche",
+  "channels.title": "Kanäle",
+  "channels.all": "Alle Kanäle",
+  "queue.title": "Warteschlange",
+  "queue.empty": "Die Warteschlange ist leer oder der Server ist noch nicht verbunden.",
+  "item.title": "Beitrag",
+  "item.select": "Wählen Sie einen Beitrag aus der Warteschlange.",
+  "item.no_title": "Ohne Titel",
+  "item.no_text": "Kein Text verfügbar",
+  "item.source": "Quelle",
+  "item.channel": "Kanal",
+  "item.language": "Sprache",
+  "item.media": "Medien",
+  "error.no_server": "INFO-Serveradresse eingeben."
+}

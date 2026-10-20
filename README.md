@@ -6,36 +6,28 @@
 
 Поточний етап: **0.1.0-dev / read-only prototype**.
 
-## Ідея
+Клієнт не прив'язаний до одного newsroom. Він підключається через версійований протокол і показує реальні редакційні дані. У першій версії native transport фізично GET-only.
 
-INFO Desktop не замінює серверне ядро й не прив'язаний до одного конкретного newsroom. Він підключається до сервера через версійований протокол взаємодії та показує реальні редакційні дані: чергу, тексти, медіа, канали, статуси, оцінки й пов'язані матеріали.
+Чинний Telegram-інтерфейс INFO залишається паралельним працездатним клієнтом.
 
-На першому етапі клієнт **тільки читає**. Жодних publish/skip/move/config changes.
+## Technology
+Tauri 2 + TypeScript + React.
 
-## Паралельна робота
+Platforms:
+- Windows 10/11 x64;
+- macOS ARM64;
+- macOS Intel x86_64;
+- Linux x64.
 
-Чинний Telegram-інтерфейс INFO залишається працездатним і незалежним. Розробка Desktop не є дозволом ламати, урізати або замінювати Telegram.
+Windows 7 не входить в обов'язкову матрицю нового продукту.
 
-## Платформи
+## Protocol
+[INFO Desktop Protocol](docs/protocol/INFO_DESKTOP_PROTOCOL.md)
 
-Модель збірок успадковує перевірений підхід Taxo:
-- Windows 10/11 x64 — Setup + Portable;
-- Windows 7 SP1 x64 — окрема Portable-збірка сумісності;
-- macOS Apple Silicon / ARM64;
-- macOS Intel x86_64.
+## Development
+Start with [START_HERE.md](START_HERE.md), then `PROJECT_RULES.md`, `PROJECT_STATE.md`, `WORKLOG.md`.
 
-Точна підтримка платформи оголошується тільки після фактичної збірки й перевірки.
-
-## Протокол
-
-Базовий контракт: [INFO Desktop Protocol](docs/protocol/INFO_DESKTOP_PROTOCOL.md).
-
-## Розробка
-
-Точка входу: [START_HERE.md](START_HERE.md). Далі читати `PROJECT_RULES.md`, `PROJECT_STATE.md` і `WORKLOG.md`.
-
-## Ліцензія
-
-**Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved.** INFO Desktop — proprietary software.
+## License
+**Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved.** Proprietary software.
 
 [LICENSE.md](LICENSE.md) · [COPYRIGHT.md](COPYRIGHT.md) · [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)

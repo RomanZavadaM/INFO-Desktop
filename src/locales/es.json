@@ -1,0 +1,22 @@
+{
+  "app.read_only": "solo lectura",
+  "server.address": "Dirección del servidor INFO",
+  "server.token": "Clave de acceso",
+  "server.connect": "Conectar",
+  "status.disconnected": "Sin conexión",
+  "status.connecting": "Conectando…",
+  "language.label": "Idioma de la interfaz",
+  "channels.title": "Canales",
+  "channels.all": "Todos los canales",
+  "queue.title": "Cola",
+  "queue.empty": "La cola está vacía o el servidor aún no está conectado.",
+  "item.title": "Material",
+  "item.select": "Seleccione un material de la cola.",
+  "item.no_title": "Sin título",
+  "item.no_text": "No hay texto disponible",
+  "item.source": "Fuente",
+  "item.channel": "Canal",
+  "item.language": "Idioma",
+  "item.media": "Medios",
+  "error.no_server": "Introduzca la dirección del servidor INFO."
+}

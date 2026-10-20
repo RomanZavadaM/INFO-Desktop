@@ -1,33 +1,33 @@
 # WORKLOG — INFO Desktop
 
 ## Active slice: 0.1.0-dev / real read-only newsroom
-
-**Base:** initial public repository  
 **Branch:** `prototype/read-only-client`  
+**PR:** #1 draft  
 **Status:** DOING
 
 ### DONE
-- Створено окремий public repository.
-- Створено робочу гілку.
-- Прийнято модель окремого універсального продукту.
-- Прийнято паралельне збереження Telegram INFO.
-- Прийнято read-only first.
-- Прийнято реальні production data for viewing, без тестової вигаданої черги.
-- Прийнято Taxo platform/i18n/license model.
-- Додано proprietary license/copyright/third-party skeleton.
+- public repository, branch, draft PR;
+- proprietary legal model;
+- universal versioned protocol draft;
+- Telegram preserved as parallel working UI;
+- read-only first, real-data acceptance;
+- Taxo localization/documentation discipline;
+- owner decision: Windows 7 removed from required matrix;
+- owner decision: Tauri 2 + TypeScript + React;
+- first native transport restricted to GET-only.
 
 ### DOING
-- Product/bootstrap documentation.
-- Protocol v1 read-only contract.
-- Localization skeleton.
+- Tauri/React product skeleton;
+- Windows/macOS/Linux CI builds;
+- seven-language UI;
+- real queue/card/media presentation.
 
 ### NEXT
-1. Створити мінімальний app skeleton.
-2. Додати UI localization resources.
-3. Реалізувати connection profile без secrets у репозиторії.
-4. Реалізувати protocol handshake/status/channels/queue/item/media reads.
-5. Підключити до реального INFO-compatible server.
-6. Перевірити UX на фактичній черзі ~100+ матеріалів.
+1. Make PR #1 CI/build matrix green.
+2. Reconcile protocol with real INFO queue schema.
+3. Add a separate read-only API PR to private INFO.
+4. Connect to LIVE and inspect ~100+ real pending items.
+5. Judge UX before any write API.
 
 ### BLOCKED
-- Серверний read-only endpoint ще не реалізований/не погоджений у `RomanZavadaM/INFO`; до конкретизації protocol v1 сервер не змінювати.
+Live connection requires a read-only server surface. Server INFO remains unchanged until protocol reconciliation.
