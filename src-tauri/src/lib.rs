@@ -32,7 +32,7 @@ fn checked_url(url: &str) -> Result<Url, String> {
 
 fn client() -> Result<reqwest::Client, String> {
     reqwest::Client::builder()
-        .user_agent("INFO-Desktop/0.1.0-dev")
+        .user_agent("INFO-Desktop/0.1-r1")
         .redirect(reqwest::redirect::Policy::limited(5))
         .build()
         .map_err(|error| error.to_string())

@@ -2,7 +2,7 @@
 
 ## Current
 
-Version: `0.1.0-dev`  
+Version: `0.1-r1`  
 Stage: read-only prototype  
 Branch: `prototype/read-only-client`  
 PR: #1 draft  

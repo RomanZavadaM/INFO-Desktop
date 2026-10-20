@@ -7,7 +7,7 @@
 - Active branch: `prototype/read-only-client`
 - Active PR: #1 draft
 - Development ledger: Issue #2
-- Product version: `0.1.0-dev`
+- Product version: `0.1-r1` (runtime SemVer `0.1.1`)
 - Stable release: none
 
 ## Architecture accepted
@@ -27,10 +27,11 @@ Owner accepted:
 - server listens, client initiates connection;
 - each Desktop receives a separate one-time registration file through a trusted path;
 - Desktop generates its own permanent cryptographic key pair locally;
-- device private key is never delivered by server and is not in the registration file;
+- permanent device private key is generated locally and is never in the registration file;
+- the registration file may contain a separate short-lived bootstrap transport private key delivered only through a trusted out-of-band path;
 - server enrolls the public key and can revoke a device independently;
 - target protected transport uses digital device keys and a non-standard public port;
-- WireGuard is the leading implementation candidate, not yet a production decision;
+- accepted bootstrap profile is `wireguard-bootstrap-v1`; production WireGuard/network deployment is not yet authorized;
 - INFO HTTP API itself should remain private behind the protected transport.
 
 Canonical spec: `docs/protocol/INFO_DESKTOP_REGISTRATION.md`.
@@ -64,7 +65,7 @@ A Google Doc `INFO Desktop — план, архітектура і реєстр�
 
 ## Next
 
-1. Finish current cross-platform build checks.
-2. Implement Registration v1 parser/data model/tests without changing production networking.
-3. Add server-side one-time registration/device-registry candidate in a separate development slice.
+1. Finish current cross-platform build checks for secure storage/bootstrap registration.
+2. Complete bootstrap/permanent key handoff logic without production networking.
+3. Complete server-side registration/device-registry tests.
 4. Before any VPN/firewall/port change, present exact production transport plan to owner.

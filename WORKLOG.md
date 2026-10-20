@@ -1,6 +1,6 @@
 # WORKLOG — INFO Desktop
 
-## Active slice: real read-only newsroom + registration design
+## Active slice: 0.1-r1 / real read-only newsroom + protected registration
 **Branch:** `prototype/read-only-client`  
 **PR:** #1 draft  
 **Status:** DOING
@@ -17,20 +17,22 @@
 - media restricted to INFO cache; remote originals not fetched automatically;
 - owner-approved one-file device registration model;
 - `info-desktop-registration/1` specification;
+- temporary `wireguard-bootstrap-v1` first-connection model;
+- permanent X25519 device key generation into OS secure storage;
+- registration token/bootstrap secret removed from UI state;
 - Google Drive `INFO Desktop` catalog and subfolders;
 - Drive architecture/roadmap document.
 
 ### DOING
-- cross-platform final CI verification for the current Desktop head;
-- Registration v1 implementation scaffolding and tests.
+- cross-platform CI verification for secure-storage/bootstrap code;
+- bootstrap → permanent-key enrollment handoff contract.
 
 ### NEXT
-1. Parse/version/validate registration files.
-2. Generate device key material locally.
-3. Define enrollment request/response and device registry.
-4. Define revoke/rotation flows.
-5. Decide protected transport implementation with owner before production network changes.
-6. Perform real LIVE read-only acceptance only after protected transport is ready.
+1. Finish CI for `0.1-r1` secure registration stack.
+2. Finish bootstrap → permanent peer handoff contract.
+3. Define revoke/rotation and bootstrap cleanup flows.
+4. Present exact production WireGuard/port/firewall plan before touching networking.
+5. Perform real LIVE read-only acceptance only after protected transport is ready.
 
 ### HARD BOUNDARY
 Do not alter production VPN/network/firewall/SSH, expose the INFO API publicly, or deploy PR #18 without an explicit owner-approved production step.

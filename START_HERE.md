@@ -21,7 +21,7 @@ INFO Desktop — окремий універсальний desktop-клієнт 
 
 Поточна гілка: `prototype/read-only-client`  
 Поточний PR: #1 draft  
-Поточний етап: `0.1.0-dev — real read-only newsroom`
+Поточний етап: `0.1-r1 — real read-only newsroom`
 
 ## Межі першого етапу
 

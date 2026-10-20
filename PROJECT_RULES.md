@@ -10,6 +10,6 @@
 8. **Стек.** Tauri 2 + TypeScript + React.
 9. **Суттєві рішення.** Зміна основного стеку, матриці ОС, storage/security/protocol architecture спершу обговорюється з власником.
 10. **Локалізація.** Українська, English, Deutsch, Español, Français, 한국어, 日本語; UI language, server language, channel language і content language — різні поняття.
-11. **Версії.** Product versioning 0.1.0 → 1.0.0; видані версії не перевикористовувати.
+11. **Версії.** TAXO-style revision scheme: `0.1-r1 → ... → 0.1-r10 → 0.2-r1`. Видану revision не перевикористовувати. Через вимогу Tauri/Cargo до SemVer внутрішня runtime-версія відображається як `0.1-rN ↔ 0.1.N`; користувацька/release-версія лишається `0.1-rN`.
 12. **Git.** main — працездатний інтегрований стан; development branches + CI; releases immutable.
 13. **Ліцензія.** Taxo model: proprietary / All rights reserved; public repository ≠ open source.
