@@ -164,10 +164,67 @@ async fn device_get_preview(
     })
 }
 
+
+#[derive(Deserialize)]
+struct RotationResponse {
+    device_id: String,
+    device_secret: String,
+    credential_expires_at: String,
+}
+
+#[derive(Serialize)]
+struct RotationResult {
+    device_id: String,
+    credential_expires_at: String,
+    storage: String,
+}
+
+#[command]
+async fn rotate_device_credential(
+    server: String,
+    device_id: String,
+) -> Result<RotationResult, String> {
+    let base = server.trim().trim_end_matches('/');
+    let url = checked_url(&(base.to_string() + "/api/info-desktop-registration/v1/rotate"))?;
+    let old_secret = registration::device_secret(&device_id)?;
+    let payload = serde_json::json!({
+        "device_id": device_id,
+        "device_secret": old_secret,
+    });
+
+    let response = client()?
+        .request(reqwest::Method::POST, url)
+        .header(reqwest::header::CONTENT_TYPE, "application/json")
+        .header(reqwest::header::ACCEPT, "application/json")
+        .body(payload.to_string())
+        .send()
+        .await
+        .map_err(|error| error.to_string())?;
+
+    let status = response.status().as_u16();
+    let body = response.text().await.map_err(|error| error.to_string())?;
+    if status < 200 || status >= 300 {
+        return Err(format!("Credential rotation failed: HTTP {status}"));
+    }
+
+    let rotated: RotationResponse =
+        serde_json::from_str(&body).map_err(|_| "Invalid rotation response".to_string())?;
+    if rotated.device_id != device_id {
+        return Err("Rotation response device mismatch".to_string());
+    }
+    registration::store_device_credential(&rotated.device_id, &rotated.device_secret)?;
+
+    Ok(RotationResult {
+        device_id: rotated.device_id,
+        credential_expires_at: rotated.credential_expires_at,
+        storage: "os-secure-store".to_string(),
+    })
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![import_registration_text, activate_registration, device_get, device_get_preview])
+        .invoke_handler(tauri::generate_handler![import_registration_text, activate_registration, rotate_device_credential, device_get, device_get_preview])
         .run(tauri::generate_context!())
         .expect("error while running INFO Desktop");
 }

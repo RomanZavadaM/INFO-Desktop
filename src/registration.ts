@@ -27,3 +27,10 @@ export async function activateRegistration(
     deviceName,
   });
 }
+
+export async function rotateDeviceCredential(
+  server: string,
+  deviceId: string,
+): Promise<ActivationResult> {
+  return invoke<ActivationResult>("rotate_device_credential", { server, deviceId });
+}

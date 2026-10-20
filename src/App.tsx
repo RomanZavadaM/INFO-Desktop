@@ -1,7 +1,7 @@
 import {useEffect,useMemo,useState} from "react";
 import {Channel,Handshake,InfoServerClient,ItemDetail,MediaDescriptor,QueueItem} from "./protocol";
 import {defaultLanguage,Language,languages,translator} from "./i18n";
-import {activateRegistration,importRegistration,RegistrationSummary} from "./registration";
+import {activateRegistration,importRegistration,RegistrationSummary,rotateDeviceCredential} from "./registration";
 function fmt(v?:string){if(!v)return"";const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleString()}
 
 function MediaPreview({media,client,t}:{media:MediaDescriptor;client:InfoServerClient;t:(k:string)=>string}){
@@ -12,13 +12,25 @@ function MediaPreview({media,client,t}:{media:MediaDescriptor;client:InfoServerC
 
 export function App(){
  const[language,setLanguage]=useState<Language>(defaultLanguage);const t=useMemo(()=>translator(language),[language]);
- const[server,setServer]=useState(()=>localStorage.getItem("info-desktop-server")??"");const[deviceId,setDeviceId]=useState(()=>localStorage.getItem("info-desktop-device-id")??"");const[hello,setHello]=useState<Handshake|null>(null);
+ const[server,setServer]=useState(()=>localStorage.getItem("info-desktop-server")??"");const[deviceId,setDeviceId]=useState(()=>localStorage.getItem("info-desktop-device-id")??"");const[credentialExpiry,setCredentialExpiry]=useState(()=>localStorage.getItem("info-desktop-credential-expiry")??"");const[hello,setHello]=useState<Handshake|null>(null);
  const[channels,setChannels]=useState<Channel[]>([]);const[queue,setQueue]=useState<QueueItem[]>([]);const[selected,setSelected]=useState<ItemDetail|null>(null);
  const[active,setActive]=useState("*");const[busy,setBusy]=useState(false);const[error,setError]=useState("");const[registration,setRegistration]=useState<RegistrationSummary|null>(null);
  const client=useMemo(()=>new InfoServerClient(server.trim(),deviceId.trim()),[server,deviceId]);
  const visible=useMemo(()=>active==="*"?queue:queue.filter(i=>i.channel===active),[queue,active]);
 
- async function connect(){if(!server.trim()){setError(t("error.no_server"));return}setBusy(true);setError("");try{const[h,ch,q]=await Promise.all([client.handshake(),client.channels(),client.queue(200)]);setHello(h);setChannels(ch);setQueue(q.items);setSelected(q.items[0]?await client.item(q.items[0].id):null)}catch(e){setHello(null);setChannels([]);setQueue([]);setSelected(null);setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
+ async function connect(){if(!server.trim()){setError(t("error.no_server"));return}setBusy(true);setError("");try{
+   if(deviceId&&credentialExpiry){
+    const exp=new Date(credentialExpiry).getTime();
+    const rotateBefore=Date.now()+7*24*60*60*1000;
+    if(Number.isFinite(exp)&&exp<=rotateBefore){
+      const rotated=await rotateDeviceCredential(server.trim(),deviceId);
+      setCredentialExpiry(rotated.credential_expires_at);
+      localStorage.setItem("info-desktop-credential-expiry",rotated.credential_expires_at);
+    }
+   }
+   const[h,ch,q]=await Promise.all([client.handshake(),client.channels(),client.queue(200)]);
+   setHello(h);setChannels(ch);setQueue(q.items);setSelected(q.items[0]?await client.item(q.items[0].id):null)
+  }catch(e){setHello(null);setChannels([]);setQueue([]);setSelected(null);setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function open(i:QueueItem){setBusy(true);setError("");try{setSelected(await client.item(i.id))}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function importRegistrationFile(file:File|undefined){
   if(!file)return;
@@ -31,7 +43,9 @@ export function App(){
    localStorage.setItem("info-desktop-server",serverUrl);
    const activated=await activateRegistration(parsed,"INFO Desktop");
    setDeviceId(activated.device_id);
+   setCredentialExpiry(activated.credential_expires_at);
    localStorage.setItem("info-desktop-device-id",activated.device_id);
+   localStorage.setItem("info-desktop-credential-expiry",activated.credential_expires_at);
   }catch(e){
    setRegistration(null);
    setError(e instanceof Error?e.message:String(e));

@@ -33,8 +33,11 @@ if (native.includes(".post(")) {
   throw new Error("Native layer must use explicit Method::POST only for enrollment");
 }
 const postCount=(native.match(/Method::POST/g)||[]).length;
-if(postCount!==1){
-  throw new Error(`Expected exactly one enrollment POST, found ${postCount}`);
+if(postCount!==2){
+  throw new Error(`Expected exactly two credential-service POST calls, found ${postCount}`);
+}
+for(const requiredPath of ["/api/info-desktop-registration/v1/enroll","/api/info-desktop-registration/v1/rotate"]){
+  if(!native.includes(requiredPath))throw new Error(`Missing allowed POST path: ${requiredPath}`);
 }
 if (!native.includes(".get(")) {
   throw new Error("Read-only native layer has no GET transport");
