@@ -20,7 +20,7 @@ export function App(){
 
  async function connect(){if(!server.trim()){setError(t("error.no_server"));return}setBusy(true);setError("");try{const[h,ch,q]=await Promise.all([client.handshake(),client.channels(),client.queue(200)]);setHello(h);setChannels(ch);setQueue(q.items);setSelected(q.items[0]?await client.item(q.items[0].id):null)}catch(e){setHello(null);setChannels([]);setQueue([]);setSelected(null);setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function open(i:QueueItem){setBusy(true);setError("");try{setSelected(await client.item(i.id))}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
- async function importRegistration(file:File|undefined){
+ async function importRegistrationFile(file:File|undefined){
   if(!file)return;
   setError("");
   try{
@@ -39,7 +39,7 @@ export function App(){
 
  return <main className="app-shell">
   <header className="topbar"><div className="brand"><strong>INFO Desktop</strong><span>{t("app.read_only")}</span></div><div className="connection">
-    <label className="import-button">{t("registration.import")}<input className="file-input" type="file" accept=".info-registration,.txt,text/plain" onChange={e=>importRegistration(e.target.files?.[0])}/></label><input placeholder={t("server.address")} value={server} onChange={e=>setServer(e.target.value)}/><input placeholder={t("server.token")} type="password" value={token} onChange={e=>setToken(e.target.value)}/><button onClick={connect} disabled={busy}>{busy?t("status.connecting"):t("server.connect")}</button></div><select value={language} onChange={e=>lang(e.target.value as Language)}>{Object.entries(languages).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}</select></header>
+    <label className="import-button">{t("registration.import")}<input className="file-input" type="file" accept=".info-registration,.txt,text/plain" onChange={e=>importRegistrationFile(e.target.files?.[0])}/></label><input placeholder={t("server.address")} value={server} onChange={e=>setServer(e.target.value)}/><input placeholder={t("server.token")} type="password" value={token} onChange={e=>setToken(e.target.value)}/><button onClick={connect} disabled={busy}>{busy?t("status.connecting"):t("server.connect")}</button></div><select value={language} onChange={e=>lang(e.target.value as Language)}>{Object.entries(languages).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}</select></header>
   <section className="server-strip"><span className={hello?"dot online":"dot"}/><span>{hello?`${hello.instance_name??hello.server_name??"INFO"} · ${hello.server_version??"?"}`:t("status.disconnected")}</span><span className="queue-count">{t("queue.title")}: {queue.length}</span></section>
   {registration&&<div className="registration-banner"><strong>{t("registration.valid")}</strong><span>{registration.server}:{registration.port}</span><span>{t("registration.expires")}: {fmt(registration.expires_at)}</span><span>{registration.transport}</span><span>{registration.bootstrap_address} → {registration.private_server}</span>{devicePublicKey&&<span>{t("registration.device_ready")}</span>}</div>}
   {error&&<div className="error-banner">{error}</div>}

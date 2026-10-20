@@ -93,7 +93,7 @@ mod tests {
     fn derives_stable_32_byte_public_key() {
         let secret = [7u8; 32];
         let encoded = public_key(secret);
-        let decoded = BASE64.decode(encoded).unwrap();
+        let decoded = BASE64.decode(&encoded).unwrap();
         assert_eq!(decoded.len(), 32);
         assert_eq!(encoded, public_key(secret));
     }
