@@ -1,49 +1,32 @@
-# INFO Desktop — Product Status
+# INFO Desktop — стан продукту
 
-## Current
+## Поточний стан
+- Версія: **0.1.1**
+- Default branch: `main`
+- PR #1: merged
+- Accepted main checkpoint: `852ee086769f2ce02246611d8772dfbb6ddc423d`
+- Реальне production-connected acceptance: пройдено
 
-Version: `0.1.1`  
-Stage: first accepted newsroom client  
-Default branch: `main`  
-PR #1: merged 2026-10-20  
-Main merge commit: `852ee086769f2ce02246611d8772dfbb6ddc423d`
-
-## Accepted product scope
-
-INFO Desktop is a separate universal desktop newsroom client for INFO-compatible servers.
-
-Implemented:
-- Tauri 2 + TypeScript + React/Rust;
-- seven UI languages;
-- Windows 10/11 x64, macOS ARM64, macOS Intel x86_64, Linux x64 build matrix;
-- versioned `info-desktop-protocol/1`;
-- one-file device registration and OS secure credential storage;
-- authenticated GET + scoped POST transport;
-- channels and full pending queue with pagination;
-- real item detail, source materials and cached-media preview;
-- title/text/channel editing;
-- save, skip, defer and scoped publish actions;
-- manual material creation;
-- Telegram-style publish preview.
+## Реалізовано
+- Tauri 2 + TypeScript + React + Rust;
+- 7 мов інтерфейсу;
+- Windows/macOS/Linux build matrix;
+- одноразова реєстрація пристрою;
+- OS secure credential storage;
+- повна pending-черга з пагінацією;
+- картка матеріалу, джерела та cached media preview;
+- редагування заголовка, тексту й каналу;
+- save / skip / defer;
+- manual create;
+- Telegram-style preview;
+- scoped publish action.
 
 ## Production acceptance
+На LIVE INFO `20261020-2040` реально створено матеріал Львова через Desktop. Він з'явився в редакційній черзі та Telegram editorial bot. Публічний Telegram SEND у цьому тесті не виконувався.
 
-On 2026-10-20 the client was connected to LIVE INFO `20261020-2040`.
-Manual creation of one real Lviv editorial item was accepted end-to-end:
-Desktop → API → SQLite → editorial queue → Telegram editorial bot.
-The acceptance did not perform a public Telegram SEND.
-
-## Server companion
-
-Private repository `RomanZavadaM/INFO`, PR #18, contains the server-side Desktop API / registration / gateway work used by LIVE 2040. It still needs repository reconciliation/merge into INFO main separately.
-
-## Not yet complete
-
-- public GitHub Release with installers/assets;
-- installer signing/notarization/update policy;
-- deliberate end-to-end Desktop publish acceptance;
-- TikTok publishing/preview adapter;
-- Facebook publishing/preview adapter;
-- broader UI polish and long-session regression.
-
-Existing Telegram INFO remains parallel and operational.
+## Ще не завершено
+- публічний GitHub Release з інсталяторами;
+- signing/notarization/update policy;
+- окремий deliberate publish acceptance;
+- TikTok та Facebook adapters;
+- подальше UI/UX шліфування.

@@ -1,25 +1,35 @@
-# INFO Desktop — User Manual
+# INFO Desktop — керівництво користувача
 
-## Status
+## Підключення
+1. Встановіть INFO Desktop.
+2. Оберіть мову інтерфейсу.
+3. Імпортуйте виданий адміністратором реєстраційний файл.
+4. Після одноразової активації пристрій зберігає секрет у системному secure storage.
+5. Натисніть **Підключитися**.
 
-This manual describes the current 0.1 read-only prototype. It will grow with accepted functionality.
+## Робота з чергою
+- ліворуч — канали;
+- посередині — редакційна черга;
+- праворуч — вибраний матеріал;
+- доступні джерела, переклади, quality metadata та cached media.
 
-## Current workflow
+## Редагування
+Можна змінити заголовок, текст і канал, після чого натиснути **Зберегти**.
 
-1. Start INFO Desktop.
-2. Choose interface language.
-3. Enter the address of an INFO-compatible server.
-4. Enter the access key if that server requires one.
-5. Connect.
-6. Browse channels and the prepared editorial queue.
-7. Select an item to read its prepared publication text, editorial metadata and source materials.
+## Дії
+Для авторизованого пристрою сервер може дозволити:
+- **Пропустити**;
+- **+1 година**;
+- **Створити** новий матеріал;
+- **Опублікувати**.
 
-## Read-only phase
+Доступ визначається server-side scopes. Desktop не обходить серверні права.
 
-Version 0.1 does not publish, skip, move, postpone or edit anything on the server.
+## Новий матеріал
+Вкажіть заголовок, канал, текст і за потреби URL джерела. Після **Створити** матеріал має з'явитися у звичайній редакційній черзі.
 
-If the connected server does not support `info-desktop-protocol/1`, the client must report incompatibility rather than guess.
+## Безпека
+Не передавайте registration file або device credential стороннім. У репозиторії секретів немає.
 
-## Real-data principle
-
-The product is evaluated with real server queue, text and media sizes. There is no substitute demonstration queue for product acceptance.
+## Перевірена поведінка
+Manual create успішно пройшов production acceptance 20.10.2026. Публічний Telegram SEND у цьому тесті не виконувався.

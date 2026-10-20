@@ -1,98 +1,34 @@
-# INFO Desktop — implementation roadmap
+# INFO Desktop — дорожня карта
 
-## A. Desktop foundation — DOING
+## DONE — фундамент і реальний INFO
+- Tauri 2 / React / TypeScript / Rust;
+- Windows/macOS/Linux;
+- 7 мов;
+- registration v1;
+- TLS/private CA;
+- реальна черга та картка;
+- authenticated media;
+- scoped write actions;
+- manual create production acceptance;
+- merge першого accepted client у `main`.
 
-Goal: cross-platform application skeleton that is independently buildable.
+## NEXT — release discipline
+- вирівняти version/release notes;
+- фіналізувати installer packaging;
+- signing/notarization policy;
+- GitHub Release з платформними assets і SHA256;
+- зберігати українську як canonical documentation, усі публічні документи синхронізувати 7 мовами.
 
-Acceptance:
-- Windows 10/11 x64 build;
-- macOS arm64 build;
-- macOS x86_64 build;
-- Linux x64 build;
-- seven UI languages;
-- no production secrets;
-- native network surface remains GET-only.
+## NEXT — редакторський цикл
+- deliberate publish acceptance тільки з явним дозволом власника;
+- довгі сесії/edge cases;
+- UI polish.
 
-## B. Real read-only protocol — DOING
+## LATER
+- TikTok preview/publishing adapter;
+- Facebook preview/publishing adapter;
+- інші INFO-compatible сервери;
+- updater після визначення політики підпису.
 
-Goal: show real INFO editorial state without slowing Telegram.
-
-Acceptance:
-- prepared editorial queue;
-- channel counts;
-- prepared draft;
-- editorial score/bucket/issues;
-- source materials/translations;
-- media metadata/private cached-photo preview;
-- bounded pagination;
-- no synchronous quality/routing recalculation on clicks.
-
-Server candidate: private INFO draft PR #18.
-
-## C. Registration v1 — NEXT
-
-Goal: one-file activation of a new Desktop device.
-
-Work:
-- canonical registration file parser;
-- file validation/version/expiry;
-- device key generation;
-- one-time registration token;
-- device registry model;
-- enrollment request/response contract;
-- revoke semantics;
-- safe local secret storage;
-- audit fields.
-
-No production port/firewall changes in this stage.
-
-## D. Protected transport — PLANNED
-
-Leading candidate: WireGuard-style per-device public-key transport.
-
-Work:
-- choose final transport;
-- choose high UDP port;
-- server listener/peer registration;
-- device internal address allocation;
-- API binds only to private transport/loopback;
-- device revoke cuts transport access;
-- recovery/rotation documentation.
-
-This stage requires explicit owner approval immediately before production network changes.
-
-## E. Real LIVE acceptance — PLANNED
-
-- create one registration grant for Roman-PC;
-- import it into Desktop;
-- establish protected transport;
-- read LIVE queue;
-- inspect real text/media/translation edge cases;
-- verify Telegram remains unaffected;
-- measure queue/card/media latency;
-- keep all server actions read-only.
-
-## F. Editorial write model — NOT STARTED
-
-Only after read-only acceptance:
-- roles;
-- item.edit;
-- item.publish;
-- item.skip;
-- postpone/move;
-- bulk operations;
-- action audit.
-
-Each write operation must be a server business operation, never direct DB mutation from Desktop.
-
-## G. Product release discipline — PLANNED
-
-Follow the Taxo-style product process:
-- synchronized version;
-- CI;
-- immutable release;
-- Windows/macOS/Linux assets;
-- checksums;
-- user guide;
-- project state/worklog;
-- Google Drive release copy where required.
+## Жорстка межа
+Не змінювати production VPN/network/firewall/SSH без окремого рішення власника.

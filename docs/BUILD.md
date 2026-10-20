@@ -1,13 +1,25 @@
-# INFO Desktop — build matrix
+# INFO Desktop — збірка і платформи
 
-## Required targets
-- Windows 10/11 x64.
-- macOS Apple Silicon / arm64.
-- macOS Intel / x86_64.
+## Версія
+Поточний accepted source checkpoint: **0.1.1** у гілці `main`.
+
+## Підтримувані цілі
+- Windows 10/11 x64;
+- macOS Apple Silicon / arm64;
+- macOS Intel / x86_64;
 - Linux x64.
 
-## Windows 7
-Not part of the required matrix as of 2026-10-20. Keeping it as a hard requirement would force legacy runtime decisions into a new product. A separate legacy client can be considered later if a real need appears.
+Windows 7 не входить до обов'язкової матриці нового продукту.
 
-## Acceptance rule
-CI artifact ≠ supported platform. Before stable documentation claims support, the application must actually start and complete the relevant smoke test on that OS.
+## Перевірка
+```bash
+npm ci
+npm run check
+npm run test:protocol
+npm run build
+npm run tauri build
+```
+
+CI-збірка сама по собі не означає підтримку платформи: стабільною ціль вважається після реального запуску та smoke-test на відповідній ОС.
+
+GitHub Actions формують окремі артефакти Windows, Linux і macOS. Імена збірок синхронізовані з версією 0.1.1.

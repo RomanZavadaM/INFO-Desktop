@@ -1,28 +1,20 @@
-# INFO Desktop — Release Index
+# INFO Desktop — індекс релізів
 
 ## 0.1.1 — accepted source checkpoint
+**Дата:** 2026-10-20  
+**Статус:** merged to main / production-connected acceptance passed  
+**Merge commit:** `852ee086769f2ce02246611d8772dfbb6ddc423d`
 
-Status: **merged to main / production-connected acceptance passed**  
-Date: 2026-10-20  
-Main merge commit: `852ee086769f2ce02246611d8772dfbb6ddc423d`
+Прийнято:
+- реальне INFO connection;
+- registration + secure credential storage;
+- повну pending queue;
+- item/source/media;
+- editing і scoped write actions;
+- manual create;
+- Windows/macOS/Linux workflows;
+- 7 мов UI та багатомовну документацію.
 
-Accepted:
-- real INFO connection;
-- device registration and secure credential storage;
-- full pending queue and item details;
-- source/media preview;
-- editing and scoped write actions;
-- manual material creation;
-- Windows/macOS/Linux build workflows;
-- seven UI languages.
+Production acceptance: LIVE INFO `20261020-2040`; manual create підтверджений у редакційному боті; public Telegram SEND не виконувався.
 
-Production acceptance:
-- LIVE INFO `20261020-2040`;
-- one real Lviv material created through Desktop and visible in the editorial bot;
-- no public Telegram SEND during that acceptance.
-
-GitHub Release assets: **not published yet**. Source checkpoint is stable in `main`; public installer release remains a separate release-packaging/signing step.
-
-## Historical development line
-
-- `0.1-r1` — prototype/read-only-client development line, now superseded by merged `0.1.1`.
+**GitHub Release assets ще не опубліковані.** Source checkpoint стабільний у `main`; інсталятори є окремим release-packaging кроком.
