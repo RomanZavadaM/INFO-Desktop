@@ -1,3 +1,4 @@
+use base64::Engine;
 use keyring::Entry;
 use serde::Serialize;
 use std::collections::HashMap;
@@ -12,6 +13,7 @@ pub struct RegistrationFile {
     pub port: u16,
     pub registration_id: String,
     pub registration_token: String,
+    pub server_certificate_der: String,
     pub expires_at: String,
     pub instance: String,
 }
@@ -21,6 +23,7 @@ pub struct RegistrationSummary {
     pub server: String,
     pub port: u16,
     pub registration_id: String,
+    pub server_certificate_der: String,
     pub expires_at: String,
     pub instance: String,
 }
@@ -94,11 +97,20 @@ pub fn parse_registration(text: &str) -> Result<RegistrationFile, String> {
     // Server is authoritative for expiry. Client keeps the timestamp for UI
     // and avoids inventing timezone/date semantics beyond requiring a value.
 
+    let server_certificate_der = nonempty(&fields, "server_certificate_der")?;
+    let cert_bytes = base64::engine::general_purpose::STANDARD
+        .decode(server_certificate_der.as_bytes())
+        .map_err(|_| "Invalid server_certificate_der".to_string())?;
+    if cert_bytes.len() < 128 || cert_bytes.len() > 16384 {
+        return Err("Invalid server_certificate_der length".to_string());
+    }
+
     Ok(RegistrationFile {
         server,
         port,
         registration_id,
         registration_token: nonempty(&fields, "registration_token")?,
+        server_certificate_der,
         expires_at,
         instance: fields
             .get("instance")
@@ -120,6 +132,7 @@ pub fn import_registration(text: &str) -> Result<RegistrationSummary, String> {
         server: parsed.server,
         port: parsed.port,
         registration_id: parsed.registration_id,
+        server_certificate_der: parsed.server_certificate_der,
         expires_at: parsed.expires_at,
         instance: parsed.instance,
     })
@@ -182,7 +195,7 @@ mod tests {
 
     fn valid() -> String {
         format!(
-            "{REGISTRATION_ID}\n\nserver = info.example.test\nport = 47443\nregistration_id = reg-123\nregistration_token = secret-456-secret-789\nexpires_at = 2099-10-21T12:00:00+03:00\ninstance = primary\n"
+            "{REGISTRATION_ID}\n\nserver = info.example.test\nport = 47443\nregistration_id = reg-123\nregistration_token = secret-456-secret-789\nserver_certificate_der = QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQ==\nexpires_at = 2099-10-21T12:00:00+03:00\ninstance = primary\n"
         )
     }
 

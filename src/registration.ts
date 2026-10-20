@@ -4,6 +4,7 @@ export interface RegistrationSummary {
   server: string;
   port: number;
   registration_id: string;
+  server_certificate_der: string;
   expires_at: string;
   instance: string;
 }
