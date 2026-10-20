@@ -22,6 +22,13 @@
 - **[GitHub Release v0.1.1](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.1) published**;
 - Windows/Linux/macOS Intel/macOS ARM assets and SHA256 published.
 
+### POST-RELEASE AUDIT — 2026-10-20
+- verified public README, release assets and canonical version files;
+- removed obsolete `0.1-r1` revision policy from `PROJECT_RULES.md`;
+- corrected obsolete GET-only connection architecture to scoped write behavior;
+- corrected Rust source User-Agent from `INFO-Desktop/0.1-r1` to `INFO-Desktop/0.1.1`;
+- kept published `v0.1.1` immutable; next published build requires a new version.
+
 ### NEXT
 1. Reconcile INFO server PR #18.
 2. Signing/notarization/update policy.
