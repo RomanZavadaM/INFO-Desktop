@@ -2,7 +2,7 @@ name: INFO Desktop checks
 on:
   pull_request:
   push:
-    branches: [main, prototype/read-only-client]
+    branches: [main]
 permissions: {contents: read}
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.head.sha || github.sha }}
