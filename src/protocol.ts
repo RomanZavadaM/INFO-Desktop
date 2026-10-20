@@ -47,17 +47,18 @@ export class InfoServerClient{
     let cursor:string|undefined;
     let counts:Record<string,number>|undefined;
     const seen=new Set<string>();
+    let finished=false;
     for(let pageNo=0;pageNo<maxPages;pageNo++){
       const page=await this.queue(pageSize,cursor);
       if(!counts&&page.counts)counts=page.counts;
       items.push(...page.items);
       const next=page.next_cursor??undefined;
-      if(!next)break;
+      if(!next){finished=true;break}
       if(seen.has(next))throw new Error("Queue pagination cursor repeated");
       seen.add(next);
       cursor=next;
     }
-    if(cursor&&items.length>=pageSize*maxPages)throw new Error("Queue pagination safety limit reached");
+    if(!finished)throw new Error("Queue pagination safety limit reached");
     return {items,next_cursor:null,counts} satisfies QueuePage;
   }
   item(id:string|number){return getJson<ItemDetail>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}`,this.deviceId,this.serverCaDer)}
