@@ -46,7 +46,7 @@ server = info.example.net
 port = 47443
 registration_id = reg-...
 registration_token = <one-time secret>
-server_certificate_der = <Base64 DER TLS server certificate>
+server_ca_der = <Base64 DER TLS server CA certificate>
 expires_at = 2026-10-21T12:00:00+03:00
 instance = primary
 ```
@@ -126,3 +126,16 @@ match the `server` field.
 
 This allows a server-managed certificate on the INFO high TCP port without any
 manual certificate installation by the editor.
+
+
+### CA rather than leaf pin
+
+The registration file carries the public INFO Desktop CA certificate, not the
+short-lived gateway leaf certificate.
+
+The gateway leaf certificate may therefore be rotated server-side without
+touching editor machines, as long as it is signed by the same INFO Desktop CA.
+
+The native client disables built-in public root CAs for INFO transport and trusts
+only the registration-delivered INFO Desktop CA. This is intentional isolation
+from the general Web PKI.

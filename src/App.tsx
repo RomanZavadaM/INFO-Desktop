@@ -12,10 +12,10 @@ function MediaPreview({media,client,t}:{media:MediaDescriptor;client:InfoServerC
 
 export function App(){
  const[language,setLanguage]=useState<Language>(defaultLanguage);const t=useMemo(()=>translator(language),[language]);
- const[server,setServer]=useState(()=>localStorage.getItem("info-desktop-server")??"");const[deviceId,setDeviceId]=useState(()=>localStorage.getItem("info-desktop-device-id")??"");const[credentialExpiry,setCredentialExpiry]=useState(()=>localStorage.getItem("info-desktop-credential-expiry")??"");const[serverCertificateDer,setServerCertificateDer]=useState(()=>localStorage.getItem("info-desktop-server-cert")??"");const[hello,setHello]=useState<Handshake|null>(null);
+ const[server,setServer]=useState(()=>localStorage.getItem("info-desktop-server")??"");const[deviceId,setDeviceId]=useState(()=>localStorage.getItem("info-desktop-device-id")??"");const[credentialExpiry,setCredentialExpiry]=useState(()=>localStorage.getItem("info-desktop-credential-expiry")??"");const[serverCaDer,setServerCertificateDer]=useState(()=>localStorage.getItem("info-desktop-server-cert")??"");const[hello,setHello]=useState<Handshake|null>(null);
  const[channels,setChannels]=useState<Channel[]>([]);const[queue,setQueue]=useState<QueueItem[]>([]);const[selected,setSelected]=useState<ItemDetail|null>(null);
  const[active,setActive]=useState("*");const[busy,setBusy]=useState(false);const[error,setError]=useState("");const[registration,setRegistration]=useState<RegistrationSummary|null>(null);
- const client=useMemo(()=>new InfoServerClient(server.trim(),deviceId.trim(),serverCertificateDer),[server,deviceId,serverCertificateDer]);
+ const client=useMemo(()=>new InfoServerClient(server.trim(),deviceId.trim(),serverCaDer),[server,deviceId,serverCaDer]);
  const visible=useMemo(()=>active==="*"?queue:queue.filter(i=>i.channel===active),[queue,active]);
 
  async function connect(){if(!server.trim()){setError(t("error.no_server"));return}setBusy(true);setError("");try{
@@ -23,7 +23,7 @@ export function App(){
     const exp=new Date(credentialExpiry).getTime();
     const rotateBefore=Date.now()+7*24*60*60*1000;
     if(Number.isFinite(exp)&&exp<=rotateBefore){
-      const rotated=await rotateDeviceCredential(server.trim(),deviceId,serverCertificateDer);
+      const rotated=await rotateDeviceCredential(server.trim(),deviceId,serverCaDer);
       setCredentialExpiry(rotated.credential_expires_at);
       localStorage.setItem("info-desktop-credential-expiry",rotated.credential_expires_at);
     }
@@ -40,9 +40,9 @@ export function App(){
    setRegistration(parsed);
    const serverUrl=`https://${parsed.server}:${parsed.port}`;
    setServer(serverUrl);
-   setServerCertificateDer(parsed.server_certificate_der);
+   setServerCertificateDer(parsed.server_ca_der);
    localStorage.setItem("info-desktop-server",serverUrl);
-   localStorage.setItem("info-desktop-server-cert",parsed.server_certificate_der);
+   localStorage.setItem("info-desktop-server-cert",parsed.server_ca_der);
    const activated=await activateRegistration(parsed,"INFO Desktop");
    setDeviceId(activated.device_id);
    setCredentialExpiry(activated.credential_expires_at);

@@ -29,15 +29,16 @@ fn checked_url(url: &str) -> Result<Url, String> {
     Ok(parsed)
 }
 
-fn client_with_cert(server_certificate_der: &str) -> Result<reqwest::Client, String> {
+fn client_with_cert(server_ca_der: &str) -> Result<reqwest::Client, String> {
     let cert_bytes = BASE64
-        .decode(server_certificate_der.trim())
-        .map_err(|_| "Invalid server certificate".to_string())?;
+        .decode(server_ca_der.trim())
+        .map_err(|_| "Invalid server CA certificate".to_string())?;
     let cert = reqwest::Certificate::from_der(&cert_bytes)
-        .map_err(|_| "Invalid server certificate DER".to_string())?;
+        .map_err(|_| "Invalid server CA certificate DER".to_string())?;
     reqwest::Client::builder()
         .user_agent("INFO-Desktop/0.1-r1")
         .redirect(reqwest::redirect::Policy::none())
+        .tls_built_in_root_certs(false)
         .add_root_certificate(cert)
         .build()
         .map_err(|error| error.to_string())
@@ -69,7 +70,7 @@ async fn activate_registration(
     port: u16,
     registration_id: String,
     device_name: String,
-    server_certificate_der: String,
+    server_ca_der: String,
 ) -> Result<ActivationResult, String> {
     let base = format!("https://{}:{}", server.trim(), port);
     let url = checked_url(&(base + "/api/info-desktop-registration/v1/enroll"))?;
@@ -81,7 +82,7 @@ async fn activate_registration(
         "device_name": device_name.trim(),
     });
 
-    let response = client_with_cert(&server_certificate_der)?
+    let response = client_with_cert(&server_ca_der)?
         .request(reqwest::Method::POST, url)
         .header(reqwest::header::CONTENT_TYPE, "application/json")
         .header(reqwest::header::ACCEPT, "application/json")
@@ -112,11 +113,11 @@ async fn activate_registration(
 async fn device_get(
     url: String,
     device_id: String,
-    server_certificate_der: String,
+    server_ca_der: String,
 ) -> Result<ReadonlyResponse, String> {
     let parsed = checked_url(&url)?;
     let secret = registration::device_secret(&device_id)?;
-    let response = client_with_cert(&server_certificate_der)?
+    let response = client_with_cert(&server_ca_der)?
         .get(parsed)
         .header(reqwest::header::ACCEPT, "application/json")
         .header("X-INFO-Device", device_id)
@@ -133,11 +134,11 @@ async fn device_get(
 async fn device_get_preview(
     url: String,
     device_id: String,
-    server_certificate_der: String,
+    server_ca_der: String,
 ) -> Result<ReadonlyBinaryResponse, String> {
     let parsed = checked_url(&url)?;
     let secret = registration::device_secret(&device_id)?;
-    let response = client_with_cert(&server_certificate_der)?
+    let response = client_with_cert(&server_ca_der)?
         .get(parsed)
         .header(reqwest::header::ACCEPT, "image/*")
         .header("X-INFO-Device", device_id)
@@ -192,7 +193,7 @@ struct RotationResult {
 async fn rotate_device_credential(
     server: String,
     device_id: String,
-    server_certificate_der: String,
+    server_ca_der: String,
 ) -> Result<RotationResult, String> {
     let base = server.trim().trim_end_matches('/');
     let url = checked_url(&(base.to_string() + "/api/info-desktop-registration/v1/rotate"))?;
@@ -202,7 +203,7 @@ async fn rotate_device_credential(
         "device_secret": old_secret,
     });
 
-    let response = client_with_cert(&server_certificate_der)?
+    let response = client_with_cert(&server_ca_der)?
         .request(reqwest::Method::POST, url)
         .header(reqwest::header::CONTENT_TYPE, "application/json")
         .header(reqwest::header::ACCEPT, "application/json")
