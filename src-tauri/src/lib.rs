@@ -1,3 +1,5 @@
+mod registration;
+
 use base64::engine::general_purpose::STANDARD as BASE64;
 use base64::Engine;
 use serde::Serialize;
@@ -106,10 +108,15 @@ async fn readonly_get_preview(
     })
 }
 
+#[command]
+fn parse_registration_text(text: String) -> Result<registration::RegistrationFile, String> {
+    registration::parse_registration(&text)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![readonly_get, readonly_get_preview])
+        .invoke_handler(tauri::generate_handler![readonly_get, readonly_get_preview, parse_registration_text])
         .run(tauri::generate_context!())
         .expect("error while running INFO Desktop");
 }
