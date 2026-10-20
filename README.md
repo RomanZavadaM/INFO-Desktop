@@ -2,6 +2,8 @@
 
 [Українська](README.md) · [English](docs/i18n/README.en.md) · [Deutsch](docs/i18n/README.de.md) · [Español](docs/i18n/README.es.md) · [Français](docs/i18n/README.fr.md) · [한국어](docs/i18n/README.ko.md) · [日本語](docs/i18n/README.ja.md)
 
+> Інтерфейс і публічний опис підтримуються однаково сімома мовами; користувацькі рядки винесені в locale-ресурси за моделлю Taxo.
+
 ![INFO Desktop checks](https://github.com/RomanZavadaM/INFO-Desktop/actions/workflows/ci.yml/badge.svg)
 
 **INFO Desktop — окреме настільне робоче місце редактора для INFO-сумісних серверів.**
