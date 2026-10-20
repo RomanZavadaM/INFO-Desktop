@@ -20,6 +20,22 @@ function safeHtml(raw:string){
 }
 function HtmlPreview({html}:{html:string}){return <div className="article-text rendered" dangerouslySetInnerHTML={{__html:safeHtml(html)}}/>}
 
+function TelegramPreview({title,html,media}:{title:string;html:string;media:MediaDescriptor[]}){
+ const hasMedia=media.some(m=>m.preview_available);
+ return <div className="platform-preview">
+  <div className="platform-tabs"><button className="active">Telegram</button><button disabled>TikTok</button><button disabled>Facebook</button></div>
+  <div className="telegram-stage">
+   <div className="telegram-bubble">
+    {hasMedia&&<div className="telegram-media-placeholder">Медіа з матеріалу</div>}
+    <div className="telegram-channel">З-під Ляди</div>
+    {title&&<div className="telegram-title">{title}</div>}
+    <div className="telegram-body" dangerouslySetInnerHTML={{__html:safeHtml(html)}}/>
+    <div className="telegram-time">18:14 ✓✓</div>
+   </div>
+  </div>
+ </div>
+}
+
 function MediaPreview({media,client,t}:{media:MediaDescriptor;client:InfoServerClient;t:(k:string)=>string}){
  const[src,setSrc]=useState("");const[error,setError]=useState("");
  useEffect(()=>{let alive=true;setSrc("");setError("");if(!media.preview_available||!media.preview_url)return;client.preview(media.preview_url).then(v=>{if(alive)setSrc(v)}).catch(e=>{if(alive)setError(e instanceof Error?e.message:String(e))});return()=>{alive=false}},[media.preview_available,media.preview_url,client]);
@@ -79,7 +95,7 @@ export function App(){
     <input className="title-editor" value={editTitle} onChange={e=>setEditTitle(e.target.value)}/>
     <div className="format-toolbar"><button onClick={()=>wrap("<b>","</b>")}><b>B</b></button><button onClick={()=>wrap("<i>","</i>")}><i>I</i></button><button onClick={()=>wrap("<u>","</u>")}><u>U</u></button><button onClick={()=>wrap("<blockquote>","</blockquote>")}>Цитата</button><button onClick={()=>wrap('<a href="https://">',"</a>")}>Посилання</button></div>
     <textarea ref={editorRef} className="text-editor" value={editText} onChange={e=>setEditText(e.target.value)}/>
-    <div className="preview-label">Попередній вигляд</div><HtmlPreview html={editText}/>
+    <div className="preview-label">Попередній вигляд у Telegram</div><TelegramPreview title={editTitle} html={editText} media={media}/>
     <div className="actions sticky-actions"><button onClick={save} disabled={busy}>Зберегти</button><button className="publish" onClick={()=>act(async()=>{const saved=await client.save(selected.id,{title:editTitle,draft_text:editText,channel:editChannel});await client.publish(saved.item_id)},"Опубліковано")} disabled={busy}>Опублікувати</button><button className="ghost" onClick={()=>act(()=>client.defer(selected.id,60),"Відкладено на годину")} disabled={busy}>+1 година</button><button className="danger" onClick={()=>act(()=>client.skip(selected.id),"Пропущено")} disabled={busy}>Пропустити</button></div>
     <div className="detail-meta"><span>Канал: {selected.channel_name??selected.channel}</span><span>{selected.bucket}{typeof selected.quality_score==="number"?` · ${selected.quality_score.toFixed(1)}`:""}</span></div>
     {!!selected.materials?.length&&<section><h3>Джерела · {selected.materials.length}</h3>{selected.materials.map((m,n)=><div className="source-card" key={String(m.id??n)}><strong>{m.source_name??m.source??"—"}</strong><span>{m.title??""}</span>{m.url&&<a href={m.url} target="_blank" rel="noreferrer">{m.url}</a>}<p>{m.translated_summary??m.summary??""}</p></div>)}</section>}
