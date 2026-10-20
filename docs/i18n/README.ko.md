@@ -1,13 +1,52 @@
 # INFO Desktop
 
-**INFO Desktop은 INFO 호환 서버를 위한 범용 크로스플랫폼 뉴스룸 작업 환경입니다.**
+[Українська](../../README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Français](README.fr.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
 
-현재 단계: **0.1.0-dev / 읽기 전용 프로토타입**.
+**INFO Desktop은 INFO 호환 서버를 위한 크로스플랫폼 뉴스룸 작업 환경입니다.**
 
-기술: **Tauri 2 + TypeScript + React**.
+버전 **0.1.1**은 `main`에 병합된 첫 번째 승인 소스 체크포인트입니다.
 
-주요 대상: Windows 10/11 x64, macOS ARM64, macOS Intel x86_64, Linux x64. Windows 7은 새 제품의 필수 대상이 아닙니다.
+## 주요 기능
 
-첫 클라이언트는 버전이 지정된 프로토콜을 통해 실제 대기열, 본문 및 미디어를 읽습니다. 네이티브 전송 계층은 GET만 허용합니다. Telegram은 병렬로 계속 동작합니다.
+- `info-desktop-protocol/1`을 통한 실제 INFO 서버 연결;
+- 일회용 기기 등록 파일;
+- 재사용 기기 비밀키를 OS 보안 저장소에만 저장;
+- 채널, 전체 대기열, 기사 상세, 출처 및 캐시 미디어 조회;
+- 제목, 본문, 대상 채널 편집;
+- 저장, 건너뛰기, 연기;
+- 새 기사 수동 생성;
+- Telegram 스타일 게시 미리보기;
+- 권한 scope 기반 게시;
+- 7개 UI 언어.
+
+## 운영 환경 검증
+
+2026년 10월 20일 INFO Desktop을 LIVE INFO `20261020-2040`에 연결했습니다. 실제 Lviv 기사를 Desktop에서 생성했고 편집 대기열과 Telegram 편집 봇에 나타나는 것을 확인했습니다. Desktop → API → 데이터베이스 → 편집 대기열 경로가 검증되었습니다. 이 검증에서는 공개 Telegram SEND를 수행하지 않았습니다.
+
+## 플랫폼
+
+Windows 10/11 x64 · macOS ARM64 · macOS Intel x86_64 · Linux x64. Windows 7은 필수 지원 대상이 아닙니다.
+
+## 보안
+
+SQLite 직접 접근 없음, 애플리케이션 프로토콜로 SSH 사용 안 함, 저장소에 운영 비밀정보 없음. 기기 권한은 scope로 제한되며 현재 gateway는 VPN-only입니다.
+
+## 기술 및 빌드
+
+Tauri 2 · TypeScript · React · Rust · reqwest/rustls.
+
+```bash
+npm ci
+npm run check
+npm run test:protocol
+npm run build
+npm run tauri build
+```
+
+[Build](../BUILD.md), [사용자 매뉴얼](../guides/USER_MANUAL.md), [프로토콜](../protocol/INFO_DESKTOP_PROTOCOL.md), [등록](../protocol/INFO_DESKTOP_REGISTRATION.md), [릴리스 인덱스](../releases/RELEASE_INDEX.md)를 참조하세요.
+
+## 릴리스 상태
+
+`0.1.1` 소스 체크포인트는 `main`에서 승인되었습니다. 공개 GitHub Release 설치 파일은 다음 패키징 단계입니다.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved. Proprietary software.**
