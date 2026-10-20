@@ -5,6 +5,8 @@ export interface RegistrationSummary {
   transport: string;
   port: number;
   server_public_key: string;
+  bootstrap_address: string;
+  private_server: string;
   registration_id: string;
   expires_at: string;
   instance: string;

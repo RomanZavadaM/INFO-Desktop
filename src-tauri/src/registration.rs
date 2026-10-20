@@ -5,6 +5,7 @@ use std::collections::HashMap;
 
 pub const REGISTRATION_ID: &str = "INFO-DESKTOP-REGISTRATION/1";
 const REGISTRATION_SECRET_SERVICE: &str = "INFO Desktop registration grant";
+const BOOTSTRAP_KEY_SERVICE: &str = "INFO Desktop bootstrap transport key";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RegistrationFile {
@@ -12,6 +13,9 @@ pub struct RegistrationFile {
     pub transport: String,
     pub port: u16,
     pub server_public_key: String,
+    pub bootstrap_private_key: String,
+    pub bootstrap_address: String,
+    pub private_server: String,
     pub registration_id: String,
     pub registration_token: String,
     pub expires_at: String,
@@ -31,6 +35,8 @@ pub struct RegistrationSummary {
     pub transport: String,
     pub port: u16,
     pub server_public_key: String,
+    pub bootstrap_address: String,
+    pub private_server: String,
     pub registration_id: String,
     pub expires_at: String,
     pub instance: String,
@@ -44,11 +50,22 @@ pub fn import_registration(text: &str) -> Result<RegistrationSummary, String> {
         .set_secret(parsed.registration_token.as_bytes())
         .map_err(|e| format!("Cannot store registration grant securely: {e}"))?;
 
+    let bootstrap_raw = base64::engine::general_purpose::STANDARD
+        .decode(parsed.bootstrap_private_key.as_bytes())
+        .map_err(|_| "Invalid bootstrap private key".to_string())?;
+    let bootstrap_entry = Entry::new(BOOTSTRAP_KEY_SERVICE, &parsed.registration_id)
+        .map_err(|e| format!("Secure credential store unavailable: {e}"))?;
+    bootstrap_entry
+        .set_secret(&bootstrap_raw)
+        .map_err(|e| format!("Cannot store bootstrap key securely: {e}"))?;
+
     Ok(RegistrationSummary {
         server: parsed.server,
         transport: parsed.transport,
         port: parsed.port,
         server_public_key: parsed.server_public_key,
+        bootstrap_address: parsed.bootstrap_address,
+        private_server: parsed.private_server,
         registration_id: parsed.registration_id,
         expires_at: parsed.expires_at,
         instance: parsed.instance,
@@ -70,6 +87,14 @@ pub fn forget_registration_token(registration_id: &str) -> Result<(), String> {
     match entry.delete_credential() {
         Ok(()) | Err(keyring::Error::NoEntry) => Ok(()),
         Err(e) => Err(format!("Cannot remove registration grant: {e}")),
+    }
+}
+
+fn valid_wg_key(value: &str) -> bool {
+    use base64::Engine;
+    match base64::engine::general_purpose::STANDARD.decode(value.as_bytes()) {
+        Ok(raw) => raw.len() == 32,
+        Err(_) => false,
     }
 }
 
@@ -109,6 +134,9 @@ pub fn parse_registration(text: &str) -> Result<RegistrationFile, String> {
     }
 
     let transport = nonempty(&fields, "transport")?;
+    if transport != "wireguard-bootstrap-v1" {
+        return Err("Unsupported registration transport".to_string());
+    }
     let port_raw = nonempty(&fields, "port")?;
     let port = port_raw
         .parse::<u16>()
@@ -122,6 +150,23 @@ pub fn parse_registration(text: &str) -> Result<RegistrationFile, String> {
         .map_err(|_| "expires_at must be RFC3339 with timezone".to_string())?;
     if expiry.with_timezone(&Utc) <= Utc::now() {
         return Err("Registration file has expired".to_string());
+    }
+
+    let server_public_key = nonempty(&fields, "server_public_key")?;
+    if !valid_wg_key(&server_public_key) {
+        return Err("Invalid server_public_key".to_string());
+    }
+    let bootstrap_private_key = nonempty(&fields, "bootstrap_private_key")?;
+    if !valid_wg_key(&bootstrap_private_key) {
+        return Err("Invalid bootstrap_private_key".to_string());
+    }
+    let bootstrap_address = nonempty(&fields, "bootstrap_address")?;
+    if !bootstrap_address.contains('/') || bootstrap_address.contains(' ') {
+        return Err("Invalid bootstrap_address".to_string());
+    }
+    let private_server = nonempty(&fields, "private_server")?;
+    if private_server.contains('/') || private_server.contains(' ') {
+        return Err("Invalid private_server".to_string());
     }
 
     let registration_id = nonempty(&fields, "registration_id")?;
@@ -138,7 +183,10 @@ pub fn parse_registration(text: &str) -> Result<RegistrationFile, String> {
         server,
         transport,
         port,
-        server_public_key: nonempty(&fields, "server_public_key")?,
+        server_public_key,
+        bootstrap_private_key,
+        bootstrap_address,
+        private_server,
         registration_id,
         registration_token: nonempty(&fields, "registration_token")?,
         expires_at,
@@ -156,7 +204,7 @@ mod tests {
 
     fn valid(expiry: &str) -> String {
         format!(
-            "{REGISTRATION_ID}\n\nserver = info.example.test\ntransport = protected-v1\nport = 47000\nserver_public_key = server-pub\nregistration_id = reg-123\nregistration_token = secret-456\nexpires_at = {expiry}\ninstance = primary\n"
+            "{REGISTRATION_ID}\n\nserver = info.example.test\ntransport = wireguard-bootstrap-v1\nport = 47000\nserver_public_key = AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=\nbootstrap_private_key = HyAeHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgE=\nbootstrap_address = 10.77.0.240/32\nprivate_server = 10.77.0.1\nregistration_id = reg-123\nregistration_token = secret-456\nexpires_at = {expiry}\ninstance = primary\n"
         )
     }
 
@@ -166,6 +214,9 @@ mod tests {
         assert_eq!(parsed.server, "info.example.test");
         assert_eq!(parsed.port, 47000);
         assert_eq!(parsed.instance, "primary");
+        assert_eq!(parsed.transport, "wireguard-bootstrap-v1");
+        assert_eq!(parsed.bootstrap_address, "10.77.0.240/32");
+        assert_eq!(parsed.private_server, "10.77.0.1");
     }
 
     #[test]
