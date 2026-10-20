@@ -1,9 +1,13 @@
 # INFO Desktop — 製品状態
 
-現在の承認済みソースチェックポイント: main の 0.1.1。
+Version: **0.1.1**  
+Main: accepted  
+Release: **[v0.1.1](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.1)**
 
-Implemented: seven UI languages, Windows/macOS/Linux builds, one-file registration, secure credentials, full pending queue, item/source/media details, editing, save/skip/defer, manual create, Telegram-style preview and scoped publish action.
+GitHub Release v0.1.1 は Windows x64、Linux x64、macOS ARM64、macOS Intel の assets と SHA256 を含めて公開済みです。
 
-2026-10-20 の INFO 20261020-2040 本番受入で手動記事作成を end-to-end で確認しました。公開 Telegram SEND は実行していません。
+Implemented: seven UI languages, multilingual documentation, secure device registration, full queue/item/source/media, editing, save/skip/defer, manual create, Telegram-style preview and scoped publish action.
 
-Not complete yet: public installer release assets, signing/notarization/update policy, deliberate publish acceptance, TikTok/Facebook adapters and further UI polish.
+Production acceptance against INFO `20261020-2040` passed. No public Telegram SEND was performed.
+
+署名/Notarization/Update policy は次のリリース段階です。

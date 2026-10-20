@@ -4,18 +4,18 @@
 - Версія: **0.1.1**
 - Default branch: `main`
 - PR #1: merged
-- Accepted main checkpoint: `852ee086769f2ce02246611d8772dfbb6ddc423d`
-- Реальне production-connected acceptance: пройдено
+- Production-connected acceptance: пройдено
+- GitHub Release: **[v0.1.1](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.1) published**
+- Release assets: Windows x64 / Linux x64 / macOS ARM64 / macOS Intel x86_64 + SHA256
 
 ## Реалізовано
 - Tauri 2 + TypeScript + React + Rust;
-- 7 мов інтерфейсу;
-- Windows/macOS/Linux build matrix;
-- одноразова реєстрація пристрою;
+- 7 мов;
+- one-file registration;
 - OS secure credential storage;
-- повна pending-черга з пагінацією;
-- картка матеріалу, джерела та cached media preview;
-- редагування заголовка, тексту й каналу;
+- full pending queue;
+- item/source/media;
+- editing;
 - save / skip / defer;
 - manual create;
 - Telegram-style preview;
@@ -25,8 +25,7 @@
 На LIVE INFO `20261020-2040` реально створено матеріал Львова через Desktop. Він з'явився в редакційній черзі та Telegram editorial bot. Публічний Telegram SEND у цьому тесті не виконувався.
 
 ## Ще не завершено
-- публічний GitHub Release з інсталяторами;
 - signing/notarization/update policy;
-- окремий deliberate publish acceptance;
+- deliberate publish acceptance;
 - TikTok та Facebook adapters;
 - подальше UI/UX шліфування.

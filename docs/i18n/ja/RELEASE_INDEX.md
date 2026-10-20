@@ -1,10 +1,12 @@
 # INFO Desktop — リリース一覧
 
 ## 0.1.1
-Status: accepted source checkpoint in `main`. Date: 2026-10-20. Merge checkpoint: `852ee086769f2ce02246611d8772dfbb6ddc423d`.
+Date: 2026-10-20  
+Status: stable GitHub Release published / production acceptance passed  
+Release: [v0.1.1](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.1)
 
-Accepted: real INFO connection, registration, secure credential storage, full queue, item/source/media, editing/scoped actions, manual create, Windows/macOS/Linux workflows and seven-language UI/documentation.
+GitHub Release v0.1.1 は Windows x64、Linux x64、macOS ARM64、macOS Intel の assets と SHA256 を含めて公開済みです。
 
-2026-10-20 の INFO 20261020-2040 本番受入で手動記事作成を end-to-end で確認しました。公開 Telegram SEND は実行していません。
+Production acceptance against INFO `20261020-2040` confirmed manual create end-to-end. No public Telegram SEND was performed.
 
-Public GitHub Release installer assets are not published yet; they remain a separate release-packaging step.
+署名/Notarization/Update policy は次のリリース段階です。

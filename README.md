@@ -2,88 +2,73 @@
 
 [Українська](README.md) · [English](docs/i18n/README.en.md) · [Deutsch](docs/i18n/README.de.md) · [Español](docs/i18n/README.es.md) · [Français](docs/i18n/README.fr.md) · [한국어](docs/i18n/README.ko.md) · [日本語](docs/i18n/README.ja.md)
 
-> Інтерфейс і публічний опис підтримуються однаково сімома мовами; користувацькі рядки винесені в locale-ресурси за моделлю Taxo.
+> Українська — основна й канонічна мова проєкту. Інтерфейс і публічна документація підтримуються сімома мовами за тією самою моделлю, що й у Taxo.
 
 ![INFO Desktop checks](https://github.com/RomanZavadaM/INFO-Desktop/actions/workflows/ci.yml/badge.svg)
 
 **INFO Desktop — окреме настільне робоче місце редактора для INFO-сумісних серверів.**
 
-Поточна версія коду: **0.1.1**. Перший робочий клієнт уже злитий у `main` і перевірений на реальному INFO: підключення, реальна редакційна черга, картка матеріалу, медіа та ручне створення матеріалу працюють end-to-end.
+Поточна версія: **0.1.1**. Перший робочий клієнт злитий у `main`, пройшов production-connected acceptance та має опублікований GitHub Release.
 
-> INFO Desktop не замінює Telegram-інтерфейс. Обидва клієнти працюють паралельно з тією самою редакційною системою.
+## Завантаження 0.1.1
+
+**[GitHub Release v0.1.1](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.1)**
+
+| Платформа | Файли |
+|---|---|
+| Windows 10/11 x64 | EXE installer, MSI |
+| macOS Apple Silicon | DMG, Portable ZIP |
+| macOS Intel x86_64 | DMG, Portable ZIP |
+| Linux x64 | AppImage, DEB |
+
+Для кожної платформи опубліковано окремий `SHA256SUMS-*.txt`.
+
+> Поточні збірки ще не мають завершеної signing/notarization/update policy. Це наступний релізний етап.
 
 ## Що вже вміє
 
-- підключення до INFO через версійований `info-desktop-protocol/1`;
+- підключення до INFO через `info-desktop-protocol/1`;
 - одноразова реєстрація пристрою;
-- секрет пристрою зберігається в системному secure storage;
-- TLS із приватним INFO CA без ручного встановлення сертифіката;
-- список каналів і повна pending-черга з пагінацією;
-- відкриття реального матеріалу, джерел, перекладів і cached-media preview;
+- reusable device secret тільки в OS secure storage;
+- TLS із приватним INFO CA;
+- канали і повна pending-черга;
+- картка матеріалу, джерела, переклади, cached-media preview;
 - редагування заголовка, тексту та каналу;
-- збереження, пропуск, відкладення;
-- ручне створення нового матеріалу;
-- Telegram-style preview перед публікацією;
-- scoped publish action для авторизованих пристроїв;
+- save / skip / defer;
+- ручне створення матеріалу;
+- Telegram-style preview;
+- scoped publish action;
 - 7 мов інтерфейсу;
 - Windows 10/11 x64, macOS ARM64, macOS Intel x86_64, Linux x64.
 
-Windows 7 не входить в обов'язкову матрицю цього продукту.
+Windows 7 не входить до обов'язкової матриці.
 
 ## Реально перевірено
 
-20.10.2026 INFO Desktop був підключений до LIVE INFO `20261020-2040`. Один реальний матеріал для Львова створено через Desktop і підтверджено в редакційній черзі/Telegram-боті. Це перевірило шлях **Desktop → API → база → редакційна черга**. Публічний Telegram SEND у цьому acceptance-тесті не виконувався.
+20.10.2026 INFO Desktop був підключений до LIVE INFO `20261020-2040`. Реальний матеріал Львова створено через Desktop і підтверджено в редакційній черзі та Telegram editorial bot. Це перевірило шлях **Desktop → API → база → редакційна черга**. Публічний Telegram SEND у цьому acceptance-тесті не виконувався.
 
 ## Безпека
 
-- клієнт не має прямого доступу до SQLite;
-- робочий протокол не використовує SSH;
-- production-секрети не зберігаються в репозиторії;
-- reusable device secret не зберігається в UI/localStorage;
-- сервер видає scopes окремо для read/write/create/publish;
-- Desktop gateway на поточному INFO залишається VPN-only;
-- жоден код цього репозиторію не повинен самовільно змінювати VPN/firewall/SSH.
-
-## Технології
-
-Tauri 2 · TypeScript · React · Rust · reqwest/rustls.
-
-## Збірка
-
-Для frontend/checks:
-
-```bash
-npm ci
-npm run check
-npm run test:protocol
-npm run build
-```
-
-Native build:
-
-```bash
-npm run tauri build
-```
-
-Детальніше: [docs/BUILD.md](docs/BUILD.md).
+- немає прямого доступу до SQLite;
+- SSH не використовується як application protocol;
+- production secrets не лежать у репозиторії;
+- device secret не зберігається в UI/localStorage;
+- сервер видає окремі read/write/create/publish scopes;
+- production gateway INFO залишається VPN-only.
 
 ## Документація
 
-- [START_HERE.md](START_HERE.md) — точка входу в розробку;
-- [PROJECT_STATE.md](PROJECT_STATE.md) — фактичний стан;
-- [USER_MANUAL.md](docs/guides/USER_MANUAL.md) — користувацьке керівництво;
-- [SYSTEM_OVERVIEW.md](docs/SYSTEM_OVERVIEW.md) — огляд системи;
-- [INFO Desktop Protocol](docs/protocol/INFO_DESKTOP_PROTOCOL.md) — серверний протокол;
-- [Registration](docs/protocol/INFO_DESKTOP_REGISTRATION.md) — реєстрація пристроїв;
-- [Release Index](docs/releases/RELEASE_INDEX.md) — контрольні релізні точки;
-- [Roadmap](docs/roadmap/ROADMAP.md) — подальший розвиток.
-
-## Статус релізу
-
-`0.1.1` — перший accepted checkpoint у `main`. GitHub Release з інсталяційними файлами ще має бути опублікований окремо після фінального release-build/signing рішення; source checkpoint уже стабільно зафіксований у main.
+- [Документація](docs/README.md)
+- [START_HERE](START_HERE.md)
+- [Стан проєкту](PROJECT_STATE.md)
+- [Керівництво користувача](docs/guides/USER_MANUAL.md)
+- [Протокол](docs/protocol/INFO_DESKTOP_PROTOCOL.md)
+- [Реєстрація](docs/protocol/INFO_DESKTOP_REGISTRATION.md)
+- [Індекс релізів](docs/releases/RELEASE_INDEX.md)
+- [Roadmap](docs/roadmap/ROADMAP.md)
 
 ## Ліцензія
 
-**Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved.** Proprietary software.
+**Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved. Proprietary software.**
 
 [LICENSE.md](LICENSE.md) · [COPYRIGHT.md](COPYRIGHT.md) · [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)

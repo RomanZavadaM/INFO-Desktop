@@ -1,9 +1,13 @@
 # INFO Desktop — Product status
 
-Current accepted source checkpoint: 0.1.1 in main.
+Version: **0.1.1**  
+Main: accepted  
+Release: **[v0.1.1](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.1)**
 
-Implemented: seven UI languages, Windows/macOS/Linux builds, one-file registration, secure credentials, full pending queue, item/source/media details, editing, save/skip/defer, manual create, Telegram-style preview and scoped publish action.
+GitHub Release v0.1.1 is published with Windows x64, Linux x64, macOS ARM64 and macOS Intel assets plus SHA256 files.
 
-Production acceptance on 20 October 2026 against INFO 20261020-2040 confirmed manual create end-to-end. No public Telegram SEND was performed.
+Implemented: seven UI languages, multilingual documentation, secure device registration, full queue/item/source/media, editing, save/skip/defer, manual create, Telegram-style preview and scoped publish action.
 
-Not complete yet: public installer release assets, signing/notarization/update policy, deliberate publish acceptance, TikTok/Facebook adapters and further UI polish.
+Production acceptance against INFO `20261020-2040` passed. No public Telegram SEND was performed.
+
+Signing/notarization/update policy remains a later release step.
