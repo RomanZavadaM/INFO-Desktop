@@ -30,6 +30,12 @@ async function getJson<T>(url:string,deviceId:string,serverCaDer:string):Promise
   if(r.status<200||r.status>=300)throw new Error(`HTTP ${r.status}`);
   return JSON.parse(r.body) as T;
 }
+
+async function postJson<T>(url:string,deviceId:string,serverCaDer:string,payload:unknown):Promise<T>{
+  const r=await invoke<{status:number;body:string}>("device_post",{url,deviceId,serverCaDer,body:JSON.stringify(payload??{})});
+  if(r.status<200||r.status>=300){let detail="";try{detail=String((JSON.parse(r.body) as {error?:string}).error??"")}catch{};throw new Error(detail?`HTTP ${r.status}: ${detail}`:`HTTP ${r.status}`)}
+  return r.body?JSON.parse(r.body) as T:{} as T;
+}
 function baseUrl(server:string){return server.replace(/\/+$/,"")}
 function absoluteUrl(server:string,path:string){return /^https?:\/\//i.test(path)?path:`${baseUrl(server)}${path.startsWith("/")?path:`/${path}`}`}
 
@@ -62,6 +68,11 @@ export class InfoServerClient{
     return {items,next_cursor:null,counts} satisfies QueuePage;
   }
   item(id:string|number){return getJson<ItemDetail>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}`,this.deviceId,this.serverCaDer)}
+  save(id:string|number,payload:{title:string;draft_text:string;channel:string}){return postJson<{ok:boolean;item_id:number}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/save`,this.deviceId,this.serverCaDer,payload)}
+  publish(id:string|number){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/publish`,this.deviceId,this.serverCaDer,{})}
+  skip(id:string|number){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/skip`,this.deviceId,this.serverCaDer,{})}
+  defer(id:string|number,minutes=60){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/defer`,this.deviceId,this.serverCaDer,{minutes})}
+  create(payload:{title:string;draft_text:string;channel:string;url?:string}){return postJson<{ok:boolean;item_id:number}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue`,this.deviceId,this.serverCaDer,payload)}
   async preview(path:string){
     const r=await invoke<{status:number;content_type:string;body_base64:string}>("device_get_preview",{url:absoluteUrl(this.server,path),deviceId:this.deviceId,serverCaDer:this.serverCaDer});
     if(r.status<200||r.status>=300)throw new Error(`HTTP ${r.status}`);
