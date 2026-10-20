@@ -4,12 +4,10 @@
 
 Current stage: **0.1.0-dev / read-only prototype**.
 
-The client connects through a versioned protocol and displays real server data: queue items, full text, media, channels, editorial status and related items. The first stage is strictly read-only.
+Technology: **Tauri 2 + TypeScript + React**.
 
-The existing Telegram interface remains an independent working client.
+Primary targets: Windows 10/11 x64, macOS ARM64, macOS Intel x86_64 and Linux x64. Windows 7 is not a required target for the new product.
 
-Planned build model follows Taxo: Windows 10/11 x64 Setup + Portable, separate Windows 7 SP1 x64 compatibility Portable, macOS ARM64 and macOS Intel x86_64.
-
-See [START_HERE.md](../../START_HERE.md) and [INFO Desktop Protocol](../protocol/INFO_DESKTOP_PROTOCOL.md).
+The first client reads real queue, text and media data through a versioned protocol. Its native transport is GET-only. The existing Telegram interface remains a parallel working client.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved. Proprietary software.**

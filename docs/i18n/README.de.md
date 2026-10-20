@@ -1,13 +1,13 @@
 # INFO Desktop
 
-**INFO Desktop ist ein universeller plattformübergreifender Newsroom-Desktop-Client für INFO-kompatible Server.**
+**INFO Desktop ist ein universeller plattformübergreifender Newsroom-Arbeitsplatz für INFO-kompatible Server.**
 
-Aktueller Stand: **0.1.0-dev / schreibgeschützter Prototyp**.
+Aktueller Stand: **0.1.0-dev / Nur-Lese-Prototyp**.
 
-Der Client verbindet sich über ein versioniertes Protokoll und zeigt reale Serverdaten: Warteschlange, Texte, Medien, Kanäle, redaktionelle Statusinformationen und verwandte Inhalte. Die erste Phase ist ausschließlich lesend.
+Technologie: **Tauri 2 + TypeScript + React**.
 
-Die bestehende Telegram-Oberfläche bleibt parallel funktionsfähig.
+Hauptziele: Windows 10/11 x64, macOS ARM64, macOS Intel x86_64 und Linux x64. Windows 7 ist kein Pflichtziel des neuen Produkts.
 
-Geplante Builds nach dem Taxo-Modell: Windows 10/11 x64 Setup + Portable, separate Windows 7 SP1 x64 Portable-Kompatibilitätsversion, macOS ARM64 und macOS Intel x86_64.
+Der erste Client liest reale Warteschlangen-, Text- und Mediendaten über ein versioniertes Protokoll. Die native Transportschicht erlaubt nur GET. Telegram bleibt parallel funktionsfähig.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). Alle Rechte vorbehalten. Proprietäre Software.**
