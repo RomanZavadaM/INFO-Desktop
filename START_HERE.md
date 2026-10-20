@@ -9,54 +9,60 @@
 2. Прочитати `PROJECT_RULES.md`.
 3. Прочитати `PROJECT_STATE.md`.
 4. Прочитати `WORKLOG.md`.
-5. Перевірити фактичний GitHub: main SHA, активну гілку/PR, CI, releases.
-6. Прочитати останні записи Issue #2 — `INFO Desktop — live development ledger`.
-7. Продовжити з першого незавершеного `DOING/NEXT`.
+5. Перевірити фактичний GitHub: main SHA, відкриті PR, CI, releases.
+6. Продовжити з першого незавершеного `DOING/NEXT`.
 
 GitHub має пріоритет над пам'яттю чату.
 
-## Продукт
+## Поточний контрольний стан
 
-INFO Desktop — окремий універсальний desktop-клієнт для INFO-сумісних серверів.
-
-Поточна гілка: `prototype/read-only-client`  
-Поточний PR: #1 draft  
-Поточний етап: `0.1-r1 — live editorial workstation`
+- Repository: `RomanZavadaM/INFO-Desktop`.
+- Default branch: `main`.
+- Version: `0.1.1`.
+- PR #1 merged.
+- Accepted main commit: `852ee086769f2ce02246611d8772dfbb6ddc423d`.
+- First real production-connected acceptance completed against INFO `20261020-2040`.
+- Manual create verified end-to-end.
+- Public GitHub Release with installers is still pending.
 
 ## Поточні межі
 
-- Читати **реальні** дані сервера.
-- Дозволені лише автентифіковані редакторські зміни через scoped Desktop API: save/channel move/skip/defer/publish/manual create.
-- Не мати прямого доступу до SQLite.
-- Не використовувати SSH як робочий протокол.
-- Не містити production-секретів.
-- Не чіпати чинний Telegram-функціонал.
-- Не змінювати private `RomanZavadaM/INFO`, поки конкретний read-only API не буде звірений і погоджений.
+- Реальні INFO data only; no mock newsroom behavior in acceptance.
+- Authenticated editor changes only through scoped Desktop API.
+- No direct SQLite access.
+- No SSH as an application protocol.
+- No production secrets in repository.
+- Telegram remains a parallel working client.
+- Do not alter production VPN/network/firewall/SSH from Desktop work.
 
 ## Architecture checkpoint
 
-- Tauri 2 + TypeScript + React.
-- Required OS: Windows 10/11 x64, macOS ARM64, macOS Intel x86_64, Linux x64.
-- Windows 7 is not required; possible separate legacy path only if needed.
-- Native transport is authenticated GET + scoped POST.
-- Significant changes to OS matrix, core stack, storage/security/protocol architecture must be discussed with the owner first.
+- Tauri 2 + TypeScript + React + Rust.
+- Windows 10/11 x64, macOS ARM64, macOS Intel x86_64, Linux x64.
+- Windows 7 is not required.
+- Authenticated GET + scoped POST.
+- One-file device registration, private INFO CA, OS secure credential store.
 
-## Acceptance
+## Acceptance passed
 
-Desktop уже підключається до реального INFO-compatible server та показує:
-- стан;
-- канали;
-- prepared pending queue;
-- картку;
-- ready draft;
-- quality/bucket/issues;
-- реальні source materials;
-- реальні медіа.
+Desktop now connects to real INFO and can:
+- read status/channels/full pending queue;
+- open item/source/media details;
+- edit title/text/channel;
+- save/skip/defer;
+- create a manual material;
+- show Telegram-style preview;
+- expose scoped publish action.
 
-Read-only acceptance вже пройдена. Наступна acceptance-точка — повний редакторський цикл з Windows: редагування → preview → зміна каналу → збереження → публікація/пропуск/відкладення/створення.
+On 2026-10-20 one real Lviv item was created through Desktop and appeared in the editorial bot. No public Telegram SEND was used for that test.
+
+## Next
+
+1. Reconcile/merge private INFO server PR #18 so server source in INFO main matches LIVE 2040.
+2. Finish release packaging policy and publish the first GitHub Release installers.
+3. Verify one deliberate publish from Desktop only with owner authorization.
+4. Continue Telegram preview polish, then TikTok and Facebook adapters.
 
 ## Новий чат
 
 > **Продовжуємо INFO Desktop. Відкрий у GitHub `START_HERE.md` і продовжуй строго за ним.**
-
-Repository: `RomanZavadaM/INFO-Desktop`.
