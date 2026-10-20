@@ -8,9 +8,9 @@ function safeHtml(raw:string){
  const doc=new DOMParser().parseFromString(raw||"","text/html");
  const allowed=new Set(["B","STRONG","I","EM","U","S","BLOCKQUOTE","A","BR","CODE","PRE"]);
  const walk=(node:Element)=>{
-  [...node.children].forEach(child=>{
+  Array.from(node.children).forEach(child=>{
    if(!allowed.has(child.tagName)){child.replaceWith(...Array.from(child.childNodes));return}
-   [...child.attributes].forEach(a=>{if(child.tagName==="A"&&a.name==="href"){try{const u=new URL(a.value);if(!["http:","https:","tg:"].includes(u.protocol))child.removeAttribute(a.name)}catch{child.removeAttribute(a.name)}}else child.removeAttribute(a.name)});
+   Array.from(child.attributes).forEach(a=>{if(child.tagName==="A"&&a.name==="href"){try{const u=new URL(a.value);if(!["http:","https:","tg:"].includes(u.protocol))child.removeAttribute(a.name)}catch{child.removeAttribute(a.name)}}else child.removeAttribute(a.name)});
    if(child.tagName==="A"){child.setAttribute("target","_blank");child.setAttribute("rel","noreferrer")}
    walk(child);
   });
