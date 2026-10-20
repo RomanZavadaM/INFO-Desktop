@@ -12,7 +12,7 @@ function MediaPreview({media,client,t}:{media:MediaDescriptor;client:InfoServerC
 
 export function App(){
  const[language,setLanguage]=useState<Language>(defaultLanguage);const t=useMemo(()=>translator(language),[language]);
- const[server,setServer]=useState("");const[deviceId,setDeviceId]=useState(()=>localStorage.getItem("info-desktop-device-id")??"");const[hello,setHello]=useState<Handshake|null>(null);
+ const[server,setServer]=useState(()=>localStorage.getItem("info-desktop-server")??"");const[deviceId,setDeviceId]=useState(()=>localStorage.getItem("info-desktop-device-id")??"");const[hello,setHello]=useState<Handshake|null>(null);
  const[channels,setChannels]=useState<Channel[]>([]);const[queue,setQueue]=useState<QueueItem[]>([]);const[selected,setSelected]=useState<ItemDetail|null>(null);
  const[active,setActive]=useState("*");const[busy,setBusy]=useState(false);const[error,setError]=useState("");const[registration,setRegistration]=useState<RegistrationSummary|null>(null);
  const client=useMemo(()=>new InfoServerClient(server.trim(),deviceId.trim()),[server,deviceId]);
@@ -26,7 +26,9 @@ export function App(){
   try{
    const parsed=await importRegistration(await file.text());
    setRegistration(parsed);
-   setServer(`https://${parsed.server}:${parsed.port}`);
+   const serverUrl=`https://${parsed.server}:${parsed.port}`;
+   setServer(serverUrl);
+   localStorage.setItem("info-desktop-server",serverUrl);
    const activated=await activateRegistration(parsed,"INFO Desktop");
    setDeviceId(activated.device_id);
    localStorage.setItem("info-desktop-device-id",activated.device_id);

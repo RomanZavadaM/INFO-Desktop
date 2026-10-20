@@ -24,15 +24,16 @@
 ## Registration / connection direction
 
 Owner accepted:
-- server listens, client initiates connection;
-- each Desktop receives a separate one-time registration file through a trusted path;
-- Desktop generates its own permanent cryptographic key pair locally;
-- permanent device private key is generated locally and is never in the registration file;
-- the registration file may contain a separate short-lived bootstrap transport private key delivered only through a trusted out-of-band path;
-- server enrolls the public key and can revoke a device independently;
-- target protected transport uses digital device keys and a non-standard public port;
-- accepted bootstrap profile is `wireguard-bootstrap-v1`; production WireGuard/network deployment is not yet authorized;
-- INFO HTTP API itself should remain private behind the protected transport.
+- server-side security may be stronger/complex; editor client stays simple;
+- no separate VPN/WireGuard/helper installation for the editor;
+- each Desktop receives a one-time registration file through a trusted path;
+- registration file contains server, high TLS port, registration ID/token and expiry;
+- server issues a reusable high-entropy `device_secret` after one-time activation;
+- Desktop stores the reusable secret only in the OS secure credential store;
+- UI/localStorage keep only non-secret server URL + `device_id`;
+- server stores only credential hashes;
+- server controls expiry, revoke and transparent rotation;
+- newsroom API remains read-only in 0.1-r1.
 
 Canonical spec: `docs/protocol/INFO_DESKTOP_REGISTRATION.md`.
 
@@ -65,7 +66,7 @@ A Google Doc `INFO Desktop — план, архітектура і реєстр�
 
 ## Next
 
-1. Finish current cross-platform build checks for secure storage/bootstrap registration.
-2. Complete bootstrap/permanent key handoff logic without production networking.
-3. Complete server-side registration/device-registry tests.
-4. Before any VPN/firewall/port change, present exact production transport plan to owner.
+1. Finish cross-platform CI for simple TLS/device-credential activation.
+2. Complete silent credential rotation endpoint/client flow.
+3. Define production TLS gateway/high port/firewall/rate-limit configuration.
+4. Before production network changes, take fresh INFO server diagnostics and deploy as a separately approved server step.
