@@ -13,7 +13,7 @@ Windows 7 не входить до обов'язкової матриці нов
 
 ## Перевірка
 ```bash
-npm ci
+npm install
 npm run check
 npm run test:protocol
 npm run build

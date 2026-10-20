@@ -36,7 +36,7 @@ Pas d’accès SQLite direct, pas de SSH comme protocole applicatif, aucun secre
 Tauri 2 · TypeScript · React · Rust · reqwest/rustls.
 
 ```bash
-npm ci
+npm install
 npm run check
 npm run test:protocol
 npm run build

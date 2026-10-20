@@ -36,7 +36,7 @@ SQLite 직접 접근 없음, 애플리케이션 프로토콜로 SSH 사용 안 �
 Tauri 2 · TypeScript · React · Rust · reqwest/rustls.
 
 ```bash
-npm ci
+npm install
 npm run check
 npm run test:protocol
 npm run build

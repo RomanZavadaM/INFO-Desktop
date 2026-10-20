@@ -36,7 +36,7 @@ Kein direkter SQLite-Zugriff, kein SSH als Anwendungsprotokoll, keine Produktion
 Tauri 2 · TypeScript · React · Rust · reqwest/rustls.
 
 ```bash
-npm ci
+npm install
 npm run check
 npm run test:protocol
 npm run build
