@@ -131,6 +131,30 @@ async fn device_get(
 }
 
 #[command]
+async fn device_post(
+    url: String,
+    device_id: String,
+    server_ca_der: String,
+    body: String,
+) -> Result<ReadonlyResponse, String> {
+    let parsed = checked_url(&url)?;
+    let secret = registration::device_secret(&device_id)?;
+    let response = client_with_cert(&server_ca_der)?
+        .post(parsed)
+        .header(reqwest::header::CONTENT_TYPE, "application/json")
+        .header(reqwest::header::ACCEPT, "application/json")
+        .header("X-INFO-Device", device_id)
+        .bearer_auth(secret)
+        .body(body)
+        .send()
+        .await
+        .map_err(|error| error.to_string())?;
+    let status = response.status().as_u16();
+    let body = response.text().await.map_err(|error| error.to_string())?;
+    Ok(ReadonlyResponse { status, body })
+}
+
+#[command]
 async fn device_get_preview(
     url: String,
     device_id: String,
@@ -235,7 +259,7 @@ async fn rotate_device_credential(
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![import_registration_text, activate_registration, rotate_device_credential, device_get, device_get_preview])
+        .invoke_handler(tauri::generate_handler![import_registration_text, activate_registration, rotate_device_credential, device_get, device_post, device_get_preview])
         .run(tauri::generate_context!())
         .expect("error while running INFO Desktop");
 }
