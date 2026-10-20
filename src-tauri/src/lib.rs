@@ -36,7 +36,7 @@ fn client_with_cert(server_ca_der: &str) -> Result<reqwest::Client, String> {
     let cert = reqwest::Certificate::from_der(&cert_bytes)
         .map_err(|_| "Invalid server CA certificate DER".to_string())?;
     reqwest::Client::builder()
-        .user_agent("INFO-Desktop/0.1-r1")
+        .user_agent("INFO-Desktop/0.1.1")
         .redirect(reqwest::redirect::Policy::none())
         .tls_built_in_root_certs(false)
         .add_root_certificate(cert)
