@@ -24,10 +24,17 @@ for (const lang of languages) {
 }
 
 const native = read(path.join(root, "src-tauri", "src", "lib.rs"));
-for (const forbidden of [".post(", ".put(", ".patch(", ".delete("]) {
+for (const forbidden of [".put(", ".patch(", ".delete("]) {
   if (native.includes(forbidden)) {
-    throw new Error(`Read-only native layer contains forbidden method: ${forbidden}`);
+    throw new Error(`Native layer contains forbidden method: ${forbidden}`);
   }
+}
+if (native.includes(".post(")) {
+  throw new Error("Native layer must use explicit Method::POST only for enrollment");
+}
+const postCount=(native.match(/Method::POST/g)||[]).length;
+if(postCount!==1){
+  throw new Error(`Expected exactly one enrollment POST, found ${postCount}`);
 }
 if (!native.includes(".get(")) {
   throw new Error("Read-only native layer has no GET transport");

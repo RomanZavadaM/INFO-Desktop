@@ -211,3 +211,9 @@ mod tests {
         assert!(parse_registration("INFO-DESKTOP-REGISTRATION/2\n").is_err());
     }
 }
+
+pub fn take_registration_token(registration_id: &str) -> Result<String, String> {
+    let token = registration_token(registration_id)?;
+    forget_registration_token(registration_id)?;
+    Ok(token)
+}

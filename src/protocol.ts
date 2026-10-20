@@ -25,8 +25,8 @@ export interface MediaDescriptor{
 export interface SourceMaterial{id?:string|number;source?:string;source_name?:string;url?:string;title?:string;summary?:string;published_at?:string;original_title?:string;original_summary?:string;translation_state?:string;translated_title?:string;translated_summary?:string;media?:MediaDescriptor[]}
 export interface ItemDetail extends QueueItem{draft_text?:string;winner_channel?:string;eligible_channels?:string[];event?:{url?:string;first_source?:string;first_published_at?:string;topics?:string[];sources?:string[]};materials?:SourceMaterial[]}
 
-async function getJson<T>(url:string,token:string):Promise<T>{
-  const r=await invoke<{status:number;body:string}>("readonly_get",{url,token});
+async function getJson<T>(url:string,deviceId:string):Promise<T>{
+  const r=await invoke<{status:number;body:string}>("device_get",{url,deviceId});
   if(r.status<200||r.status>=300)throw new Error(`HTTP ${r.status}`);
   return JSON.parse(r.body) as T;
 }
@@ -34,13 +34,13 @@ function baseUrl(server:string){return server.replace(/\/+$/,"")}
 function absoluteUrl(server:string,path:string){return /^https?:\/\//i.test(path)?path:`${baseUrl(server)}${path.startsWith("/")?path:`/${path}`}`}
 
 export class InfoServerClient{
-  constructor(private readonly server:string,private readonly token:string){}
-  async handshake(){const d=await getJson<Handshake>(`${baseUrl(this.server)}/api/info-desktop/v1/handshake`,this.token);if(d.protocol!==PROTOCOL_ID)throw new Error(`Unsupported protocol ${String(d.protocol)}; expected ${PROTOCOL_ID}`);return d}
-  channels(){return getJson<Channel[]>(`${baseUrl(this.server)}/api/info-desktop/v1/channels`,this.token)}
-  queue(limit=200){return getJson<QueuePage>(`${baseUrl(this.server)}/api/info-desktop/v1/queue?limit=${limit}`,this.token)}
-  item(id:string|number){return getJson<ItemDetail>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}`,this.token)}
+  constructor(private readonly server:string,private readonly deviceId:string){}
+  async handshake(){const d=await getJson<Handshake>(`${baseUrl(this.server)}/api/info-desktop/v1/handshake`,this.deviceId);if(d.protocol!==PROTOCOL_ID)throw new Error(`Unsupported protocol ${String(d.protocol)}; expected ${PROTOCOL_ID}`);return d}
+  channels(){return getJson<Channel[]>(`${baseUrl(this.server)}/api/info-desktop/v1/channels`,this.deviceId)}
+  queue(limit=200){return getJson<QueuePage>(`${baseUrl(this.server)}/api/info-desktop/v1/queue?limit=${limit}`,this.deviceId)}
+  item(id:string|number){return getJson<ItemDetail>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}`,this.deviceId)}
   async preview(path:string){
-    const r=await invoke<{status:number;content_type:string;body_base64:string}>("readonly_get_preview",{url:absoluteUrl(this.server,path),token:this.token});
+    const r=await invoke<{status:number;content_type:string;body_base64:string}>("device_get_preview",{url:absoluteUrl(this.server,path),deviceId:this.deviceId});
     if(r.status<200||r.status>=300)throw new Error(`HTTP ${r.status}`);
     return `data:${r.content_type};base64,${r.body_base64}`;
   }

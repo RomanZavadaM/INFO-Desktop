@@ -1,7 +1,7 @@
 import {useEffect,useMemo,useState} from "react";
 import {Channel,Handshake,InfoServerClient,ItemDetail,MediaDescriptor,QueueItem} from "./protocol";
 import {defaultLanguage,Language,languages,translator} from "./i18n";
-import {importRegistration,RegistrationSummary} from "./registration";
+import {activateRegistration,importRegistration,RegistrationSummary} from "./registration";
 function fmt(v?:string){if(!v)return"";const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleString()}
 
 function MediaPreview({media,client,t}:{media:MediaDescriptor;client:InfoServerClient;t:(k:string)=>string}){
@@ -12,10 +12,10 @@ function MediaPreview({media,client,t}:{media:MediaDescriptor;client:InfoServerC
 
 export function App(){
  const[language,setLanguage]=useState<Language>(defaultLanguage);const t=useMemo(()=>translator(language),[language]);
- const[server,setServer]=useState("");const[token,setToken]=useState("");const[hello,setHello]=useState<Handshake|null>(null);
+ const[server,setServer]=useState("");const[deviceId,setDeviceId]=useState(()=>localStorage.getItem("info-desktop-device-id")??"");const[hello,setHello]=useState<Handshake|null>(null);
  const[channels,setChannels]=useState<Channel[]>([]);const[queue,setQueue]=useState<QueueItem[]>([]);const[selected,setSelected]=useState<ItemDetail|null>(null);
  const[active,setActive]=useState("*");const[busy,setBusy]=useState(false);const[error,setError]=useState("");const[registration,setRegistration]=useState<RegistrationSummary|null>(null);
- const client=useMemo(()=>new InfoServerClient(server.trim(),token.trim()),[server,token]);
+ const client=useMemo(()=>new InfoServerClient(server.trim(),deviceId.trim()),[server,deviceId]);
  const visible=useMemo(()=>active==="*"?queue:queue.filter(i=>i.channel===active),[queue,active]);
 
  async function connect(){if(!server.trim()){setError(t("error.no_server"));return}setBusy(true);setError("");try{const[h,ch,q]=await Promise.all([client.handshake(),client.channels(),client.queue(200)]);setHello(h);setChannels(ch);setQueue(q.items);setSelected(q.items[0]?await client.item(q.items[0].id):null)}catch(e){setHello(null);setChannels([]);setQueue([]);setSelected(null);setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
@@ -27,6 +27,9 @@ export function App(){
    const parsed=await importRegistration(await file.text());
    setRegistration(parsed);
    setServer(`https://${parsed.server}:${parsed.port}`);
+   const activated=await activateRegistration(parsed,"INFO Desktop");
+   setDeviceId(activated.device_id);
+   localStorage.setItem("info-desktop-device-id",activated.device_id);
   }catch(e){
    setRegistration(null);
    setError(e instanceof Error?e.message:String(e));
@@ -37,9 +40,9 @@ export function App(){
 
  return <main className="app-shell">
   <header className="topbar"><div className="brand"><strong>INFO Desktop</strong><span>{t("app.read_only")}</span></div><div className="connection">
-    <label className="import-button">{t("registration.import")}<input className="file-input" type="file" accept=".info-registration,.txt,text/plain" onChange={e=>importRegistrationFile(e.target.files?.[0])}/></label><input placeholder={t("server.address")} value={server} onChange={e=>setServer(e.target.value)}/><input placeholder={t("server.token")} type="password" value={token} onChange={e=>setToken(e.target.value)}/><button onClick={connect} disabled={busy}>{busy?t("status.connecting"):t("server.connect")}</button></div><select value={language} onChange={e=>lang(e.target.value as Language)}>{Object.entries(languages).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}</select></header>
+    <label className="import-button">{t("registration.import")}<input className="file-input" type="file" accept=".info-registration,.txt,text/plain" onChange={e=>importRegistrationFile(e.target.files?.[0])}/></label><input placeholder={t("server.address")} value={server} onChange={e=>setServer(e.target.value)}/><button onClick={connect} disabled={busy}>{busy?t("status.connecting"):t("server.connect")}</button></div><select value={language} onChange={e=>lang(e.target.value as Language)}>{Object.entries(languages).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}</select></header>
   <section className="server-strip"><span className={hello?"dot online":"dot"}/><span>{hello?`${hello.instance_name??hello.server_name??"INFO"} · ${hello.server_version??"?"}`:t("status.disconnected")}</span><span className="queue-count">{t("queue.title")}: {queue.length}</span></section>
-  {registration&&<div className="registration-banner"><strong>{t("registration.valid")}</strong><span>{registration.server}:{registration.port}</span><span>{t("registration.expires")}: {fmt(registration.expires_at)}</span><span>{registration.instance}</span></div>}
+  {registration&&<div className="registration-banner"><strong>{t("registration.valid")}</strong><span>{registration.server}:{registration.port}</span><span>{t("registration.expires")}: {fmt(registration.expires_at)}</span><span>{registration.instance}</span><span>{deviceId?t("registration.device_ready"):""}</span></div>}
   {error&&<div className="error-banner">{error}</div>}
   <section className="workspace">
    <aside className="channels-pane"><h2>{t("channels.title")}</h2><button className={active==="*"?"channel active":"channel"} onClick={()=>setActive("*")}><span>{t("channels.all")}</span><strong>{queue.length}</strong></button>{channels.map(c=><button className={active===c.code?"channel active":"channel"} key={c.code} onClick={()=>setActive(c.code)}><span>{c.name}</span><strong>{c.pending??queue.filter(i=>i.channel===c.code).length}</strong></button>)}</aside>
