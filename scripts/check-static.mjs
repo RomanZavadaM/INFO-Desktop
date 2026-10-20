@@ -29,8 +29,9 @@ for (const forbidden of [".put(", ".patch(", ".delete("]) {
     throw new Error(`Native layer contains forbidden method: ${forbidden}`);
   }
 }
-if (native.includes(".post(")) {
-  throw new Error("Native layer must use explicit Method::POST only for enrollment");
+const editorPostCount=(native.match(/\.post\(parsed\)/g)||[]).length;
+if(editorPostCount!==1){
+  throw new Error(`Expected exactly one authenticated editor POST transport, found ${editorPostCount}`);
 }
 const postCount=(native.match(/Method::POST/g)||[]).length;
 if(postCount!==2){
@@ -40,7 +41,8 @@ for(const requiredPath of ["/api/info-desktop-registration/v1/enroll","/api/info
   if(!native.includes(requiredPath))throw new Error(`Missing allowed POST path: ${requiredPath}`);
 }
 if (!native.includes(".get(")) {
-  throw new Error("Read-only native layer has no GET transport");
+  throw new Error("Native layer has no GET transport");
 }
+if(!native.includes("async fn device_post"))throw new Error("Missing authenticated editor POST command");
 
 console.log("Static contract checks: OK");
