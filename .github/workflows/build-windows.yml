@@ -1,0 +1,63 @@
+name: Build INFO Desktop Windows
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'main.py'
+      - 'src/**'
+      - 'packaging/**'
+      - 'VERSION.txt'
+      - '.github/workflows/build-windows.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          architecture: 'x64'
+
+      - name: Test
+        shell: pwsh
+        run: |
+          $env:PYTHONPATH = "$PWDsrc"
+          python -m unittest discover -s tests -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Install packager
+        run: python -m pip install pyinstaller==6.22.2
+
+      - name: Build portable application
+        run: python -m PyInstaller --noconfirm --clean packaging/INFO_Desktop.spec
+
+      - name: Verify portable bundle
+        shell: pwsh
+        run: |
+          if (!(Test-Path 'dist/INFO-Desktop/INFO-Desktop.exe')) { throw 'INFO-Desktop.exe missing' }
+          if (!(Test-Path 'dist/INFO-Desktop/_internal/info_desktop/locales/uk.json')) { throw 'Locales missing' }
+          $bad = Get-ChildItem 'dist/INFO-Desktop' -Recurse -File -Include *.db,*.sqlite,*.sqlite3,.env
+          if ($bad) { throw "Private data unexpectedly bundled: $($bad.FullName -join ', ')" }
+
+      - name: Create portable ZIP
+        shell: pwsh
+        run: Compress-Archive -Path 'dist/INFO-Desktop' -DestinationPath 'INFO-Desktop_0.1.0-dev_Windows_x64_Portable.zip' -Force
+
+      - name: Create checksum
+        shell: pwsh
+        run: |
+          $h=(Get-FileHash 'INFO-Desktop_0.1.0-dev_Windows_x64_Portable.zip' -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$h  INFO-Desktop_0.1.0-dev_Windows_x64_Portable.zip" | Set-Content -Encoding ascii SHA256SUMS_Windows_x64.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: INFO-Desktop-0.1.0-dev-Windows-x64
+          path: |
+            INFO-Desktop_0.1.0-dev_Windows_x64_Portable.zip
+            SHA256SUMS_Windows_x64.txt
+          retention-days: 14

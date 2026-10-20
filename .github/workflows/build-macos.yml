@@ -1,0 +1,68 @@
+name: Build INFO Desktop macOS
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'main.py'
+      - 'src/**'
+      - 'packaging/**'
+      - 'VERSION.txt'
+      - '.github/workflows/build-macos.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-macos:
+    name: macOS ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            arch: arm64
+          - runner: macos-15-intel
+            arch: x86_64
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Verify architecture
+        run: test "$(uname -m)" = "${{ matrix.arch }}"
+
+      - name: Test
+        run: |
+          PYTHONPATH=src python -m unittest discover -s tests -v
+
+      - name: Install packager
+        run: python -m pip install pyinstaller==6.22.2
+
+      - name: Build app
+        run: python -m PyInstaller --noconfirm --clean packaging/INFO_Desktop.spec
+
+      - name: Verify app
+        run: |
+          test -x 'dist/INFO Desktop.app/Contents/MacOS/INFO-Desktop'
+          find 'dist/INFO Desktop.app' -path '*/info_desktop/locales/uk.json' -print -quit | grep -q .
+          file 'dist/INFO Desktop.app/Contents/MacOS/INFO-Desktop' | grep -q "${{ matrix.arch }}"
+
+      - name: Create portable ZIP
+        run: |
+          dir="INFO-Desktop_0.1.0-dev_macOS_${{ matrix.arch }}"
+          mkdir "$dir"
+          mv 'dist/INFO Desktop.app' "$dir/"
+          /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$dir" "${dir}_Portable.zip"
+          shasum -a 256 "${dir}_Portable.zip" > "SHA256SUMS_macOS_${{ matrix.arch }}.txt"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: INFO-Desktop-0.1.0-dev-macOS-${{ matrix.arch }}
+          path: |
+            INFO-Desktop_0.1.0-dev_macOS_${{ matrix.arch }}_Portable.zip
+            SHA256SUMS_macOS_${{ matrix.arch }}.txt
+          retention-days: 14
