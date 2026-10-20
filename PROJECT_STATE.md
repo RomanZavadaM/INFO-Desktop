@@ -17,9 +17,11 @@
 - Windows 7 is not required.
 - Universal versioned INFO-compatible server protocol.
 - Existing Telegram INFO remains parallel and independent.
-- First product stage is read-only on real newsroom data.
-- Native Desktop transport surface is GET-only.
-- Cached media preview is authenticated and memory-only in Desktop.
+- First live read-only acceptance is complete on real newsroom data.
+- Current prototype has moved to authenticated editorial read/write actions: save, channel move, skip, defer, publish and manual create.
+- Native transport is authenticated GET + scoped POST over the private INFO TLS gateway.
+- Cached media preview remains authenticated and memory-only in Desktop.
+- Editor includes Telegram-style publish preview; TikTok and Facebook preview tabs are reserved for the next publishing adapters.
 
 ## Registration / connection direction
 
@@ -33,7 +35,7 @@ Owner accepted:
 - UI/localStorage keep only non-secret server URL + `device_id`;
 - server stores only credential hashes;
 - server controls expiry, revoke and transparent rotation;
-- newsroom API remains read-only in 0.1-r1.
+- device credentials now carry explicit `item.write`, `item.create` and `publish.write` scopes in schema v18.
 
 Canonical spec: `docs/protocol/INFO_DESKTOP_REGISTRATION.md`.
 
@@ -50,9 +52,9 @@ Canonical spec: `docs/protocol/INFO_DESKTOP_REGISTRATION.md`.
 Private `RomanZavadaM/INFO`:
 - branch `feature/desktop-readonly-api`;
 - draft PR #18;
-- isolated GET-only read-only API candidate;
-- not deployed;
-- production network untouched.
+- authenticated Desktop API with scoped write endpoints;
+- LIVE server candidate `20261020-1814` deployed and verified;
+- gateway remains bound only to VPN address `10.8.0.1:47443`; public firewall/network exposure was not added.
 
 ## Google Drive
 
@@ -66,7 +68,7 @@ A Google Doc `INFO Desktop — план, архітектура і реєстр�
 
 ## Next
 
-1. Finish cross-platform CI for simple TLS/device-credential activation.
-2. Complete silent credential rotation endpoint/client flow.
-3. Define production TLS gateway/high port/firewall/rate-limit configuration.
-4. Before production network changes, take fresh INFO server diagnostics and deploy as a separately approved server step.
+1. Live-test edit/save/channel-change/skip/defer/publish/manual-create from Windows against `20261020-1814`.
+2. Refine Telegram preview against real cards/media.
+3. Add TikTok publishing/preview adapter, then Facebook, without coupling them to Telegram.
+4. Keep the current VPN-only gateway until a separate owner-approved decision on external access or split tunneling.

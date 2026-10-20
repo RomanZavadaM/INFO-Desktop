@@ -21,12 +21,12 @@ INFO Desktop — окремий універсальний desktop-клієнт 
 
 Поточна гілка: `prototype/read-only-client`  
 Поточний PR: #1 draft  
-Поточний етап: `0.1-r1 — real read-only newsroom`
+Поточний етап: `0.1-r1 — live editorial workstation`
 
-## Межі першого етапу
+## Поточні межі
 
 - Читати **реальні** дані сервера.
-- Не змінювати серверний стан.
+- Дозволені лише автентифіковані редакторські зміни через scoped Desktop API: save/channel move/skip/defer/publish/manual create.
 - Не мати прямого доступу до SQLite.
 - Не використовувати SSH як робочий протокол.
 - Не містити production-секретів.
@@ -38,12 +38,12 @@ INFO Desktop — окремий універсальний desktop-клієнт 
 - Tauri 2 + TypeScript + React.
 - Required OS: Windows 10/11 x64, macOS ARM64, macOS Intel x86_64, Linux x64.
 - Windows 7 is not required; possible separate legacy path only if needed.
-- Native transport in 0.1 is GET-only.
+- Native transport is authenticated GET + scoped POST.
 - Significant changes to OS matrix, core stack, storage/security/protocol architecture must be discussed with the owner first.
 
-## Перша acceptance-точка
+## Acceptance
 
-Desktop підключається до реального INFO-compatible server та швидко показує:
+Desktop уже підключається до реального INFO-compatible server та показує:
 - стан;
 - канали;
 - prepared pending queue;
@@ -53,7 +53,7 @@ Desktop підключається до реального INFO-compatible serve
 - реальні source materials;
 - реальні медіа.
 
-Жодних write actions.
+Read-only acceptance вже пройдена. Наступна acceptance-точка — повний редакторський цикл з Windows: редагування → preview → зміна каналу → збереження → публікація/пропуск/відкладення/створення.
 
 ## Новий чат
 
