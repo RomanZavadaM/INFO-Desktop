@@ -74,12 +74,22 @@ pub fn parse_registration(text: &str) -> Result<RegistrationFile, String> {
         return Err("Registration file has expired".to_string());
     }
 
+    let registration_id = nonempty(&fields, "registration_id")?;
+    if registration_id.len() < 4
+        || registration_id.len() > 128
+        || !registration_id
+            .bytes()
+            .all(|b| b.is_ascii_alphanumeric() || matches!(b, b'-' | b'_' | b'.' | b':'))
+    {
+        return Err("Invalid registration_id".to_string());
+    }
+
     Ok(RegistrationFile {
         server,
         transport,
         port,
         server_public_key: nonempty(&fields, "server_public_key")?,
-        registration_id: nonempty(&fields, "registration_id")?,
+        registration_id,
         registration_token: nonempty(&fields, "registration_token")?,
         expires_at,
         instance: fields

@@ -1,3 +1,4 @@
+mod device_keys;
 mod registration;
 
 use base64::engine::general_purpose::STANDARD as BASE64;
@@ -109,6 +110,16 @@ async fn readonly_get_preview(
 }
 
 #[command]
+fn ensure_device_key(registration_id: String) -> Result<device_keys::DevicePublicIdentity, String> {
+    device_keys::ensure_device_key(&registration_id)
+}
+
+#[command]
+fn forget_device_key(registration_id: String) -> Result<(), String> {
+    device_keys::forget_device_key(&registration_id)
+}
+
+#[command]
 fn parse_registration_text(text: String) -> Result<registration::RegistrationFile, String> {
     registration::parse_registration(&text)
 }
@@ -116,7 +127,7 @@ fn parse_registration_text(text: String) -> Result<registration::RegistrationFil
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![readonly_get, readonly_get_preview, parse_registration_text])
+        .invoke_handler(tauri::generate_handler![readonly_get, readonly_get_preview, parse_registration_text, ensure_device_key, forget_device_key])
         .run(tauri::generate_context!())
         .expect("error while running INFO Desktop");
 }
