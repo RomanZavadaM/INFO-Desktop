@@ -1,0 +1,21 @@
+{
+  "app.title": "INFO Desktop",
+  "server.address": "Сервер",
+  "server.token": "Ключ доступу",
+  "server.connect": "Підключитися",
+  "status.disconnected": "Не підключено",
+  "status.connecting": "Підключення…",
+  "channels.title": "Канали",
+  "channels.all": "Усі канали",
+  "queue.title": "Черга",
+  "queue.time": "Час",
+  "queue.channel": "Канал",
+  "queue.headline": "Заголовок",
+  "item.title": "Матеріал",
+  "item.source": "Джерело",
+  "item.channel": "Канал",
+  "item.language": "Мова",
+  "item.media": "Медіа",
+  "error.title": "INFO Desktop",
+  "error.no_server": "Вкажіть адресу INFO-сервера."
+}

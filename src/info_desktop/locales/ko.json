@@ -1,0 +1,21 @@
+{
+  "app.title": "INFO Desktop",
+  "server.address": "서버",
+  "server.token": "접근 키",
+  "server.connect": "연결",
+  "status.disconnected": "연결 안 됨",
+  "status.connecting": "연결 중…",
+  "channels.title": "채널",
+  "channels.all": "모든 채널",
+  "queue.title": "대기열",
+  "queue.time": "시간",
+  "queue.channel": "채널",
+  "queue.headline": "제목",
+  "item.title": "기사",
+  "item.source": "출처",
+  "item.channel": "채널",
+  "item.language": "언어",
+  "item.media": "미디어",
+  "error.title": "INFO Desktop",
+  "error.no_server": "INFO 서버 주소를 입력하세요."
+}

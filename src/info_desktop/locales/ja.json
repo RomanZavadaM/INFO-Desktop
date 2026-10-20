@@ -1,0 +1,21 @@
+{
+  "app.title": "INFO Desktop",
+  "server.address": "サーバー",
+  "server.token": "アクセスキー",
+  "server.connect": "接続",
+  "status.disconnected": "未接続",
+  "status.connecting": "接続中…",
+  "channels.title": "チャンネル",
+  "channels.all": "すべてのチャンネル",
+  "queue.title": "キュー",
+  "queue.time": "時刻",
+  "queue.channel": "チャンネル",
+  "queue.headline": "見出し",
+  "item.title": "記事",
+  "item.source": "ソース",
+  "item.channel": "チャンネル",
+  "item.language": "言語",
+  "item.media": "メディア",
+  "error.title": "INFO Desktop",
+  "error.no_server": "INFOサーバーのアドレスを入力してください。"
+}

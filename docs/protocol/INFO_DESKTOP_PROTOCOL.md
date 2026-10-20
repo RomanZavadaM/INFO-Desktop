@@ -1,109 +1,93 @@
 # INFO Desktop Protocol
 
-**Working identifier:** `info-desktop-protocol/1`  
+**Identifier:** `info-desktop-protocol/1`  
 **Status:** draft / read-only subset
 
-## Мета
+## Base path
 
-Протокол відділяє універсальний Desktop-клієнт від конкретної реалізації INFO Server.
+`/api/info-desktop/v1`
 
-Клієнт не повинен знати:
-- структуру SQLite;
-- внутрішні Python modules;
-- systemd;
-- Telegram token/session;
-- файлове розташування даних.
+## Read-only endpoints
 
-## 1. Handshake
+- `GET /handshake`
+- `GET /status`
+- `GET /channels`
+- `GET /queue?limit=<n>&cursor=<cursor>`
+- `GET /queue/{id}`
 
-Сервер має віддати:
-- protocol identifier/version;
-- server product/name;
-- server instance label;
-- server version;
-- server time/timezone;
-- supported capabilities;
-- supported content/localization languages;
-- authentication requirements.
+Media access is described by item/media descriptors returned by the server. Large binary content should not be embedded directly into queue JSON.
 
-Приклад семантики capabilities:
-- `status.read`
-- `channels.read`
-- `queue.read`
-- `item.read`
-- `media.read`
-- майбутні `item.publish`, `item.skip`, `item.move`, `admin.*`
+## Handshake
 
-Desktop показує тільки функції, які сервер реально оголосив.
+Minimum response:
+```json
+{
+  "protocol": "info-desktop-protocol/1",
+  "server_name": "INFO",
+  "instance_name": "Example newsroom",
+  "server_version": "20261019-2245",
+  "timezone": "Europe/Kyiv",
+  "capabilities": [
+    "status.read",
+    "channels.read",
+    "queue.read",
+    "item.read",
+    "media.read"
+  ],
+  "languages": ["uk", "en"]
+}
+```
 
-## 2. Read-only v1
+Desktop must render only capabilities actually declared by the server.
 
-Перший subset повинен дозволяти:
-- server status;
-- channels;
-- queue list з pagination/filter metadata;
-- one item detail;
-- source/provenance metadata;
-- media descriptors/access;
-- quality/editorial status;
-- related/similar items, якщо підтримується;
-- localization/translation states.
+## Queue response
 
-## 3. Queue
+Minimum shape:
+```json
+{
+  "items": [
+    {
+      "id": 123,
+      "channel": "world",
+      "channel_name": "Світ",
+      "title": "…",
+      "created_at": "…",
+      "state": "pending",
+      "language": "uk",
+      "media_count": 1
+    }
+  ],
+  "next_cursor": null
+}
+```
 
-Queue item повинен мати стабільний server ID та мінімально:
-- id;
-- channel/current route;
-- title;
-- timestamps;
-- state;
-- quality/editorial fields;
-- source summary;
-- media presence;
-- language/translation state.
+## Item detail
 
-Desktop не повинен виводити сенс із внутрішніх назв таблиць чи Python-станів.
-
-## 4. Item detail
-
-Повна картка може включати:
-- original title/text;
-- prepared/publication title/text;
+May include:
+- original/prepared title and text;
 - source/provenance;
-- media;
-- routing;
-- quality;
-- language variants;
-- related items;
+- channel/routing;
+- quality/editorial status;
+- language and translation state;
+- media descriptors;
+- related/similar items;
 - server-side warnings.
 
-## 5. Media
+## Read-only guarantee
 
-Media не вбудовується у protocol response великими binary blobs без потреби. Сервер віддає descriptor + authenticated fetch mechanism.
+Protocol v1 subset used by INFO Desktop 0.1.x performs no mutation. Client code must not send POST/PUT/PATCH/DELETE during this phase.
 
-Клієнт повинен підтримувати реальні фото/відео/документи без припущення про їхній розмір.
+## Authentication
 
-## 6. Read-only guarantee
+Bearer token is allowed for the first protocol version, but credentials are installation/user secrets and must not be committed to Git or built into releases.
 
-Для першого етапу клієнт не надсилає жодних mutation commands. Серверний read-only surface теж не повинен мати side effects.
+## Compatibility
 
-## 7. Authentication
+A client must reject an incompatible protocol identifier instead of guessing server semantics.
 
-Protocol не визначає production secret у source code. Credentials мають видаватися конкретному installation/device/user і зберігатися у системному secure storage клієнта.
+## Future write capabilities
 
-## 8. Compatibility
+Reserved future capabilities include:
+`item.publish`, `item.skip`, `item.postpone`, `item.move`, `item.edit`, `bulk.*`, `admin.*`.
 
-Server може підтримувати кілька protocol versions. Desktop має відмовитися від небезпечної несумісної операції, а не вгадувати.
-
-## 9. Future write subset
-
-Пізніше окремо описуються:
-- publish;
-- skip;
-- postpone;
-- move;
-- edit;
-- bulk actions;
-- admin/configuration.
-
-Усі write actions валідовуються сервером і аудіюються сервером.
+Those are not part of the 0.1 read-only acceptance.

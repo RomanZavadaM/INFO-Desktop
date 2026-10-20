@@ -1,0 +1,21 @@
+{
+  "app.title": "INFO Desktop",
+  "server.address": "Serveur",
+  "server.token": "Clé d’accès",
+  "server.connect": "Connexion",
+  "status.disconnected": "Non connecté",
+  "status.connecting": "Connexion…",
+  "channels.title": "Canaux",
+  "channels.all": "Tous les canaux",
+  "queue.title": "File",
+  "queue.time": "Heure",
+  "queue.channel": "Canal",
+  "queue.headline": "Titre",
+  "item.title": "Article",
+  "item.source": "Source",
+  "item.channel": "Canal",
+  "item.language": "Langue",
+  "item.media": "Médias",
+  "error.title": "INFO Desktop",
+  "error.no_server": "Indiquez l’adresse du serveur INFO."
+}
