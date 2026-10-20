@@ -1,28 +1,70 @@
 # PROJECT_STATE — INFO Desktop
 
-## 2026-10-20
+## State 2026-10-20
+
 - Repository: `RomanZavadaM/INFO-Desktop` (public)
-- main: initial repository only
-- active branch: `prototype/read-only-client`
-- active PR: #1 draft
-- product version: `0.1.0-dev`
-- release/stable: none
+- Main: initial repository only; prototype not merged
+- Active branch: `prototype/read-only-client`
+- Active PR: #1 draft
+- Development ledger: Issue #2
+- Product version: `0.1.0-dev`
+- Stable release: none
 
-## Decisions
-- Separate universal product.
-- Existing server INFO and Telegram stay untouched during bootstrap.
-- First prototype is strictly read-only, accepted on real queue/text/media.
-- Protocol: `info-desktop-protocol/1`.
-- Taxo i18n/license/release discipline.
-- Technology: Tauri 2 + TypeScript + React.
-- Required targets: Windows 10/11 x64, macOS arm64, macOS Intel, Linux x64.
-- Windows 7 removed from required matrix by owner decision; legacy support may be revisited separately.
+## Architecture accepted
 
-## Current safety boundary
-Native transport exposes only GET for http/https. No queue mutation path exists.
+- Tauri 2 + TypeScript + React.
+- Required: Windows 10/11 x64, macOS arm64, macOS x86_64, Linux x64.
+- Windows 7 is not required.
+- Universal versioned INFO-compatible server protocol.
+- Existing Telegram INFO remains parallel and independent.
+- First product stage is read-only on real newsroom data.
+- Native Desktop transport surface is GET-only.
+- Cached media preview is authenticated and memory-only in Desktop.
+
+## Registration / connection direction
+
+Owner accepted:
+- server listens, client initiates connection;
+- each Desktop receives a separate one-time registration file through a trusted path;
+- Desktop generates its own permanent cryptographic key pair locally;
+- device private key is never delivered by server and is not in the registration file;
+- server enrolls the public key and can revoke a device independently;
+- target protected transport uses digital device keys and a non-standard public port;
+- WireGuard is the leading implementation candidate, not yet a production decision;
+- INFO HTTP API itself should remain private behind the protected transport.
+
+Canonical spec: `docs/protocol/INFO_DESKTOP_REGISTRATION.md`.
+
+## Third-party media
+
+- INFO media is editorial source material, not product-owned archive.
+- Existing cached photos may live with the editorial material/cache life cycle (currently around the 48-hour material window).
+- Remote-only originals are not automatically copied in 0.1.
+- Video remains metadata-first.
+- Source/provenance remains visible.
+
+## Server companion
+
+Private `RomanZavadaM/INFO`:
+- branch `feature/desktop-readonly-api`;
+- draft PR #18;
+- isolated GET-only read-only API candidate;
+- not deployed;
+- production network untouched.
+
+## Google Drive
+
+Created under the main INFO Drive folder:
+- `INFO Desktop/`
+  - `Документація/`
+  - `Реєстрація і ключі/`
+  - `Релізи/`
+
+A Google Doc `INFO Desktop — план, архітектура і реєстрація` records the human-readable architecture and roadmap.
 
 ## Next
-1. Get CI/build matrix green.
-2. Reconcile protocol v1 fields with real INFO data.
-3. Only then add a minimal read-only endpoint to private INFO.
-4. Connect Desktop to LIVE queue/media without mutation.
+
+1. Finish current cross-platform build checks.
+2. Implement Registration v1 parser/data model/tests without changing production networking.
+3. Add server-side one-time registration/device-registry candidate in a separate development slice.
+4. Before any VPN/firewall/port change, present exact production transport plan to owner.

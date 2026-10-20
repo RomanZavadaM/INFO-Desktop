@@ -1,33 +1,36 @@
 # WORKLOG — INFO Desktop
 
-## Active slice: 0.1.0-dev / real read-only newsroom
+## Active slice: real read-only newsroom + registration design
 **Branch:** `prototype/read-only-client`  
 **PR:** #1 draft  
 **Status:** DOING
 
 ### DONE
-- public repository, branch, draft PR;
-- proprietary legal model;
-- universal versioned protocol draft;
-- Telegram preserved as parallel working UI;
-- read-only first, real-data acceptance;
-- Taxo localization/documentation discipline;
-- owner decision: Windows 7 removed from required matrix;
-- owner decision: Tauri 2 + TypeScript + React;
-- first native transport restricted to GET-only.
+- separate public product repository;
+- Tauri 2 + TypeScript + React foundation;
+- Windows/macOS/Linux build workflows;
+- seven UI languages;
+- universal `info-desktop-protocol/1`;
+- real INFO schema/protocol reconciliation;
+- private authenticated image previews through GET-only native layer;
+- first private INFO read-only API candidate in PR #18;
+- media restricted to INFO cache; remote originals not fetched automatically;
+- owner-approved one-file device registration model;
+- `info-desktop-registration/1` specification;
+- Google Drive `INFO Desktop` catalog and subfolders;
+- Drive architecture/roadmap document.
 
 ### DOING
-- Tauri/React product skeleton;
-- Windows/macOS/Linux CI builds;
-- seven-language UI;
-- real queue/card/media presentation.
+- cross-platform final CI verification for the current Desktop head;
+- Registration v1 implementation scaffolding and tests.
 
 ### NEXT
-1. Make PR #1 CI/build matrix green.
-2. Reconcile protocol with real INFO queue schema.
-3. Add a separate read-only API PR to private INFO.
-4. Connect to LIVE and inspect ~100+ real pending items.
-5. Judge UX before any write API.
+1. Parse/version/validate registration files.
+2. Generate device key material locally.
+3. Define enrollment request/response and device registry.
+4. Define revoke/rotation flows.
+5. Decide protected transport implementation with owner before production network changes.
+6. Perform real LIVE read-only acceptance only after protected transport is ready.
 
-### BLOCKED
-Live connection requires a read-only server surface. Server INFO remains unchanged until protocol reconciliation.
+### HARD BOUNDARY
+Do not alter production VPN/network/firewall/SSH, expose the INFO API publicly, or deploy PR #18 without an explicit owner-approved production step.
