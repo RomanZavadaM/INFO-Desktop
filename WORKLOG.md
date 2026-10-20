@@ -1,46 +1,36 @@
 # WORKLOG — INFO Desktop
 
-## Active slice: 0.1-r1 / live editorial workstation
-**Branch:** `prototype/read-only-client`  
-**PR:** #1 draft  
-**Status:** LIVE TESTING
+## 0.1.1 — accepted main checkpoint
+**Status:** MERGED / LIVE-CONNECTED ACCEPTANCE PASSED  
+**Main:** `852ee086769f2ce02246611d8772dfbb6ddc423d`
 
 ### DONE
-- separate public product repository;
-- Tauri 2 + TypeScript + React foundation;
+- separate public INFO Desktop repository;
+- Tauri 2 + TypeScript + React/Rust foundation;
 - Windows/macOS/Linux build workflows;
 - seven UI languages;
 - universal `info-desktop-protocol/1`;
-- real INFO schema/protocol reconciliation;
-- private authenticated image previews through GET-only native layer;
-- first private INFO API companion in PR #18;
-- LIVE read-only acceptance against INFO succeeded;
-- scoped Desktop write API deployed with INFO `20261020-1814` / schema v18;
-- edit title/text, change channel, save, skip, defer, publish and manual create implemented;
-- Telegram-style publish preview implemented;
-- Windows/Linux/macOS builds and frontend/Rust checks green for commit `731081f6`;
-- Windows artifact contains EXE + MSI + SHA256SUMS;
-- media restricted to INFO cache; remote originals not fetched automatically;
-- owner-approved one-file device registration model;
-- `info-desktop-registration/1` specification;
-- one-file registration import;
-- server-issued device credential model over TLS;
-- reusable device secret stored only in OS secure storage;
-- registration/device secrets removed from UI state;
-- old WireGuard/X25519 client design retired before merge;
-- Google Drive `INFO Desktop` catalog and subfolders;
-- Drive architecture/roadmap document.
+- secure one-file device registration;
+- reusable credential only in OS secure storage;
+- real INFO connection and read-only acceptance;
+- authenticated cached media preview;
+- scoped Desktop write API integration;
+- edit title/text and change channel;
+- save, skip and defer;
+- scoped publish action implemented;
+- manual create implemented;
+- Telegram-style preview;
+- real manual-create production acceptance against INFO `20261020-2040`;
+- PR #1 merged to main.
 
-### DOING
-- live Windows acceptance of write actions against production INFO through VPN-only gateway;
-- visual refinement of Telegram preview with real newsroom cards/media.
+### ACCEPTANCE FACT
+One real Lviv item was created through Desktop and appeared in the editorial Telegram bot. This validated Desktop → API → database → editorial queue. No public Telegram SEND was performed by that acceptance.
 
 ### NEXT
-1. Verify save + channel move without publication.
-2. Verify one deliberate publish from Desktop and confirm Telegram/journal result.
-3. Verify manual material creation.
-4. Add TikTok adapter/preview as the next platform, then Facebook.
-5. Keep gateway VPN-only while the editor is being stabilized.
+1. Reconcile private INFO server PR #18 into INFO main.
+2. Publish first GitHub Release/installers after packaging/signing decision.
+3. Verify one deliberate publish only with explicit owner authorization.
+4. Improve Telegram preview and add TikTok/Facebook adapters.
 
 ### HARD BOUNDARY
-Do not alter production VPN/network/firewall/SSH or expose INFO Desktop publicly without explicit owner approval. Current gateway is intentionally VPN-only.
+Do not alter production VPN/network/firewall/SSH or expose INFO Desktop publicly without explicit owner approval. Current gateway remains VPN-only.
