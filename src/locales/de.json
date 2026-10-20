@@ -21,5 +21,6 @@
   "error.no_server": "INFO-Serveradresse eingeben.",
   "registration.import": "Registrierung importieren",
   "registration.valid": "Registrierungsdatei ist gültig",
-  "registration.expires": "Gültig bis"
+  "registration.expires": "Gültig bis",
+  "registration.device_ready": "Geräteschlüssel bereit"
 }

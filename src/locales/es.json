@@ -21,5 +21,6 @@
   "error.no_server": "Introduzca la dirección del servidor INFO.",
   "registration.import": "Importar registro",
   "registration.valid": "El archivo de registro es válido",
-  "registration.expires": "Válido hasta"
+  "registration.expires": "Válido hasta",
+  "registration.device_ready": "Clave del dispositivo lista"
 }

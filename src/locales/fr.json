@@ -21,5 +21,6 @@
   "error.no_server": "Saisissez l’adresse du serveur INFO.",
   "registration.import": "Importer l’enregistrement",
   "registration.valid": "Le fichier d’enregistrement est valide",
-  "registration.expires": "Expire le"
+  "registration.expires": "Expire le",
+  "registration.device_ready": "Clé de l’appareil prête"
 }

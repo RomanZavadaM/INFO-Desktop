@@ -21,5 +21,6 @@
   "error.no_server": "Enter the INFO server address.",
   "registration.import": "Import registration",
   "registration.valid": "Registration file is valid",
-  "registration.expires": "Expires"
+  "registration.expires": "Expires",
+  "registration.device_ready": "Device key ready"
 }

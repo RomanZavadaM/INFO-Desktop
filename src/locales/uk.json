@@ -21,5 +21,6 @@
   "error.no_server": "Вкажіть адресу INFO-сервера.",
   "registration.import": "Імпортувати реєстрацію",
   "registration.valid": "Реєстраційний файл дійсний",
-  "registration.expires": "Діє до"
+  "registration.expires": "Діє до",
+  "registration.device_ready": "Ключ пристрою готовий"
 }

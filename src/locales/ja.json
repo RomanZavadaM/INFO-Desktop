@@ -21,5 +21,6 @@
   "error.no_server": "INFOサーバーのアドレスを入力してください。",
   "registration.import": "登録をインポート",
   "registration.valid": "登録ファイルは有効です",
-  "registration.expires": "有効期限"
+  "registration.expires": "有効期限",
+  "registration.device_ready": "デバイスキー準備完了"
 }

@@ -120,14 +120,14 @@ fn forget_device_key(registration_id: String) -> Result<(), String> {
 }
 
 #[command]
-fn parse_registration_text(text: String) -> Result<registration::RegistrationFile, String> {
-    registration::parse_registration(&text)
+fn import_registration_text(text: String) -> Result<registration::RegistrationSummary, String> {
+    registration::import_registration(&text)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![readonly_get, readonly_get_preview, parse_registration_text, ensure_device_key, forget_device_key])
+        .invoke_handler(tauri::generate_handler![readonly_get, readonly_get_preview, import_registration_text, ensure_device_key, forget_device_key])
         .run(tauri::generate_context!())
         .expect("error while running INFO Desktop");
 }

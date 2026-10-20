@@ -1,10 +1,12 @@
 use chrono::{DateTime, FixedOffset, Utc};
+use keyring::Entry;
 use serde::Serialize;
 use std::collections::HashMap;
 
 pub const REGISTRATION_ID: &str = "INFO-DESKTOP-REGISTRATION/1";
+const REGISTRATION_SECRET_SERVICE: &str = "INFO Desktop registration grant";
 
-#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RegistrationFile {
     pub server: String,
     pub transport: String,
@@ -21,6 +23,54 @@ fn nonempty(map: &HashMap<String, String>, key: &str) -> Result<String, String> 
         .map(|v| v.trim().to_string())
         .filter(|v| !v.is_empty())
         .ok_or_else(|| format!("Missing registration field: {key}"))
+}
+
+#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
+pub struct RegistrationSummary {
+    pub server: String,
+    pub transport: String,
+    pub port: u16,
+    pub server_public_key: String,
+    pub registration_id: String,
+    pub expires_at: String,
+    pub instance: String,
+}
+
+pub fn import_registration(text: &str) -> Result<RegistrationSummary, String> {
+    let parsed = parse_registration(text)?;
+    let entry = Entry::new(REGISTRATION_SECRET_SERVICE, &parsed.registration_id)
+        .map_err(|e| format!("Secure credential store unavailable: {e}"))?;
+    entry
+        .set_secret(parsed.registration_token.as_bytes())
+        .map_err(|e| format!("Cannot store registration grant securely: {e}"))?;
+
+    Ok(RegistrationSummary {
+        server: parsed.server,
+        transport: parsed.transport,
+        port: parsed.port,
+        server_public_key: parsed.server_public_key,
+        registration_id: parsed.registration_id,
+        expires_at: parsed.expires_at,
+        instance: parsed.instance,
+    })
+}
+
+pub fn registration_token(registration_id: &str) -> Result<String, String> {
+    let entry = Entry::new(REGISTRATION_SECRET_SERVICE, registration_id)
+        .map_err(|e| format!("Secure credential store unavailable: {e}"))?;
+    let raw = entry
+        .get_secret()
+        .map_err(|e| format!("Registration grant is unavailable: {e}"))?;
+    String::from_utf8(raw).map_err(|_| "Stored registration grant is invalid".to_string())
+}
+
+pub fn forget_registration_token(registration_id: &str) -> Result<(), String> {
+    let entry = Entry::new(REGISTRATION_SECRET_SERVICE, registration_id)
+        .map_err(|e| format!("Secure credential store unavailable: {e}"))?;
+    match entry.delete_credential() {
+        Ok(()) | Err(keyring::Error::NoEntry) => Ok(()),
+        Err(e) => Err(format!("Cannot remove registration grant: {e}")),
+    }
 }
 
 pub fn parse_registration(text: &str) -> Result<RegistrationFile, String> {

@@ -1,7 +1,7 @@
 import {useEffect,useMemo,useState} from "react";
 import {Channel,Handshake,InfoServerClient,ItemDetail,MediaDescriptor,QueueItem} from "./protocol";
 import {defaultLanguage,Language,languages,translator} from "./i18n";
-import {parseRegistration,RegistrationFile} from "./registration";
+import {ensureDeviceKey,importRegistration,RegistrationSummary} from "./registration";
 function fmt(v?:string){if(!v)return"";const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleString()}
 
 function MediaPreview({media,client,t}:{media:MediaDescriptor;client:InfoServerClient;t:(k:string)=>string}){
@@ -14,7 +14,7 @@ export function App(){
  const[language,setLanguage]=useState<Language>(defaultLanguage);const t=useMemo(()=>translator(language),[language]);
  const[server,setServer]=useState("");const[token,setToken]=useState("");const[hello,setHello]=useState<Handshake|null>(null);
  const[channels,setChannels]=useState<Channel[]>([]);const[queue,setQueue]=useState<QueueItem[]>([]);const[selected,setSelected]=useState<ItemDetail|null>(null);
- const[active,setActive]=useState("*");const[busy,setBusy]=useState(false);const[error,setError]=useState("");const[registration,setRegistration]=useState<RegistrationFile|null>(null);
+ const[active,setActive]=useState("*");const[busy,setBusy]=useState(false);const[error,setError]=useState("");const[registration,setRegistration]=useState<RegistrationSummary|null>(null);const[devicePublicKey,setDevicePublicKey]=useState("");
  const client=useMemo(()=>new InfoServerClient(server.trim(),token.trim()),[server,token]);
  const visible=useMemo(()=>active==="*"?queue:queue.filter(i=>i.channel===active),[queue,active]);
 
@@ -24,11 +24,13 @@ export function App(){
   if(!file)return;
   setError("");
   try{
-   const parsed=await parseRegistration(await file.text());
+   const parsed=await importRegistration(await file.text());
+   const device=await ensureDeviceKey(parsed.registration_id);
    setRegistration(parsed);
+   setDevicePublicKey(device.public_key);
    setServer(`http://${parsed.server}`);
   }catch(e){
-   setRegistration(null);
+   setRegistration(null);setDevicePublicKey("");
    setError(e instanceof Error?e.message:String(e));
   }
  }
@@ -39,7 +41,7 @@ export function App(){
   <header className="topbar"><div className="brand"><strong>INFO Desktop</strong><span>{t("app.read_only")}</span></div><div className="connection">
     <label className="import-button">{t("registration.import")}<input className="file-input" type="file" accept=".info-registration,.txt,text/plain" onChange={e=>importRegistration(e.target.files?.[0])}/></label><input placeholder={t("server.address")} value={server} onChange={e=>setServer(e.target.value)}/><input placeholder={t("server.token")} type="password" value={token} onChange={e=>setToken(e.target.value)}/><button onClick={connect} disabled={busy}>{busy?t("status.connecting"):t("server.connect")}</button></div><select value={language} onChange={e=>lang(e.target.value as Language)}>{Object.entries(languages).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}</select></header>
   <section className="server-strip"><span className={hello?"dot online":"dot"}/><span>{hello?`${hello.instance_name??hello.server_name??"INFO"} · ${hello.server_version??"?"}`:t("status.disconnected")}</span><span className="queue-count">{t("queue.title")}: {queue.length}</span></section>
-  {registration&&<div className="registration-banner"><strong>{t("registration.valid")}</strong><span>{registration.server}:{registration.port}</span><span>{t("registration.expires")}: {fmt(registration.expires_at)}</span><span>{registration.transport}</span></div>}
+  {registration&&<div className="registration-banner"><strong>{t("registration.valid")}</strong><span>{registration.server}:{registration.port}</span><span>{t("registration.expires")}: {fmt(registration.expires_at)}</span><span>{registration.transport}</span>{devicePublicKey&&<span>{t("registration.device_ready")}</span>}</div>}
   {error&&<div className="error-banner">{error}</div>}
   <section className="workspace">
    <aside className="channels-pane"><h2>{t("channels.title")}</h2><button className={active==="*"?"channel active":"channel"} onClick={()=>setActive("*")}><span>{t("channels.all")}</span><strong>{queue.length}</strong></button>{channels.map(c=><button className={active===c.code?"channel active":"channel"} key={c.code} onClick={()=>setActive(c.code)}><span>{c.name}</span><strong>{c.pending??queue.filter(i=>i.channel===c.code).length}</strong></button>)}</aside>

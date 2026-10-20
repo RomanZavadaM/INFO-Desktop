@@ -21,5 +21,6 @@
   "error.no_server": "INFO 서버 주소를 입력하세요.",
   "registration.import": "등록 가져오기",
   "registration.valid": "등록 파일이 유효합니다",
-  "registration.expires": "만료"
+  "registration.expires": "만료",
+  "registration.device_ready": "기기 키 준비됨"
 }
