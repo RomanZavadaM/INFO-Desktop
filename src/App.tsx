@@ -28,7 +28,7 @@ export function App(){
       localStorage.setItem("info-desktop-credential-expiry",rotated.credential_expires_at);
     }
    }
-   const[h,ch,q]=await Promise.all([client.handshake(),client.channels(),client.queue(200)]);
+   const[h,ch,q]=await Promise.all([client.handshake(),client.channels(),client.queueAll()]);
    setHello(h);setChannels(ch);setQueue(q.items);setSelected(q.items[0]?await client.item(q.items[0].id):null)
   }catch(e){setHello(null);setChannels([]);setQueue([]);setSelected(null);setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function open(i:QueueItem){setBusy(true);setError("");try{setSelected(await client.item(i.id))}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}

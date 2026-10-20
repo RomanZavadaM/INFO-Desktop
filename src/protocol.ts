@@ -37,7 +37,29 @@ export class InfoServerClient{
   constructor(private readonly server:string,private readonly deviceId:string,private readonly serverCaDer:string){}
   async handshake(){const d=await getJson<Handshake>(`${baseUrl(this.server)}/api/info-desktop/v1/handshake`,this.deviceId,this.serverCaDer);if(d.protocol!==PROTOCOL_ID)throw new Error(`Unsupported protocol ${String(d.protocol)}; expected ${PROTOCOL_ID}`);return d}
   channels(){return getJson<Channel[]>(`${baseUrl(this.server)}/api/info-desktop/v1/channels`,this.deviceId,this.serverCaDer)}
-  queue(limit=200){return getJson<QueuePage>(`${baseUrl(this.server)}/api/info-desktop/v1/queue?limit=${limit}`,this.deviceId,this.serverCaDer)}
+  queue(limit=100,cursor?:string){
+    const params=new URLSearchParams({limit:String(Math.max(1,Math.min(100,limit)))});
+    if(cursor)params.set("cursor",cursor);
+    return getJson<QueuePage>(`${baseUrl(this.server)}/api/info-desktop/v1/queue?${params.toString()}`,this.deviceId,this.serverCaDer)
+  }
+  async queueAll(pageSize=100,maxPages=100){
+    const items:QueueItem[]=[];
+    let cursor:string|undefined;
+    let counts:Record<string,number>|undefined;
+    const seen=new Set<string>();
+    for(let pageNo=0;pageNo<maxPages;pageNo++){
+      const page=await this.queue(pageSize,cursor);
+      if(!counts&&page.counts)counts=page.counts;
+      items.push(...page.items);
+      const next=page.next_cursor??undefined;
+      if(!next)break;
+      if(seen.has(next))throw new Error("Queue pagination cursor repeated");
+      seen.add(next);
+      cursor=next;
+    }
+    if(cursor&&items.length>=pageSize*maxPages)throw new Error("Queue pagination safety limit reached");
+    return {items,next_cursor:null,counts} satisfies QueuePage;
+  }
   item(id:string|number){return getJson<ItemDetail>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}`,this.deviceId,this.serverCaDer)}
   async preview(path:string){
     const r=await invoke<{status:number;content_type:string;body_base64:string}>("device_get_preview",{url:absoluteUrl(this.server,path),deviceId:this.deviceId,serverCaDer:this.serverCaDer});

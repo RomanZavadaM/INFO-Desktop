@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "tauri": "tauri",
-    "check": "node scripts/check-static.mjs"
+    "check": "node scripts/check-static.mjs",
+    "test:protocol": "tsx scripts/test-protocol.ts"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.12.4",
@@ -20,6 +21,7 @@
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^5",
     "typescript": "^5.9",
-    "vite": "^7"
+    "vite": "^7",
+    "tsx": "^4.20.6"
   }
 }
