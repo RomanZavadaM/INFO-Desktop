@@ -12,6 +12,9 @@
 ## Accepted behavior
 Connection, channels, full queue, item details, cached media, editing and manual create work against real INFO. One real Lviv material reached the editorial queue and Telegram editorial bot. No public Telegram SEND was performed in that acceptance.
 
+## Post-release audit
+On 2026-10-20 the public repository was re-audited after `v0.1.1` publication. Old `0.1-r1`/GET-only assumptions were found in project rules, connection architecture and the Rust User-Agent source and were corrected in `main`. The already published `v0.1.1` release is not rewritten; the next published Desktop build must receive a new version.
+
 ## Server companion
 Private `RomanZavadaM/INFO` PR #18 corresponds to the Desktop server-side work used by LIVE 2040 and still needs repository reconciliation.
 
