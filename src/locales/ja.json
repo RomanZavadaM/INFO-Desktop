@@ -18,5 +18,8 @@
   "item.channel": "チャンネル",
   "item.language": "言語",
   "item.media": "メディア",
-  "error.no_server": "INFOサーバーのアドレスを入力してください。"
+  "error.no_server": "INFOサーバーのアドレスを入力してください。",
+  "registration.import": "登録をインポート",
+  "registration.valid": "登録ファイルは有効です",
+  "registration.expires": "有効期限"
 }

@@ -18,5 +18,8 @@
   "item.channel": "Canal",
   "item.language": "Idioma",
   "item.media": "Medios",
-  "error.no_server": "Introduzca la dirección del servidor INFO."
+  "error.no_server": "Introduzca la dirección del servidor INFO.",
+  "registration.import": "Importar registro",
+  "registration.valid": "El archivo de registro es válido",
+  "registration.expires": "Válido hasta"
 }

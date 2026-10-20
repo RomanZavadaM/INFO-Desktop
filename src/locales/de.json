@@ -18,5 +18,8 @@
   "item.channel": "Kanal",
   "item.language": "Sprache",
   "item.media": "Medien",
-  "error.no_server": "INFO-Serveradresse eingeben."
+  "error.no_server": "INFO-Serveradresse eingeben.",
+  "registration.import": "Registrierung importieren",
+  "registration.valid": "Registrierungsdatei ist gültig",
+  "registration.expires": "Gültig bis"
 }

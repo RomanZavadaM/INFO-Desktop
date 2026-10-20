@@ -18,5 +18,8 @@
   "item.channel": "Canal",
   "item.language": "Langue",
   "item.media": "Médias",
-  "error.no_server": "Saisissez l’adresse du serveur INFO."
+  "error.no_server": "Saisissez l’adresse du serveur INFO.",
+  "registration.import": "Importer l’enregistrement",
+  "registration.valid": "Le fichier d’enregistrement est valide",
+  "registration.expires": "Expire le"
 }

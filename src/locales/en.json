@@ -18,5 +18,8 @@
   "item.channel": "Channel",
   "item.language": "Language",
   "item.media": "Media",
-  "error.no_server": "Enter the INFO server address."
+  "error.no_server": "Enter the INFO server address.",
+  "registration.import": "Import registration",
+  "registration.valid": "Registration file is valid",
+  "registration.expires": "Expires"
 }

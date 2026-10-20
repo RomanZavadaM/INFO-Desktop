@@ -18,5 +18,8 @@
   "item.channel": "Канал",
   "item.language": "Мова",
   "item.media": "Медіа",
-  "error.no_server": "Вкажіть адресу INFO-сервера."
+  "error.no_server": "Вкажіть адресу INFO-сервера.",
+  "registration.import": "Імпортувати реєстрацію",
+  "registration.valid": "Реєстраційний файл дійсний",
+  "registration.expires": "Діє до"
 }
