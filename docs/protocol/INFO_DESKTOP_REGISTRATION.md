@@ -1,89 +1,113 @@
 # INFO Desktop Registration Protocol v1
 
 **Identifier:** `info-desktop-registration/1`  
-**Transport profile:** `wireguard-bootstrap-v1`  
-**Status:** design / not deployed
+**Status:** accepted design / not deployed
 
-## Core idea
+## User-facing rule
 
-The registration file is delivered through a separate trusted path such as SSH/SCP or USB.
+The editor installs only INFO Desktop.
 
-It contains **a temporary bootstrap transport credential**, not the permanent Desktop device key.
+No separate VPN, WireGuard, driver, certificate manager or helper application is
+required from the user.
 
-This removes the bootstrap paradox: the server already knows the temporary peer's public key before the client ever connects.
+User flow:
 
-## Flow
+```text
+install INFO Desktop
+→ import registration file
+→ activate device
+→ work
+```
 
-1. Server creates a short-lived bootstrap WireGuard key pair and one-time registration grant.
-2. Server keeps the bootstrap **public** key and temporary allowed address.
-3. Registration file receives the bootstrap **private** key, server public key, hidden/high UDP port, temporary address and one-time registration token.
-4. The file is delivered separately (for example by SCP).
-5. Desktop imports it and moves the bootstrap private key + registration token into the OS secure store.
-6. Desktop independently generates its permanent device X25519 key pair locally.
-7. Desktop uses the bootstrap key to establish the temporary protected tunnel.
-8. Inside that tunnel it calls the one-purpose enrollment service and submits only its permanent public key plus the one-time token.
-9. Server creates the permanent device record.
-10. Bootstrap peer/grant is invalidated.
-11. Desktop switches to its permanent key and deletes the bootstrap secret/token.
-12. The source registration file is no longer needed.
+## Connection model
+
+```text
+INFO Desktop
+    │ TLS on server-selected high TCP port
+    │ device_id + device_secret
+    ▼
+server security gateway
+    ▼
+INFO Desktop API
+```
+
+Server-side infrastructure may be as strict or complex as needed. That
+complexity is deliberately hidden from the editor/admin client.
 
 ## Registration file
 
-Semantic example:
+The file is delivered through a separate trusted path such as SSH/SCP, USB or
+another owner-approved channel.
 
 ```text
 INFO-DESKTOP-REGISTRATION/1
 
 server = info.example.net
-transport = wireguard-bootstrap-v1
-port = 47xxx
-server_public_key = <32-byte WireGuard public key, Base64>
-bootstrap_private_key = <32-byte TEMPORARY private key, Base64>
-bootstrap_address = 10.77.0.240/32
-private_server = 10.77.0.1
+port = 47443
 registration_id = reg-...
 registration_token = <one-time secret>
 expires_at = 2026-10-21T12:00:00+03:00
 instance = primary
 ```
 
-## Secret distinction
+The registration token is only for first activation. It is not the permanent
+Desktop credential.
 
-**Temporary secret shipped in the file**
-- bootstrap private key;
-- one-time registration token;
-- short lifetime;
-- transported by an already trusted out-of-band path;
-- destroyed after enrollment.
+## Activation
 
-**Permanent device secret**
-- generated locally by INFO Desktop;
-- never shipped by server;
-- never present in registration file;
-- stored in OS secure credential storage.
+1. Desktop imports the file.
+2. The one-time registration token is stored in the OS credential store.
+3. Desktop contacts the registration endpoint over TLS.
+4. Server validates and consumes the registration grant.
+5. Server creates a device record and returns:
+   - `device_id`;
+   - high-entropy `device_secret`;
+   - credential expiry/rotation metadata.
+6. Desktop stores `device_secret` in the OS credential store.
+7. One-time registration token is deleted locally.
+8. Future API requests authenticate as that device.
 
-## Why this model
+The server stores only hashes of reusable device secrets.
 
-The public Internet sees only the protected transport listener on a non-standard UDP port. The enrollment HTTP service itself does not need to be public.
+## Rotation
 
-Packets without a valid transport key are not an INFO API login attempt. The unusual port reduces scan noise, while cryptographic authentication supplies the actual security.
+Credential rotation is server-controlled and should normally be invisible to the
+editor.
 
-## Application scopes
+Planned flow:
+- server announces rotation required / near expiry;
+- authenticated Desktop asks for replacement credential;
+- new credential is stored locally;
+- old credential has a short grace period and is then invalidated.
 
-Initial permanent device scopes:
+Lost/stolen device:
+- server revokes that single `device_id`;
+- other Desktop installations continue working.
+
+## Initial permissions
+
+0.1-r1:
 - `queue.read`
 - `item.read`
 - `media.preview`
 
-No editorial write scope exists in 0.1.
+There is no edit/publish/delete permission in the first product stage.
+
+## Security proportion
+
+INFO mostly handles public source material and editorial derivatives. The design
+therefore prioritizes:
+- preventing unauthorized control of INFO;
+- avoiding generic Internet scanning/noise;
+- independent device revoke;
+- encrypted transport;
+- simple editor UX.
+
+It intentionally avoids client-side VPN complexity that does not materially
+improve the first read-only use case.
 
 ## Production boundary
 
-This protocol design does not authorize:
-- opening the UDP port;
-- changing firewall;
-- installing/configuring WireGuard on LIVE;
-- creating system services;
-- changing SSH/VPN.
-
-Those are a separate owner-approved production step.
+The exact public hostname, high TCP port, TLS termination, firewall/rate-limit
+configuration and credential rotation period are server production decisions.
+They are not hard-coded in the public Desktop repository.

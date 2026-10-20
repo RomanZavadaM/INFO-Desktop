@@ -1,4 +1,3 @@
-mod device_keys;
 mod registration;
 
 use base64::engine::general_purpose::STANDARD as BASE64;
@@ -24,8 +23,8 @@ struct ReadonlyBinaryResponse {
 
 fn checked_url(url: &str) -> Result<Url, String> {
     let parsed = Url::parse(url).map_err(|_| "Invalid server URL".to_string())?;
-    if parsed.scheme() != "https" && parsed.scheme() != "http" {
-        return Err("Only http:// and https:// INFO servers are allowed".to_string());
+    if parsed.scheme() != "https" {
+        return Err("INFO Desktop requires https:// server connections".to_string());
     }
     Ok(parsed)
 }
@@ -33,7 +32,7 @@ fn checked_url(url: &str) -> Result<Url, String> {
 fn client() -> Result<reqwest::Client, String> {
     reqwest::Client::builder()
         .user_agent("INFO-Desktop/0.1-r1")
-        .redirect(reqwest::redirect::Policy::limited(5))
+        .redirect(reqwest::redirect::Policy::none())
         .build()
         .map_err(|error| error.to_string())
 }
@@ -110,16 +109,6 @@ async fn readonly_get_preview(
 }
 
 #[command]
-fn ensure_device_key(registration_id: String) -> Result<device_keys::DevicePublicIdentity, String> {
-    device_keys::ensure_device_key(&registration_id)
-}
-
-#[command]
-fn forget_device_key(registration_id: String) -> Result<(), String> {
-    device_keys::forget_device_key(&registration_id)
-}
-
-#[command]
 fn import_registration_text(text: String) -> Result<registration::RegistrationSummary, String> {
     registration::import_registration(&text)
 }
@@ -127,7 +116,7 @@ fn import_registration_text(text: String) -> Result<registration::RegistrationSu
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![readonly_get, readonly_get_preview, import_registration_text, ensure_device_key, forget_device_key])
+        .invoke_handler(tauri::generate_handler![readonly_get, readonly_get_preview, import_registration_text])
         .run(tauri::generate_context!())
         .expect("error while running INFO Desktop");
 }
