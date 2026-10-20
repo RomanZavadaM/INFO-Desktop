@@ -46,6 +46,7 @@ server = info.example.net
 port = 47443
 registration_id = reg-...
 registration_token = <one-time secret>
+server_certificate_der = <Base64 DER TLS server certificate>
 expires_at = 2026-10-21T12:00:00+03:00
 instance = primary
 ```
@@ -111,3 +112,17 @@ improve the first read-only use case.
 The exact public hostname, high TCP port, TLS termination, firewall/rate-limit
 configuration and credential rotation period are server production decisions.
 They are not hard-coded in the public Desktop repository.
+
+
+## TLS server trust
+
+The registration file carries the server TLS certificate as Base64 DER.
+
+It is public material, not a secret. INFO Desktop adds it only to its own native
+HTTP client's trust roots; nothing is installed into the operating system.
+
+Normal TLS hostname/IP verification still applies, so the certificate SAN must
+match the `server` field.
+
+This allows a server-managed certificate on the INFO high TCP port without any
+manual certificate installation by the editor.

@@ -26,12 +26,14 @@ export async function activateRegistration(
     port: registration.port,
     registrationId: registration.registration_id,
     deviceName,
+    serverCertificateDer: registration.server_certificate_der,
   });
 }
 
 export async function rotateDeviceCredential(
   server: string,
   deviceId: string,
+  serverCertificateDer: string,
 ): Promise<ActivationResult> {
-  return invoke<ActivationResult>("rotate_device_credential", { server, deviceId });
+  return invoke<ActivationResult>("rotate_device_credential", { server, deviceId, serverCertificateDer });
 }
