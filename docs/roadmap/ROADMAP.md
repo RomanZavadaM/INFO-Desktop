@@ -13,21 +13,22 @@
 - merge першого accepted client у `main`.
 
 ## NEXT — release discipline
-- вирівняти version/release notes;
-- фіналізувати installer packaging;
-- signing/notarization policy;
-- GitHub Release з платформними assets і SHA256;
+- імена файлів у `SHA256SUMS-*.txt` без пропусків (збігаються з іменами в Release);
+- політика signing/notarization/updater (чернетка `docs/decisions/SIGNING_UPDATES.md`, чекає рішення власника);
 - зберігати українську як canonical documentation, усі публічні документи синхронізувати 7 мовами.
 
 ## NEXT — редакторський цикл
+- acceptance на INFO `20261022-1730` (канали «Новини» і «Тривоги»);
+- «Чому»: пояснення, чому матеріал потрапив чи не потрапив у канал (серверний запит + кнопка в картці);
+- «Що зміниться»: проба XLSX-файлу налаштувань на сервері, звіт по каналах у Desktop (довга операція: запуск і опитування стану);
 - deliberate publish acceptance тільки з явним дозволом власника;
-- довгі сесії/edge cases;
 - UI polish.
 
 ## LATER
 - TikTok preview/publishing adapter;
 - Facebook preview/publishing adapter;
 - інші INFO-compatible сервери;
+- редактор XLSX-налаштувань у Desktop (експорт, правка, проба, застосування, відкат);
 - updater після визначення політики підпису.
 
 ## Жорстка межа

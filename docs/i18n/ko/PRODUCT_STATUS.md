@@ -11,3 +11,5 @@ Implemented: seven UI languages, multilingual documentation, secure device regis
 Production acceptance against INFO `20261020-2040` passed. No public Telegram SEND was performed.
 
 서명/공증/업데이트 정책은 이후 릴리스 단계입니다.
+
+서버: 릴리스 0.1.1은 LIVE INFO `20261020-2040`에서 수락되었으며, 현재 LIVE INFO는 `20261022-1730`입니다(수락은 아직 진행되지 않았습니다).

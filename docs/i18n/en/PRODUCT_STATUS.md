@@ -11,3 +11,5 @@ Implemented: seven UI languages, multilingual documentation, secure device regis
 Production acceptance against INFO `20261020-2040` passed. No public Telegram SEND was performed.
 
 Signing/notarization/update policy remains a later release step.
+
+Server: release 0.1.1 was accepted on LIVE INFO `20261020-2040`; the current LIVE INFO is `20261022-1730` (acceptance on it has not been done yet).

@@ -1,7 +1,9 @@
 # INFO Desktop — Roadmap
 
-DONE: application foundation, seven languages, registration/TLS, real queue/item/media, scoped editor actions, manual-create production acceptance, merge to main.
+ERLEDIGT: Anwendungsgrundlage, sieben Sprachen, Registrierung/TLS, echte Warteschlange/Beitrag/Medien, Editoraktionen mit Scopes, Produktionsabnahme der manuellen Erstellung, Merge in main, öffentliches Release v0.1.1.
 
-Als Nächstes: Release-Paketierung/Signatur, öffentliche GitHub-Release-Artefakte, bewusster Publish-Test nur mit Freigabe des Eigentümers, danach TikTok/Facebook-Adapter.
+Als Nächstes: Dateinamen der Prüfsummen ohne Leerzeichen; Richtlinie für Signierung/Notarisierung/Updater (Entwurf wartet auf die Entscheidung des Eigentümers); Abnahme auf INFO `20261022-1730` (Kanäle Nachrichten und Alarme); „Warum“ (warum ein Beitrag in einen Kanal kam oder nicht) und „Was ändert sich“ (Probe einer XLSX-Einstellungsdatei auf dem Server); bewusste Veröffentlichungsabnahme mit Zustimmung des Eigentümers.
 
-Hard boundary: production VPN/network/firewall/SSH must not be changed without a separate explicit owner decision.
+Später: TikTok/Facebook-Adapter, weitere INFO-kompatible Server, XLSX-Einstellungseditor, Updater.
+
+Harte Grenze: Produktions-VPN/Netzwerk/Firewall/SSH dürfen ohne gesonderte ausdrückliche Entscheidung des Eigentümers nicht geändert werden.
