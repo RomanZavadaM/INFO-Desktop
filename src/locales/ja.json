@@ -48,5 +48,20 @@
   "why.title": "イベントに対するチャンネルの判断",
   "why.rules": "チャンネルの XLSX ルール",
   "why.no_rules": "このチャンネルには XLSX ルールがありません。",
-  "why.truncated": "先頭のみ表示（一覧を短縮）。"
+  "why.truncated": "先頭のみ表示（一覧を短縮）。",
+  "settings.open": "設定",
+  "settings.back": "キューへ戻る",
+  "settings.title": "サーバー設定（XLSX）",
+  "settings.intro": "現在の設定をダウンロードし、ファイルを編集してここで選択してください。サーバーがファイルを確認し、確認後にのみ適用します。最後の変更は元に戻せます。",
+  "settings.download": "現在の設定をダウンロード",
+  "settings.choose": "XLSX ファイルを選択",
+  "settings.apply": "確認済みファイルを適用",
+  "settings.rollback": "最後の適用を元に戻す",
+  "settings.exported": "ファイルを保存しました",
+  "settings.checked": "ファイル確認済み、何も適用されていません",
+  "settings.applied": "適用しました",
+  "settings.rolled_back": "元に戻しました",
+  "settings.confirm_apply": "確認済みの設定ファイルをサーバーに適用しますか？",
+  "settings.confirm_rollback": "最後の適用前の状態に設定を戻しますか？",
+  "settings.probe_hint": "「48時間での変更」の試行は現在サーバーで実行します：コマンド info xlsx try-pending。"
 }

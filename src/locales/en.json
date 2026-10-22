@@ -48,5 +48,20 @@
   "why.title": "Channel decisions for the event",
   "why.rules": "XLSX rules for the channel",
   "why.no_rules": "This channel has no XLSX rules.",
-  "why.truncated": "Beginning shown (list shortened)."
+  "why.truncated": "Beginning shown (list shortened).",
+  "settings.open": "Settings",
+  "settings.back": "Back to queue",
+  "settings.title": "Server settings (XLSX)",
+  "settings.intro": "Download the current settings, edit the file and choose it here: the server checks the file and applies it only after your confirmation. The last change can be rolled back.",
+  "settings.download": "Download current settings",
+  "settings.choose": "Choose XLSX file",
+  "settings.apply": "Apply the checked file",
+  "settings.rollback": "Roll back the last apply",
+  "settings.exported": "File saved",
+  "settings.checked": "File checked, nothing applied",
+  "settings.applied": "Applied",
+  "settings.rolled_back": "Rolled back",
+  "settings.confirm_apply": "Apply the checked settings file on the server?",
+  "settings.confirm_rollback": "Return the settings to the state before the last apply?",
+  "settings.probe_hint": "The \"what changes in 48 hours\" probe still runs on the server: command info xlsx try-pending."
 }

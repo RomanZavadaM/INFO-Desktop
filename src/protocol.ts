@@ -26,6 +26,9 @@ export interface SourceMaterial{id?:string|number;source?:string;source_name?:st
 export interface WhyChannel{code:string;mode:string;ok:boolean;reason:string}
 export interface WhyRules{channel:string;has_rules:boolean;ok:boolean|null;reason:string;lines:string[];truncated:boolean}
 export interface Why{item_id:number;event_id:number;title:string;topics:string[];scope:string;channels:WhyChannel[];rules?:WhyRules}
+export interface SettingsStatus{has_pending:boolean;can_rollback:boolean}
+export interface SettingsExport{filename:string;size:number;base64:string}
+export interface SettingsCheck{ok:boolean;summary:string}
 export interface ItemDetail extends QueueItem{draft_text?:string;winner_channel?:string;eligible_channels?:string[];event?:{url?:string;first_source?:string;first_published_at?:string;topics?:string[];sources?:string[]};materials?:SourceMaterial[]}
 
 async function getJson<T>(url:string,deviceId:string,serverCaDer:string):Promise<T>{
@@ -36,7 +39,7 @@ async function getJson<T>(url:string,deviceId:string,serverCaDer:string):Promise
 
 async function postJson<T>(url:string,deviceId:string,serverCaDer:string,payload:unknown):Promise<T>{
   const r=await invoke<{status:number;body:string}>("device_post",{url,deviceId,serverCaDer,body:JSON.stringify(payload??{})});
-  if(r.status<200||r.status>=300){let detail="";try{detail=String((JSON.parse(r.body) as {error?:string}).error??"")}catch{};throw new Error(detail?`HTTP ${r.status}: ${detail}`:`HTTP ${r.status}`)}
+  if(r.status<200||r.status>=300){let detail="";try{const j=JSON.parse(r.body) as {error?:string;detail?:string};detail=String(j.detail??j.error??"")}catch{};throw new Error(detail?`HTTP ${r.status}: ${detail}`:`HTTP ${r.status}`)}
   return r.body?JSON.parse(r.body) as T:{} as T;
 }
 function baseUrl(server:string){return server.replace(/\/+$/,"")}
@@ -76,6 +79,11 @@ export class InfoServerClient{
     if(channel)params.set("channel",channel);
     return getJson<Why>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/why?${params.toString()}`,this.deviceId,this.serverCaDer)
   }
+  settingsStatus(){return getJson<SettingsStatus>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/status`,this.deviceId,this.serverCaDer)}
+  settingsExport(){return getJson<SettingsExport>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx`,this.deviceId,this.serverCaDer)}
+  settingsCheck(base64:string){return postJson<SettingsCheck>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx/check`,this.deviceId,this.serverCaDer,{base64})}
+  settingsApply(){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx/apply`,this.deviceId,this.serverCaDer,{})}
+  settingsRollback(){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx/rollback`,this.deviceId,this.serverCaDer,{})}
   save(id:string|number,payload:{title:string;draft_text:string;channel:string}){return postJson<{ok:boolean;item_id:number}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/save`,this.deviceId,this.serverCaDer,payload)}
   publish(id:string|number){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/publish`,this.deviceId,this.serverCaDer,{})}
   skip(id:string|number){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/skip`,this.deviceId,this.serverCaDer,{})}

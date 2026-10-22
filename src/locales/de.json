@@ -48,5 +48,20 @@
   "why.title": "Kanalentscheidungen für das Ereignis",
   "why.rules": "XLSX-Regeln für den Kanal",
   "why.no_rules": "Für diesen Kanal gibt es keine XLSX-Regeln.",
-  "why.truncated": "Anfang angezeigt (Liste gekürzt)."
+  "why.truncated": "Anfang angezeigt (Liste gekürzt).",
+  "settings.open": "Einstellungen",
+  "settings.back": "Zur Warteschlange",
+  "settings.title": "Servereinstellungen (XLSX)",
+  "settings.intro": "Laden Sie die aktuellen Einstellungen herunter, bearbeiten Sie die Datei und wählen Sie sie hier aus: Der Server prüft die Datei und wendet sie erst nach Ihrer Bestätigung an. Die letzte Änderung kann zurückgenommen werden.",
+  "settings.download": "Aktuelle Einstellungen herunterladen",
+  "settings.choose": "XLSX-Datei wählen",
+  "settings.apply": "Geprüfte Datei anwenden",
+  "settings.rollback": "Letzte Anwendung zurücknehmen",
+  "settings.exported": "Datei gespeichert",
+  "settings.checked": "Datei geprüft, nichts angewendet",
+  "settings.applied": "Angewendet",
+  "settings.rolled_back": "Zurückgenommen",
+  "settings.confirm_apply": "Geprüfte Einstellungsdatei auf dem Server anwenden?",
+  "settings.confirm_rollback": "Einstellungen auf den Stand vor der letzten Anwendung zurücksetzen?",
+  "settings.probe_hint": "Die Probe „Was ändert sich in 48 Stunden“ läuft vorerst auf dem Server: Befehl info xlsx try-pending."
 }

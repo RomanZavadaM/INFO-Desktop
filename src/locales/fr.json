@@ -48,5 +48,20 @@
   "why.title": "Décisions des canaux pour l'événement",
   "why.rules": "Règles XLSX du canal",
   "why.no_rules": "Ce canal n'a pas de règles XLSX.",
-  "why.truncated": "Début affiché (liste raccourcie)."
+  "why.truncated": "Début affiché (liste raccourcie).",
+  "settings.open": "Paramètres",
+  "settings.back": "Retour à la file",
+  "settings.title": "Paramètres du serveur (XLSX)",
+  "settings.intro": "Téléchargez les paramètres actuels, modifiez le fichier et choisissez-le ici : le serveur le vérifie et ne l'applique qu'après votre confirmation. La dernière modification peut être annulée.",
+  "settings.download": "Télécharger les paramètres actuels",
+  "settings.choose": "Choisir un fichier XLSX",
+  "settings.apply": "Appliquer le fichier vérifié",
+  "settings.rollback": "Annuler la dernière application",
+  "settings.exported": "Fichier enregistré",
+  "settings.checked": "Fichier vérifié, rien n'a été appliqué",
+  "settings.applied": "Appliqué",
+  "settings.rolled_back": "Annulé",
+  "settings.confirm_apply": "Appliquer sur le serveur le fichier de paramètres vérifié ?",
+  "settings.confirm_rollback": "Revenir aux paramètres d'avant la dernière application ?",
+  "settings.probe_hint": "L'essai « ce qui change en 48 heures » s'exécute encore sur le serveur : commande info xlsx try-pending."
 }

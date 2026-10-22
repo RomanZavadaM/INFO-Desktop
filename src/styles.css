@@ -38,3 +38,6 @@
 .why-row.no strong{color:#b42318}
 .why-lines{white-space:pre-wrap;font-size:12px;max-height:360px;overflow:auto;background:rgba(127,127,127,.08);padding:8px;border-radius:8px}
 
+.settings-panel{padding:16px;max-width:900px}
+.settings-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+

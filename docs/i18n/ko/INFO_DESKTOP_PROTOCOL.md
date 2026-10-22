@@ -13,3 +13,5 @@ Queue data is a prepared editorial view; clicks must not trigger heavy routing/q
 Credentials are device secrets and must not be committed to Git or packaged into releases. Unknown fields are ignored; incompatible protocol identifiers are rejected.
 
 - `GET /queue/{id}/why?channel=&scope=` - 이벤트에 대한 채널 결정을 설명합니다(scope `item.read`, 읽기 전용): `channels`(코드, 모드, ok, 이유)와 `rules`(선택한 채널의 XLSX 조건 트리)
+
+- XLSX 설정(scope `settings.read`, `settings.write`): `GET /settings/status`, `GET /settings/xlsx`, `POST /settings/xlsx/check`, `POST /settings/xlsx/apply`, `POST /settings/xlsx/rollback` - 내보내기, 적용 없이 확인, 한 단계 되돌리기가 있는 적용; Telegram 봇 및 `info menu`와 같은 형식과 규칙.
