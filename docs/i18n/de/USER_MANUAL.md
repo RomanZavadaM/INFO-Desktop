@@ -14,3 +14,7 @@ Manual create sends title, text, channel and optional source URL to the server a
 Desktop hat keinen direkten SQLite-Zugriff, verwendet SSH nicht als Anwendungsprotokoll, speichert wiederverwendbare Geräteschlüssel nur im sicheren OS-Speicher und nutzt serverseitige Scopes.
 
 Die Produktionsabnahme am 20.10.2026 mit INFO 20261020-2040 bestätigte die manuelle Erstellung vollständig. Kein öffentlicher Telegram-SEND wurde ausgeführt.
+
+## Servereinstellungen (XLSX)
+Die Schaltfläche „Einstellungen“ in der Kopfzeile: „Aktuelle Einstellungen herunterladen“ speichert die XLSX-Datei; die bearbeitete Datei wählen Sie mit „XLSX-Datei wählen“ - der Server prüft sie nur und zeigt eine Zusammenfassung; „Geprüfte Datei anwenden“ wendet sie nach Bestätigung an; „Letzte Anwendung zurücknehmen“ stellt den vorherigen Zustand wieder her. Erfordert die Scopes `settings.read` und `settings.write` (bei der Registrierung vergeben). Die Probe „Was ändert sich in 48 Stunden“ läuft vorerst auf dem Server mit `info xlsx try-pending`.
+

@@ -14,3 +14,7 @@ Manual create sends title, text, channel and optional source URL to the server a
 Desktop has no direct SQLite access, does not use SSH as an application protocol, stores reusable device secrets only in OS secure storage, and uses scoped server permissions.
 
 Production acceptance on 20 October 2026 against INFO 20261020-2040 confirmed manual create end-to-end. No public Telegram SEND was performed.
+
+## Server settings (XLSX)
+The "Settings" button in the header: "Download current settings" saves the XLSX; choose the edited file with "Choose XLSX file" - the server only checks it and shows a summary; "Apply the checked file" applies it after confirmation; "Roll back the last apply" returns the previous state. Requires the scopes `settings.read` and `settings.write` (issued at registration). The "what changes in 48 hours" probe still runs on the server with `info xlsx try-pending`.
+
