@@ -43,5 +43,10 @@
   "format.link": "Link",
   "preview.telegram": "Telegram-Vorschau",
   "preview.media_from_item": "Medien aus dem Beitrag",
-  "sources.title": "Quellen"
+  "sources.title": "Quellen",
+  "why.button": "Warum in diesem Kanal?",
+  "why.title": "Kanalentscheidungen für das Ereignis",
+  "why.rules": "XLSX-Regeln für den Kanal",
+  "why.no_rules": "Für diesen Kanal gibt es keine XLSX-Regeln.",
+  "why.truncated": "Anfang angezeigt (Liste gekürzt)."
 }

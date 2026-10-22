@@ -23,6 +23,9 @@ export interface MediaDescriptor{
   size?:number;
 }
 export interface SourceMaterial{id?:string|number;source?:string;source_name?:string;url?:string;title?:string;summary?:string;published_at?:string;original_title?:string;original_summary?:string;translation_state?:string;translated_title?:string;translated_summary?:string;media?:MediaDescriptor[]}
+export interface WhyChannel{code:string;mode:string;ok:boolean;reason:string}
+export interface WhyRules{channel:string;has_rules:boolean;ok:boolean|null;reason:string;lines:string[];truncated:boolean}
+export interface Why{item_id:number;event_id:number;title:string;topics:string[];scope:string;channels:WhyChannel[];rules?:WhyRules}
 export interface ItemDetail extends QueueItem{draft_text?:string;winner_channel?:string;eligible_channels?:string[];event?:{url?:string;first_source?:string;first_published_at?:string;topics?:string[];sources?:string[]};materials?:SourceMaterial[]}
 
 async function getJson<T>(url:string,deviceId:string,serverCaDer:string):Promise<T>{
@@ -68,6 +71,11 @@ export class InfoServerClient{
     return {items,next_cursor:null,counts} satisfies QueuePage;
   }
   item(id:string|number){return getJson<ItemDetail>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}`,this.deviceId,this.serverCaDer)}
+  why(id:string|number,channel?:string,scope="route"){
+    const params=new URLSearchParams({scope});
+    if(channel)params.set("channel",channel);
+    return getJson<Why>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/why?${params.toString()}`,this.deviceId,this.serverCaDer)
+  }
   save(id:string|number,payload:{title:string;draft_text:string;channel:string}){return postJson<{ok:boolean;item_id:number}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/save`,this.deviceId,this.serverCaDer,payload)}
   publish(id:string|number){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/publish`,this.deviceId,this.serverCaDer,{})}
   skip(id:string|number){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/skip`,this.deviceId,this.serverCaDer,{})}

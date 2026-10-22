@@ -43,5 +43,10 @@
   "format.link": "Link",
   "preview.telegram": "Telegram preview",
   "preview.media_from_item": "Media from item",
-  "sources.title": "Sources"
+  "sources.title": "Sources",
+  "why.button": "Why in this channel?",
+  "why.title": "Channel decisions for the event",
+  "why.rules": "XLSX rules for the channel",
+  "why.no_rules": "This channel has no XLSX rules.",
+  "why.truncated": "Beginning shown (list shortened)."
 }

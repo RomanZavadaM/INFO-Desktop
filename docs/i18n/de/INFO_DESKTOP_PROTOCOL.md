@@ -11,3 +11,5 @@ Scoped write operations: save/edit, skip, defer, manual create and publish. Acce
 Queue data is a prepared editorial view; clicks must not trigger heavy routing/quality recomputation. Desktop never writes directly to the database.
 
 Credentials are device secrets and must not be committed to Git or packaged into releases. Unknown fields are ignored; incompatible protocol identifiers are rejected.
+
+- `GET /queue/{id}/why?channel=&scope=` - erklärt die Kanalentscheidungen für das Ereignis (Scope `item.read`, nur lesen): `channels` (Code, Modus, ok, Grund) und `rules` (XLSX-Bedingungsbaum des gewählten Kanals)

@@ -43,5 +43,10 @@
   "format.link": "リンク",
   "preview.telegram": "Telegramプレビュー",
   "preview.media_from_item": "記事のメディア",
-  "sources.title": "出典"
+  "sources.title": "出典",
+  "why.button": "なぜこのチャンネル？",
+  "why.title": "イベントに対するチャンネルの判断",
+  "why.rules": "チャンネルの XLSX ルール",
+  "why.no_rules": "このチャンネルには XLSX ルールがありません。",
+  "why.truncated": "先頭のみ表示（一覧を短縮）。"
 }
