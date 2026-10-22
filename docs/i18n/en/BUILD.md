@@ -1,6 +1,6 @@
 # INFO Desktop — Build and platforms
 
-Current accepted source checkpoint: 0.1.1 in main.
+Current accepted source checkpoint: 0.1.2 in main.
 
 Supported targets: Windows 10/11 x64, macOS arm64, macOS x86_64, Linux x64. Windows 7 is not required.
 

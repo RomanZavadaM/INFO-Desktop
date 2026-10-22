@@ -4,7 +4,7 @@
 
 **INFO Desktop es una estación de trabajo editorial multiplataforma para servidores compatibles con INFO.**
 
-La versión **0.1.1** es el primer punto de control aceptado e integrado en `main`.
+La versión **0.1.2** es el primer punto de control aceptado e integrado en `main`.
 
 ## Funciones
 
@@ -47,6 +47,6 @@ Consulte [Build](../BUILD.md), [Manual](../guides/USER_MANUAL.md), [Protocolo](.
 
 ## Estado de la versión
 
-El checkpoint `0.1.1` está aceptado en `main`. Los instaladores públicos de GitHub Release son el siguiente paso.
+El checkpoint `0.1.2` está aceptado en `main`. Los instaladores públicos de GitHub Release son el siguiente paso.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). Todos los derechos reservados. Software propietario.**

@@ -4,7 +4,7 @@
 
 **INFO Desktop ist ein plattformübergreifender Newsroom-Arbeitsplatz für INFO-kompatible Server.**
 
-Version **0.1.1** ist der erste akzeptierte Quellcode-Checkpoint in `main`.
+Version **0.1.2** ist der erste akzeptierte Quellcode-Checkpoint in `main`.
 
 ## Funktionen
 
@@ -47,6 +47,6 @@ Siehe [Build](../BUILD.md), [Benutzerhandbuch](../guides/USER_MANUAL.md), [Proto
 
 ## Release-Status
 
-Der Quellcode-Checkpoint `0.1.1` ist in `main` akzeptiert. Öffentliche GitHub-Release-Installer sind der nächste Paketierungsschritt.
+Der Quellcode-Checkpoint `0.1.2` ist in `main` akzeptiert. Öffentliche GitHub-Release-Installer sind der nächste Paketierungsschritt.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). Alle Rechte vorbehalten. Proprietäre Software.**

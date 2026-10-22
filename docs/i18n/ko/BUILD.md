@@ -1,6 +1,6 @@
 # INFO Desktop — 빌드 및 플랫폼
 
-현재 승인된 소스 체크포인트: main의 0.1.1.
+현재 승인된 소스 체크포인트: main의 0.1.2.
 
 지원 대상: Windows 10/11 x64, macOS arm64, macOS x86_64, Linux x64. Windows 7은 필수가 아닙니다.
 

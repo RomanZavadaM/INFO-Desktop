@@ -4,7 +4,7 @@
 
 **INFO Desktop is a cross-platform newsroom workstation for INFO-compatible servers.**
 
-Version **0.1.1** is the first accepted source checkpoint merged into `main`.
+Version **0.1.2** is the first accepted source checkpoint merged into `main`.
 
 ## What it does
 
@@ -47,6 +47,6 @@ See [Build](../BUILD.md), [User manual](../guides/USER_MANUAL.md), [Protocol](..
 
 ## Release status
 
-Source checkpoint `0.1.1` is accepted in `main`. Public GitHub Release installers are the next packaging step.
+Source checkpoint `0.1.2` is accepted in `main`. Public GitHub Release installers are the next packaging step.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved. Proprietary software.**

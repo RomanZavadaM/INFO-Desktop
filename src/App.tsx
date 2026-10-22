@@ -1,6 +1,7 @@
 import {useEffect,useMemo,useRef,useState} from "react";
 import {Channel,Handshake,InfoServerClient,ItemDetail,MediaDescriptor,QueueItem,Why} from "./protocol";
 import {defaultLanguage,Language,languages,translator} from "./i18n";
+import pkg from "../package.json";
 import {activateRegistration,importRegistration,RegistrationSummary,rotateDeviceCredential} from "./registration";
 
 function fmt(v?:string){if(!v)return"";const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleString()}
@@ -90,7 +91,7 @@ export function App(){
  const media=selected?.materials?.flatMap(m=>m.media??[])??[];
 
  return <main className="app-shell">
-  <header className="topbar"><div className="brand"><strong>INFO Desktop</strong><span>{t("app.editor")}</span></div><div className="connection">
+  <header className="topbar"><div className="brand"><strong>INFO Desktop</strong><span>{t("app.editor")}</span><small className="app-version">v{pkg.version}</small></div><div className="connection">
    <button className="new-button" onClick={()=>setCreating(v=>!v)}>+ {t("create.new")}</button>
    <label className="import-button">{t("registration.import")}<input className="file-input" type="file" accept=".registration,.info-registration,.txt,text/plain" onChange={e=>importRegistrationFile(e.target.files?.[0])}/></label>
    <input placeholder={t("server.address")} value={server} onChange={e=>setServer(e.target.value)}/><button onClick={connect} disabled={busy}>{busy?t("status.connecting"):t("server.connect")}</button></div>

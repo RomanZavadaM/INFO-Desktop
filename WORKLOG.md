@@ -53,3 +53,9 @@ Do not alter production VPN/network/firewall/SSH without explicit owner approval
 - запрошення Desktop видає сервер у текстовому меню `info menu` (пункти: запросити Desktop, пристрої, XLSX, відкат, стан); функціонал Desktop живе в самому Desktop, не в Telegram-боті;
 - наступний реліз Desktop: 0.1.2 разом із серверним випуском (`why`, обмеження прев'ю, меню).
 
+### 2026-10-22 (ніч): підготовка 0.1.2
+- версія 0.1.2 у `VERSION.txt`, `package.json`, `Cargo.toml`, `tauri.conf.json`, User-Agent; версія видна в шапці застосунку;
+- новий workflow `release-0.1.2.yml` (замість `release-0.1.1.yml`, щоб не перезаписати опублікований v0.1.1): імена файлів без пропусків, `SHA256SUMS-*.txt` збігаються з іменами в Release;
+- нотатки релізу й індекс 7 мовами; статуси й README оновлено до 0.1.2;
+- реліз публікується workflow після злиття в `main`; після публікації перевірити assets і SHA256 за хешем та іменами.
+
