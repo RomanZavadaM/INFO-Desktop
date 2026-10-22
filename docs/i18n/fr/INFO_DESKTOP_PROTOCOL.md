@@ -15,3 +15,5 @@ Credentials are device secrets and must not be committed to Git or packaged into
 - `GET /queue/{id}/why?channel=&scope=` - explique les décisions des canaux pour l'événement (scope `item.read`, lecture seule) : `channels` (code, mode, ok, raison) et `rules` (arbre de conditions XLSX du canal choisi)
 
 - Paramètres XLSX (scopes `settings.read`, `settings.write`) : `GET /settings/status`, `GET /settings/xlsx`, `POST /settings/xlsx/check`, `POST /settings/xlsx/apply`, `POST /settings/xlsx/rollback` - export, vérification sans application, application avec annulation en une étape ; même format et mêmes règles que le bot Telegram et `info menu`.
+
+- Essai : `POST /settings/probe` (202), `GET /settings/probe` (état `none|queued|running|done|error` et texte du rapport). Thèmes : `GET /themes`, `POST /themes/test` `{words,text}`, `POST /themes/save` `{topic,words}` (l'état précédent est conservé pour l'annulation).

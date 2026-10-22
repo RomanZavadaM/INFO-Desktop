@@ -1,5 +1,5 @@
 import {useEffect,useMemo,useRef,useState} from "react";
-import {Channel,Handshake,InfoServerClient,ItemDetail,MediaDescriptor,QueueItem,SettingsStatus,Why} from "./protocol";
+import {Channel,Handshake,InfoServerClient,ItemDetail,MediaDescriptor,ProbeStatus,QueueItem,SettingsStatus,Theme,Why} from "./protocol";
 import {defaultLanguage,Language,languages,translator} from "./i18n";
 import pkg from "../package.json";
 import {activateRegistration,importRegistration,RegistrationSummary,rotateDeviceCredential} from "./registration";
@@ -51,9 +51,13 @@ function toBase64(buf:ArrayBuffer){const bytes=new Uint8Array(buf);let s="";for(
 function fromBase64(b64:string){const s=atob(b64);const out=new Uint8Array(s.length);for(let i=0;i<s.length;i++)out[i]=s.charCodeAt(i);return out}
 
 function SettingsPanel({client,t,onError}:{client:InfoServerClient;t:(k:string)=>string;onError:(m:string)=>void}){
+ const[probe,setProbe]=useState<ProbeStatus>({state:"none"});
  const[status,setStatus]=useState<SettingsStatus|null>(null);const[summary,setSummary]=useState("");const[busy,setBusy]=useState(false);const[message,setMessage]=useState("");
  async function refresh(){try{setStatus(await client.settingsStatus())}catch(e){onError(e instanceof Error?e.message:String(e))}}
  useEffect(()=>{refresh()},[client]);
+ useEffect(()=>{let alive=true;async function poll(){try{const p=await client.settingsProbeStatus();if(alive)setProbe(p)}catch{}}poll();
+  const timer=window.setInterval(()=>{if(probe.state==="queued"||probe.state==="running")poll()},5000);return()=>{alive=false;window.clearInterval(timer)}},[client,probe.state]);
+ async function runProbe(){await run(async()=>{await client.settingsProbe(48);setProbe({state:"queued"})})}
  async function run(fn:()=>Promise<void>){setBusy(true);setMessage("");onError("");try{await fn();await refresh()}catch(e){onError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function download(){await run(async()=>{const x=await client.settingsExport();const url=URL.createObjectURL(new Blob([fromBase64(x.base64)],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));const a=document.createElement("a");a.href=url;a.download=x.filename;a.click();URL.revokeObjectURL(url);setMessage(t("settings.exported"))})}
  async function upload(file:File|undefined){if(!file)return;await run(async()=>{const r=await client.settingsCheck(toBase64(await file.arrayBuffer()));setSummary(r.summary);setMessage(t("settings.checked"))})}
@@ -61,14 +65,43 @@ function SettingsPanel({client,t,onError}:{client:InfoServerClient;t:(k:string)=
  async function rollback(){if(!window.confirm(t("settings.confirm_rollback")))return;await run(async()=>{await client.settingsRollback();setMessage(t("settings.rolled_back"))})}
  return <section className="settings-panel">
   <h2>{t("settings.title")}</h2>
+  <div className="warning-banner">{t("settings.warning")}</div>
   <p>{t("settings.intro")}</p>
   <div className="settings-actions"><button onClick={download} disabled={busy}>{t("settings.download")}</button>
    <label className="import-button">{t("settings.choose")}<input className="file-input" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" disabled={busy} onChange={e=>{upload(e.target.files?.[0]);e.target.value=""}}/></label></div>
   {summary&&<pre className="why-lines">{summary}</pre>}
+  <div className="settings-actions"><button onClick={runProbe} disabled={busy||!status?.has_pending||probe.state==="queued"||probe.state==="running"}>{t("settings.probe")}</button>
+   {(probe.state==="queued"||probe.state==="running")&&<span>{t("settings.probe_running")}</span>}</div>
+  {(probe.state==="done"||probe.state==="error")&&!!probe.text&&<pre className="why-lines">{probe.text}</pre>}
   <div className="settings-actions"><button className="publish" onClick={apply} disabled={busy||!status?.has_pending}>{t("settings.apply")}</button>
    <button onClick={rollback} disabled={busy||!status?.can_rollback}>{t("settings.rollback")}</button></div>
   {message&&<div className="notice-banner">{message}</div>}
   <small>{t("settings.probe_hint")}</small>
+ </section>
+}
+
+function ThemesPanel({client,t,onError}:{client:InfoServerClient;t:(k:string)=>string;onError:(m:string)=>void}){
+ const[themes,setThemes]=useState<Theme[]>([]);const[code,setCode]=useState("");const[text,setText]=useState("");const[sample,setSample]=useState("");const[matched,setMatched]=useState<string[]|null>(null);const[busy,setBusy]=useState(false);const[message,setMessage]=useState("");
+ const current=themes.find(x=>x.code===code);
+ async function load(keep?:string){try{const r=await client.themes();setThemes(r.themes);const c=keep&&r.themes.some(x=>x.code===keep)?keep:r.themes[0]?.code??"";setCode(c);setText((r.themes.find(x=>x.code===c)?.words??[]).join("\n"))}catch(e){onError(e instanceof Error?e.message:String(e))}}
+ useEffect(()=>{load()},[client]);
+ function pick(c:string){setCode(c);setText((themes.find(x=>x.code===c)?.words??[]).join("\n"));setMatched(null);setMessage("")}
+ const words=()=>text.split("\n").map(w=>w.trim()).filter(Boolean);
+ async function run(fn:()=>Promise<void>){setBusy(true);onError("");setMessage("");try{await fn()}catch(e){onError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
+ async function check(){await run(async()=>{const r=await client.themesTest(words(),sample);setMatched(r.matched)})}
+ async function save(){if(!window.confirm(t("themes.confirm_save")))return;await run(async()=>{const r=await client.themesSave(code,words());setMessage(`${t("themes.saved")}: ${r.words}`);await load(code)})}
+ return <section className="settings-panel">
+  <h2>{t("themes.title")}</h2><div className="warning-banner">{t("themes.warning")}</div><p>{t("themes.intro")}</p>
+  <div className="settings-actions"><select value={code} onChange={e=>pick(e.target.value)}>{themes.map(x=><option key={x.code} value={x.code}>{x.title||x.code} ({x.words.length})</option>)}</select></div>
+  <textarea className="text-editor" value={text} onChange={e=>setText(e.target.value)} placeholder={t("themes.words_hint")}/>
+  <small>{t("themes.syntax")}</small>
+  <h3>{t("themes.test")}</h3>
+  <textarea className="text-editor" value={sample} onChange={e=>setSample(e.target.value)} placeholder={t("themes.sample_hint")}/>
+  <div className="settings-actions"><button onClick={check} disabled={busy||!sample.trim()}>{t("themes.check")}</button>
+   <button className="publish" onClick={save} disabled={busy||!current}>{t("themes.save")}</button></div>
+  {matched&&<div className={matched.length?"notice-banner":"error-banner"}>{matched.length?`${t("themes.matched")}: ${matched.join(", ")}`:t("themes.none")}</div>}
+  {message&&<div className="notice-banner">{message}</div>}
+  <small>{t("themes.rollback_hint")}</small>
  </section>
 }
 
@@ -88,7 +121,7 @@ export function App(){
  const[active,setActive]=useState("*");const[busy,setBusy]=useState(false);const[error,setError]=useState("");const[notice,setNotice]=useState("");const[registration,setRegistration]=useState<RegistrationSummary|null>(null);
  const[editTitle,setEditTitle]=useState("");const[editText,setEditText]=useState("");const[editChannel,setEditChannel]=useState("");
  const[creating,setCreating]=useState(false);const[newTitle,setNewTitle]=useState("");const[newText,setNewText]=useState("");const[newChannel,setNewChannel]=useState("");const[newUrl,setNewUrl]=useState("");
- const[why,setWhy]=useState<Why|null>(null);const[view,setView]=useState<"queue"|"settings">("queue");
+ const[why,setWhy]=useState<Why|null>(null);const[view,setView]=useState<"queue"|"settings"|"themes">("queue");
  const editorRef=useRef<HTMLTextAreaElement|null>(null);
  const client=useMemo(()=>new InfoServerClient(server.trim(),deviceId.trim(),serverCaDer),[server,deviceId,serverCaDer]);
  const visible=useMemo(()=>active==="*"?queue:queue.filter(i=>i.channel===active),[queue,active]);
@@ -118,7 +151,8 @@ export function App(){
  return <main className="app-shell">
   <header className="topbar"><div className="brand"><strong>INFO Desktop</strong><span>{t("app.editor")}</span><small className="app-version">v{pkg.version}</small></div><div className="connection">
    <button className="new-button" onClick={()=>setCreating(v=>!v)}>+ {t("create.new")}</button>
-   <button onClick={()=>setView(v=>v==="queue"?"settings":"queue")} disabled={!hello}>{view==="queue"?t("settings.open"):t("settings.back")}</button>
+   <button onClick={()=>setView(v=>v==="settings"?"queue":"settings")} disabled={!hello}>{view==="settings"?t("settings.back"):t("settings.open")}</button>
+   <button onClick={()=>setView(v=>v==="themes"?"queue":"themes")} disabled={!hello}>{view==="themes"?t("settings.back"):t("themes.open")}</button>
    <label className="import-button">{t("registration.import")}<input className="file-input" type="file" accept=".registration,.info-registration,.txt,text/plain" onChange={e=>importRegistrationFile(e.target.files?.[0])}/></label>
    <input placeholder={t("server.address")} value={server} onChange={e=>setServer(e.target.value)}/><button onClick={connect} disabled={busy}>{busy?t("status.connecting"):t("server.connect")}</button></div>
    <select value={language} onChange={e=>lang(e.target.value as Language)}>{Object.entries(languages).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}</select></header>
@@ -127,6 +161,7 @@ export function App(){
   {notice&&<div className="notice-banner">{notice}</div>}{error&&<div className="error-banner">{error}</div>}
   {creating&&<section className="create-panel"><h2>{t("create.new")}</h2><input placeholder={t("create.title")} value={newTitle} onChange={e=>setNewTitle(e.target.value)}/><select value={newChannel} onChange={e=>setNewChannel(e.target.value)}>{channels.map(c=><option key={c.code} value={c.code}>{c.name}</option>)}</select><input placeholder={t("create.source_url")} value={newUrl} onChange={e=>setNewUrl(e.target.value)}/><textarea placeholder={t("create.text")} value={newText} onChange={e=>setNewText(e.target.value)}/><div className="actions"><button onClick={createNew} disabled={busy}>{t("create.submit")}</button><button className="ghost" onClick={()=>setCreating(false)}>{t("action.cancel")}</button></div></section>}
   {view==="settings"&&hello&&<SettingsPanel client={client} t={t} onError={setError}/>}
+  {view==="themes"&&hello&&<ThemesPanel client={client} t={t} onError={setError}/>}
   {view==="queue"&&<section className="workspace">
    <aside className="channels-pane"><h2>{t("channels.title")}</h2><button className={active==="*"?"channel active":"channel"} onClick={()=>setActive("*")}><span>{t("channels.all")}</span><strong>{queue.length}</strong></button>{channels.map(c=><button className={active===c.code?"channel active":"channel"} key={c.code} onClick={()=>setActive(c.code)}><span>{c.name}</span><strong>{c.pending??queue.filter(i=>i.channel===c.code).length}</strong></button>)}</aside>
    <section className="queue-pane"><h2>{t("queue.title")}</h2><div className="queue-list">{visible.map(i=><button key={String(i.id)} className={String(selected?.id)===String(i.id)?"queue-row selected":"queue-row"} onClick={()=>open(i)}><span className="row-time">{fmt(i.first_published_at??i.created_at)}</span><span className="row-channel">{i.channel_name??i.channel}</span><span className="row-title">{i.title}</span><span className="row-meta">{i.bucket??""}{typeof i.quality_score==="number"?` · ${i.quality_score.toFixed(1)}`:""}{i.media_count?` · 📎 ${i.media_count}`:""}</span></button>)}</div></section>
