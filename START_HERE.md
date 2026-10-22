@@ -6,7 +6,7 @@
 
 ## Контрольний стан
 - Repository: `RomanZavadaM/INFO-Desktop`
-- Version: `0.1.2` (підготовлено 22.10; після злиття release-workflow публікує v0.1.2; опублікований стабільний - v0.1.1 до цього моменту)
+- Version: `0.1.2`, GitHub Release v0.1.2 опубліковано 2026-10-22 (Windows/Linux/macOS ARM64/Intel + SHA256; відомо: Windows-файл сум має CRLF)
 - PR #1 merged
 - Production acceptance against INFO `20261020-2040`: passed
 - Manual create: verified end-to-end
