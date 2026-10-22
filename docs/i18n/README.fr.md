@@ -4,7 +4,7 @@
 
 **INFO Desktop est un poste de travail rédactionnel multiplateforme pour les serveurs compatibles INFO.**
 
-La version **0.1.1** est le premier jalon source accepté et fusionné dans `main`.
+La version **0.1.2** est le premier jalon source accepté et fusionné dans `main`.
 
 ## Fonctionnalités
 
@@ -47,6 +47,6 @@ Voir [Build](../BUILD.md), [Manuel utilisateur](../guides/USER_MANUAL.md), [Prot
 
 ## État de publication
 
-Le checkpoint source `0.1.1` est accepté dans `main`. Les installateurs GitHub Release publics constituent la prochaine étape.
+Le checkpoint source `0.1.2` est accepté dans `main`. Les installateurs GitHub Release publics constituent la prochaine étape.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). Tous droits réservés. Logiciel propriétaire.**

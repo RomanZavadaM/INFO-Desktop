@@ -8,11 +8,11 @@
 
 **INFO Desktop — окреме настільне робоче місце редактора для INFO-сумісних серверів.**
 
-Поточна версія: **0.1.1**. Перший робочий клієнт злитий у `main`, пройшов production-connected acceptance та має опублікований GitHub Release.
+Поточна версія: **0.1.2**. Перший робочий клієнт злитий у `main`, пройшов production-connected acceptance та має опублікований GitHub Release.
 
-## Завантаження 0.1.1
+## Завантаження 0.1.2
 
-**[GitHub Release v0.1.1](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.1)**
+**[GitHub Release v0.1.2](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.2)**
 
 | Платформа | Файли |
 |---|---|

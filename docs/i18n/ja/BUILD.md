@@ -1,6 +1,6 @@
 # INFO Desktop — ビルドと対応環境
 
-現在の承認済みソースチェックポイント: main の 0.1.1。
+現在の承認済みソースチェックポイント: main の 0.1.2。
 
 対応対象: Windows 10/11 x64、macOS arm64、macOS x86_64、Linux x64。Windows 7 は必須ではありません。
 

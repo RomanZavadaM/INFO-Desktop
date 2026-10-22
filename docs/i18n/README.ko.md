@@ -4,7 +4,7 @@
 
 **INFO Desktop은 INFO 호환 서버를 위한 크로스플랫폼 뉴스룸 작업 환경입니다.**
 
-버전 **0.1.1**은 `main`에 병합된 첫 번째 승인 소스 체크포인트입니다.
+버전 **0.1.2**은 `main`에 병합된 첫 번째 승인 소스 체크포인트입니다.
 
 ## 주요 기능
 
@@ -47,6 +47,6 @@ npm run tauri build
 
 ## 릴리스 상태
 
-`0.1.1` 소스 체크포인트는 `main`에서 승인되었습니다. 공개 GitHub Release 설치 파일은 다음 패키징 단계입니다.
+`0.1.2` 소스 체크포인트는 `main`에서 승인되었습니다. 공개 GitHub Release 설치 파일은 다음 패키징 단계입니다.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved. Proprietary software.**

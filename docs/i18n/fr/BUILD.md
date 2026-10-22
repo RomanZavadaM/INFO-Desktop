@@ -1,6 +1,6 @@
 # INFO Desktop — Build et plateformes
 
-Jalon source accepté actuel : 0.1.1 dans main.
+Jalon source accepté actuel : 0.1.2 dans main.
 
 Cibles prises en charge : Windows 10/11 x64, macOS arm64, macOS x86_64, Linux x64. Windows 7 n’est pas requis.
 
