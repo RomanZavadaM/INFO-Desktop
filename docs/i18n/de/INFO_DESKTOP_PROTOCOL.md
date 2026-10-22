@@ -13,3 +13,5 @@ Queue data is a prepared editorial view; clicks must not trigger heavy routing/q
 Credentials are device secrets and must not be committed to Git or packaged into releases. Unknown fields are ignored; incompatible protocol identifiers are rejected.
 
 - `GET /queue/{id}/why?channel=&scope=` - erklärt die Kanalentscheidungen für das Ereignis (Scope `item.read`, nur lesen): `channels` (Code, Modus, ok, Grund) und `rules` (XLSX-Bedingungsbaum des gewählten Kanals)
+
+- XLSX-Einstellungen (Scopes `settings.read`, `settings.write`): `GET /settings/status`, `GET /settings/xlsx`, `POST /settings/xlsx/check`, `POST /settings/xlsx/apply`, `POST /settings/xlsx/rollback` - Export, Prüfung ohne Anwendung, Anwendung mit einstufigem Rollback; gleiches Format und gleiche Regeln wie im Telegram-Bot und in `info menu`.

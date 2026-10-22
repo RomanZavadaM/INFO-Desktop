@@ -13,3 +13,5 @@ Queue data is a prepared editorial view; clicks must not trigger heavy routing/q
 Credentials are device secrets and must not be committed to Git or packaged into releases. Unknown fields are ignored; incompatible protocol identifiers are rejected.
 
 - `GET /queue/{id}/why?channel=&scope=` - イベントに対するチャンネルの判断を説明します（スコープ `item.read`、読み取り専用）：`channels`（コード、モード、ok、理由）と `rules`（選択したチャンネルの XLSX 条件ツリー）
+
+- XLSX 設定（スコープ `settings.read`、`settings.write`）：`GET /settings/status`、`GET /settings/xlsx`、`POST /settings/xlsx/check`、`POST /settings/xlsx/apply`、`POST /settings/xlsx/rollback` - エクスポート、適用なしの確認、1 段階のロールバック付き適用；Telegram ボットや `info menu` と同じ形式とルール。

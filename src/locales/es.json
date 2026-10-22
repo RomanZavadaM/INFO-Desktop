@@ -48,5 +48,20 @@
   "why.title": "Decisiones de los canales para el evento",
   "why.rules": "Reglas XLSX del canal",
   "why.no_rules": "Este canal no tiene reglas XLSX.",
-  "why.truncated": "Se muestra el principio (lista acortada)."
+  "why.truncated": "Se muestra el principio (lista acortada).",
+  "settings.open": "Ajustes",
+  "settings.back": "Volver a la cola",
+  "settings.title": "Ajustes del servidor (XLSX)",
+  "settings.intro": "Descargue los ajustes actuales, edite el archivo y elíjalo aquí: el servidor lo comprueba y solo lo aplica tras su confirmación. El último cambio se puede revertir.",
+  "settings.download": "Descargar los ajustes actuales",
+  "settings.choose": "Elegir archivo XLSX",
+  "settings.apply": "Aplicar el archivo comprobado",
+  "settings.rollback": "Revertir la última aplicación",
+  "settings.exported": "Archivo guardado",
+  "settings.checked": "Archivo comprobado, no se ha aplicado nada",
+  "settings.applied": "Aplicado",
+  "settings.rolled_back": "Revertido",
+  "settings.confirm_apply": "¿Aplicar en el servidor el archivo de ajustes comprobado?",
+  "settings.confirm_rollback": "¿Devolver los ajustes al estado anterior a la última aplicación?",
+  "settings.probe_hint": "La prueba «qué cambia en 48 horas» aún se ejecuta en el servidor: comando info xlsx try-pending."
 }
