@@ -11,3 +11,5 @@ Implemented: seven UI languages, multilingual documentation, secure device regis
 Production acceptance against INFO `20261020-2040` passed. No public Telegram SEND was performed.
 
 署名/Notarization/Update policy は次のリリース段階です。
+
+サーバー：リリース 0.1.1 は LIVE INFO `20261020-2040` で受け入れ済みです。現在の LIVE INFO は `20261022-1730` です（受け入れは未実施）。

@@ -1,7 +1,9 @@
 # INFO Desktop — 로드맵
 
-DONE: application foundation, seven languages, registration/TLS, real queue/item/media, scoped editor actions, manual-create production acceptance, merge to main.
+완료: 애플리케이션 기반, 7개 언어, 등록/TLS, 실제 대기열/항목/미디어, scope 기반 편집 작업, 수동 생성 프로덕션 수락, main 병합, 공개 Release v0.1.1.
 
-다음: 릴리스 패키징/서명 정책, 공개 GitHub Release 자산, 소유자 승인 하의 의도적 게시 검증, 이후 TikTok/Facebook 어댑터.
+다음: 공백 없는 체크섬 파일 이름; 서명/공증/업데이터 정책(소유자 결정을 기다리는 초안); INFO `20261022-1730` 수락(뉴스 및 경보 채널); "왜"(항목이 채널에 들어갔거나 들어가지 않은 이유)와 "무엇이 바뀌는가"(서버에서 XLSX 설정 파일 시험); 소유자 승인 하의 의도적 게시 수락.
 
-Hard boundary: production VPN/network/firewall/SSH must not be changed without a separate explicit owner decision.
+이후: TikTok/Facebook 어댑터, 다른 INFO 호환 서버, XLSX 설정 편집기, 업데이터.
+
+엄격한 제한: 소유자의 별도 명시적 결정 없이 프로덕션 VPN/네트워크/방화벽/SSH를 변경하지 않습니다.

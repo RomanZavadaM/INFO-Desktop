@@ -37,3 +37,12 @@
 
 ### HARD BOUNDARY
 Do not alter production VPN/network/firewall/SSH without explicit owner approval.
+
+### AUDIT 2026-10-22
+- перевірено GitHub: `main` `095bd58`, CI success, Release `v0.1.1` (12 файлів), версії `0.1.1` у `VERSION.txt`, `package.json`, `Cargo.toml`, `tauri.conf.json`;
+- звірено хеші Windows EXE/MSI і macOS ARM64 DMG/ZIP з опублікованими `SHA256SUMS-*.txt`: збігаються;
+- знайдено розбіжність імен у `SHA256SUMS-*.txt` (пропуски) та в Release (крапки); локальний інсталятор від 22.10 10:16 не є збіркою Release;
+- 7 мов документації: по 10 файлів, ключі локалей синхронні; старих тверджень немає;
+- серверна частина: INFO PR #18 злито 21.10; LIVE INFO `20261022-1730`;
+- додано `docs/decisions/SIGNING_UPDATES.md` (чернетка політики підпису й оновлень) і оновлено дорожню карту (7 мов).
+
