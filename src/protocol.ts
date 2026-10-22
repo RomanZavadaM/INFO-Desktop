@@ -29,6 +29,9 @@ export interface Why{item_id:number;event_id:number;title:string;topics:string[]
 export interface SettingsStatus{has_pending:boolean;can_rollback:boolean}
 export interface SettingsExport{filename:string;size:number;base64:string}
 export interface SettingsCheck{ok:boolean;summary:string}
+export interface ProbeStatus{state:"none"|"queued"|"running"|"done"|"error";id?:string;hours?:number;created?:string;finished?:string;text?:string}
+export interface Theme{code:string;title:string;enabled:boolean;words:string[]}
+export interface ThemeTest{matched:string[];words:number}
 export interface ItemDetail extends QueueItem{draft_text?:string;winner_channel?:string;eligible_channels?:string[];event?:{url?:string;first_source?:string;first_published_at?:string;topics?:string[];sources?:string[]};materials?:SourceMaterial[]}
 
 async function getJson<T>(url:string,deviceId:string,serverCaDer:string):Promise<T>{
@@ -84,6 +87,11 @@ export class InfoServerClient{
   settingsCheck(base64:string){return postJson<SettingsCheck>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx/check`,this.deviceId,this.serverCaDer,{base64})}
   settingsApply(){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx/apply`,this.deviceId,this.serverCaDer,{})}
   settingsRollback(){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx/rollback`,this.deviceId,this.serverCaDer,{})}
+  settingsProbe(hours=48){return postJson<{ok:boolean;id:string}>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/probe`,this.deviceId,this.serverCaDer,{hours})}
+  settingsProbeStatus(){return getJson<ProbeStatus>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/probe`,this.deviceId,this.serverCaDer)}
+  themes(){return getJson<{themes:Theme[]}>(`${baseUrl(this.server)}/api/info-desktop/v1/themes`,this.deviceId,this.serverCaDer)}
+  themesTest(words:string[],text:string){return postJson<ThemeTest>(`${baseUrl(this.server)}/api/info-desktop/v1/themes/test`,this.deviceId,this.serverCaDer,{words,text})}
+  themesSave(topic:string,words:string[]){return postJson<{ok:boolean;topic:string;words:number}>(`${baseUrl(this.server)}/api/info-desktop/v1/themes/save`,this.deviceId,this.serverCaDer,{topic,words})}
   save(id:string|number,payload:{title:string;draft_text:string;channel:string}){return postJson<{ok:boolean;item_id:number}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/save`,this.deviceId,this.serverCaDer,payload)}
   publish(id:string|number){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/publish`,this.deviceId,this.serverCaDer,{})}
   skip(id:string|number){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/queue/${encodeURIComponent(String(id))}/skip`,this.deviceId,this.serverCaDer,{})}

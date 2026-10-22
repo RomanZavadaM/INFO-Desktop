@@ -18,3 +18,6 @@ La validation de production du 20/10/2026 avec INFO 20261020-2040 a confirmé la
 ## Paramètres du serveur (XLSX)
 Le bouton « Paramètres » dans l'en-tête : « Télécharger les paramètres actuels » enregistre le XLSX ; le fichier modifié se choisit avec « Choisir un fichier XLSX » - le serveur ne fait que le vérifier et affiche un résumé ; « Appliquer le fichier vérifié » l'applique après confirmation ; « Annuler la dernière application » rétablit l'état précédent. Nécessite les scopes `settings.read` et `settings.write` (délivrés à l'enregistrement). L'essai « ce qui change en 48 heures » s'exécute encore sur le serveur avec `info xlsx try-pending`.
 
+### Essai et thèmes
+« Essai : ce qui change en 48 h » lance un calcul sur le serveur (quelques minutes) et affiche un rapport par canal. Onglet « Thèmes » : choisissez un thème, modifiez les mots (`mot*` - début de mot, `mot!` - exactement cette forme), vérifiez-les sur un titre d'exemple et enregistrez ; l'annulation est dans « Paramètres ».
+

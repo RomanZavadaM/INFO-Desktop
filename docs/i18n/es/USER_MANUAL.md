@@ -18,3 +18,6 @@ La aceptación en producción del 20/10/2026 con INFO 20261020-2040 confirmó la
 ## Ajustes del servidor (XLSX)
 El botón «Ajustes» en la cabecera: «Descargar los ajustes actuales» guarda el XLSX; el archivo editado se elige con «Elegir archivo XLSX» - el servidor solo lo comprueba y muestra un resumen; «Aplicar el archivo comprobado» lo aplica tras la confirmación; «Revertir la última aplicación» devuelve el estado anterior. Requiere los scopes `settings.read` y `settings.write` (se otorgan en el registro). La prueba «qué cambia en 48 horas» aún se ejecuta en el servidor con `info xlsx try-pending`.
 
+### Prueba y temas
+«Prueba: qué cambia en 48 h» inicia un cálculo en el servidor (unos minutos) y muestra un informe por canal. Pestaña «Temas»: elija un tema, edite las palabras (`palabra*` - inicio de palabra, `palabra!` - exactamente esta forma), compruébelas con un titular de ejemplo y guárdelas; la reversión está en «Ajustes».
+

@@ -41,3 +41,5 @@
 .settings-panel{padding:16px;max-width:900px}
 .settings-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
 
+.warning-banner{border:1px solid #b42318;background:rgba(180,35,24,.10);color:inherit;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:13px}
+

@@ -34,6 +34,12 @@
 - `POST /settings/xlsx/apply` - застосувати перевірений файл (409 `no_pending`, якщо файлу немає); попередній стан зберігається;
 - `POST /settings/xlsx/rollback` - повернути стан перед останнім застосуванням (409 `no_rollback`).
 Той самий формат, перевірки й відкат, що в боті та `info menu`.
+- `POST /settings/probe` `{hours}` (202) - поставити пробу «що зміниться» для перевіреного файлу (409 `no_pending`/`busy`); виконує окрема служба сервера; `GET /settings/probe` - стан `none|queued|running|done|error` і текст звіту.
+
+## Теми (ключові слова; scopes `settings.read`, `settings.write`)
+- `GET /themes` - теми з їхніми словами (разом із «Гарячі слова» `hot` і «Регіон» `region`);
+- `POST /themes/test` `{words,text}` - які слова збігаються з текстом (нічого не зберігає);
+- `POST /themes/save` `{topic,words}` - замінити слова однієї теми (400 `invalid_words`); попередній стан зберігається для відкату в «Налаштуваннях».
 
 ## Handshake
 Мінімально містить protocol id, instance/server name, server version, timezone, capabilities і languages. Клієнт відхиляє несумісний protocol id.
