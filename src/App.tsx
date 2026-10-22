@@ -1,5 +1,5 @@
 import {useEffect,useMemo,useRef,useState} from "react";
-import {Channel,Handshake,InfoServerClient,ItemDetail,MediaDescriptor,QueueItem} from "./protocol";
+import {Channel,Handshake,InfoServerClient,ItemDetail,MediaDescriptor,QueueItem,Why} from "./protocol";
 import {defaultLanguage,Language,languages,translator} from "./i18n";
 import {activateRegistration,importRegistration,RegistrationSummary,rotateDeviceCredential} from "./registration";
 
@@ -36,6 +36,16 @@ function TelegramPreview({title,html,media,t}:{title:string;html:string;media:Me
  </div>
 }
 
+function WhyPanel({why,t}:{why:Why;t:(k:string)=>string}){
+ return <section className="why-panel">
+  <h3>{t("why.title")} #{why.event_id}</h3>
+  <div className="why-channels">{why.channels.map(c=><div key={c.code} className={c.ok?"why-row yes":"why-row no"}><strong>{c.ok?"✓":"✗"} {c.code}</strong><span>{c.reason}</span></div>)}</div>
+  {why.rules&&<><h3>{t("why.rules")}: {why.rules.channel}</h3>
+   {why.rules.has_rules?<pre className="why-lines">{why.rules.lines.join("\n")}</pre>:<div className="empty">{t("why.no_rules")}</div>}
+   {why.rules.truncated&&<small>{t("why.truncated")}</small>}</>}
+ </section>
+}
+
 function MediaPreview({media,client,t}:{media:MediaDescriptor;client:InfoServerClient;t:(k:string)=>string}){
  const[src,setSrc]=useState("");const[error,setError]=useState("");
  useEffect(()=>{let alive=true;setSrc("");setError("");if(!media.preview_available||!media.preview_url)return;client.preview(media.preview_url).then(v=>{if(alive)setSrc(v)}).catch(e=>{if(alive)setError(e instanceof Error?e.message:String(e))});return()=>{alive=false}},[media.preview_available,media.preview_url,client]);
@@ -52,10 +62,11 @@ export function App(){
  const[active,setActive]=useState("*");const[busy,setBusy]=useState(false);const[error,setError]=useState("");const[notice,setNotice]=useState("");const[registration,setRegistration]=useState<RegistrationSummary|null>(null);
  const[editTitle,setEditTitle]=useState("");const[editText,setEditText]=useState("");const[editChannel,setEditChannel]=useState("");
  const[creating,setCreating]=useState(false);const[newTitle,setNewTitle]=useState("");const[newText,setNewText]=useState("");const[newChannel,setNewChannel]=useState("");const[newUrl,setNewUrl]=useState("");
+ const[why,setWhy]=useState<Why|null>(null);
  const editorRef=useRef<HTMLTextAreaElement|null>(null);
  const client=useMemo(()=>new InfoServerClient(server.trim(),deviceId.trim(),serverCaDer),[server,deviceId,serverCaDer]);
  const visible=useMemo(()=>active==="*"?queue:queue.filter(i=>i.channel===active),[queue,active]);
- useEffect(()=>{setEditTitle(selected?.title??"");setEditText(selected?.draft_text??"");setEditChannel(selected?.channel??"")},[selected]);
+ useEffect(()=>{setWhy(null);setEditTitle(selected?.title??"");setEditText(selected?.draft_text??"");setEditChannel(selected?.channel??"")},[selected]);
 
  async function load(prefer?:string|number){
   const[h,ch,q]=await Promise.all([client.handshake(),client.channels(),client.queueAll()]);
@@ -70,6 +81,7 @@ export function App(){
   }catch(e){setHello(null);setChannels([]);setQueue([]);setSelected(null);setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function open(i:QueueItem){setBusy(true);setError("");try{setSelected(await client.item(i.id))}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function act(fn:()=>Promise<unknown>,message:string){setBusy(true);setError("");setNotice("");try{await fn();setNotice(message);await load()}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
+ async function loadWhy(){if(!selected)return;setBusy(true);setError("");try{setWhy(await client.why(selected.id,editChannel||selected.channel))}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function save(){if(!selected)return;setBusy(true);setError("");setNotice("");try{const r=await client.save(selected.id,{title:editTitle,draft_text:editText,channel:editChannel});setNotice(t("notice.saved"));await load(r.item_id)}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function createNew(){setBusy(true);setError("");setNotice("");try{const r=await client.create({title:newTitle,draft_text:newText,channel:newChannel,url:newUrl});setCreating(false);setNewTitle("");setNewText("");setNewUrl("");setNotice(t("notice.created"));await load(r.item_id)}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  function wrap(openTag:string,closeTag:string=openTag.replace("<","</")){const el=editorRef.current;if(!el)return;const a=el.selectionStart,b=el.selectionEnd;const value=editText.slice(0,a)+openTag+editText.slice(a,b)+closeTag+editText.slice(b);setEditText(value);requestAnimationFrame(()=>{el.focus();el.setSelectionRange(a+openTag.length,b+openTag.length)})}
@@ -97,6 +109,7 @@ export function App(){
     <textarea ref={editorRef} className="text-editor" value={editText} onChange={e=>setEditText(e.target.value)}/>
     <div className="preview-label">{t("preview.telegram")}</div><TelegramPreview title={editTitle} html={editText} media={media} t={t}/>
     <div className="actions sticky-actions"><button onClick={save} disabled={busy}>{t("action.save")}</button><button className="publish" onClick={()=>act(async()=>{const saved=await client.save(selected.id,{title:editTitle,draft_text:editText,channel:editChannel});await client.publish(saved.item_id)},t("notice.published"))} disabled={busy}>{t("action.publish")}</button><button className="ghost" onClick={()=>act(()=>client.defer(selected.id,60),t("notice.deferred"))} disabled={busy}>{t("action.defer_hour")}</button><button className="danger" onClick={()=>act(()=>client.skip(selected.id),t("notice.skipped"))} disabled={busy}>{t("action.skip")}</button></div>
+    <div className="why-block"><button onClick={loadWhy} disabled={busy}>{t("why.button")}</button></div>{why&&<WhyPanel why={why} t={t}/>}
     <div className="detail-meta"><span>{t("item.channel")}: {selected.channel_name??selected.channel}</span><span>{selected.bucket}{typeof selected.quality_score==="number"?` · ${selected.quality_score.toFixed(1)}`:""}</span></div>
     {!!selected.materials?.length&&<section><h3>{t("sources.title")} · {selected.materials.length}</h3>{selected.materials.map((m,n)=><div className="source-card" key={String(m.id??n)}><strong>{m.source_name??m.source??"—"}</strong><span>{m.title??""}</span>{m.url&&<a href={m.url} target="_blank" rel="noreferrer">{m.url}</a>}<p>{m.translated_summary??m.summary??""}</p></div>)}</section>}
     {!!media.length&&<section className="media-block"><h3>{t("item.media")} · {media.length}</h3><div className="media-grid">{media.map((m,n)=><MediaPreview key={n} media={m} client={client} t={t}/>)}</div></section>}

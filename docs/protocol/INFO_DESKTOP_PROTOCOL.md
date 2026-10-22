@@ -14,6 +14,7 @@
 - `GET /channels`
 - `GET /queue`
 - `GET /queue/{id}`
+- `GET /queue/{id}/why?channel=&scope=` - пояснення рішення каналів для події (scope `item.read`, лише читання): `channels` (код, режим, ok, причина) і `rules` (дерево умов XLSX для вибраного каналу)
 - authenticated media preview descriptors/routes
 
 ## Scoped write endpoints

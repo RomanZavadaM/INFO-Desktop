@@ -43,5 +43,10 @@
   "format.link": "링크",
   "preview.telegram": "Telegram 미리보기",
   "preview.media_from_item": "기사 미디어",
-  "sources.title": "출처"
+  "sources.title": "출처",
+  "why.button": "이 채널에 있는 이유?",
+  "why.title": "이벤트에 대한 채널 결정",
+  "why.rules": "채널의 XLSX 규칙",
+  "why.no_rules": "이 채널에는 XLSX 규칙이 없습니다.",
+  "why.truncated": "앞부분만 표시됨(목록 축약)."
 }

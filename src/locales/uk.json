@@ -43,5 +43,10 @@
   "format.link": "Посилання",
   "preview.telegram": "Попередній вигляд у Telegram",
   "preview.media_from_item": "Медіа з матеріалу",
-  "sources.title": "Джерела"
+  "sources.title": "Джерела",
+  "why.button": "Чому в цьому каналі?",
+  "why.title": "Рішення каналів для події",
+  "why.rules": "Правила XLSX для каналу",
+  "why.no_rules": "Для цього каналу немає правил XLSX.",
+  "why.truncated": "Показано початок (список скорочено)."
 }

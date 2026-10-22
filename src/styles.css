@@ -28,3 +28,12 @@
 .telegram-body a{color:#168acd;text-decoration:none}
 .telegram-media-placeholder{height:150px;margin:-10px -12px 9px;background:#e5e7eb;display:grid;place-items:center;color:#64748b;border-radius:14px 14px 0 0}
 .telegram-time{position:absolute;right:10px;bottom:4px;color:#94a3b8;font-size:10px}
+
+.why-block{margin:12px 0 4px}
+.why-panel{border:1px solid var(--line,#d0d7de);border-radius:10px;padding:12px;margin:8px 0}
+.why-row{display:flex;gap:10px;padding:3px 0;font-size:13px}
+.why-row strong{min-width:210px}
+.why-row.yes strong{color:#1a7f37}
+.why-row.no strong{color:#b42318}
+.why-lines{white-space:pre-wrap;font-size:12px;max-height:360px;overflow:auto;background:rgba(127,127,127,.08);padding:8px;border-radius:8px}
+
