@@ -14,3 +14,7 @@ Manual create sends title, text, channel and optional source URL to the server a
 Desktop は SQLite に直接アクセスせず、SSH をアプリケーションプロトコルに使わず、再利用可能なデバイス秘密情報を OS の安全なストレージにのみ保存し、サーバーの scope 権限を使用します。
 
 2026-10-20 の INFO 20261020-2040 本番受入で手動記事作成を end-to-end で確認しました。公開 Telegram SEND は実行していません。
+
+## サーバー設定（XLSX）
+ヘッダーの「設定」ボタン：「現在の設定をダウンロード」で XLSX を保存し、編集したファイルは「XLSX ファイルを選択」で選びます。サーバーは確認のみ行い概要を表示します。「確認済みファイルを適用」は確認後に適用し、「最後の適用を元に戻す」は直前の状態に戻します。スコープ `settings.read` と `settings.write` が必要です（登録時に付与）。「48時間での変更」の試行は現在サーバーで `info xlsx try-pending` により実行します。
+
