@@ -24,6 +24,9 @@
 ## Production acceptance
 На LIVE INFO `20261020-2040` реально створено матеріал Львова через Desktop. Він з'явився в редакційній черзі та Telegram editorial bot. Публічний Telegram SEND у цьому тесті не виконувався.
 
+## Сервер
+Реліз 0.1.1 прийнято на LIVE INFO `20261020-2040`; поточний LIVE INFO - `20261022-1730` (acceptance на ньому ще не проводився).
+
 ## Ще не завершено
 - signing/notarization/update policy;
 - deliberate publish acceptance;

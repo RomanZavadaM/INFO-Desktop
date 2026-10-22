@@ -1,7 +1,9 @@
 # INFO Desktop — ロードマップ
 
-DONE: application foundation, seven languages, registration/TLS, real queue/item/media, scoped editor actions, manual-create production acceptance, merge to main.
+完了：アプリケーション基盤、7言語、登録/TLS、実際のキュー/項目/メディア、スコープ付き編集操作、手動作成の本番受け入れ、main へのマージ、公開 Release v0.1.1。
 
-次: リリースのパッケージ/署名方針、公開 GitHub Release assets、所有者承認のもとでの明示的 publish 検証、その後 TikTok/Facebook アダプター。
+次：スペースのないチェックサムファイル名、署名/公証/アップデーターのポリシー（所有者の決定待ちの草案）、INFO `20261022-1730` での受け入れ（ニュースとアラートのチャンネル）、「なぜ」（項目がチャンネルに入った／入らなかった理由）と「何が変わるか」（サーバー上での XLSX 設定ファイルの試行）、所有者の承認を得た意図的な公開の受け入れ。
 
-Hard boundary: production VPN/network/firewall/SSH must not be changed without a separate explicit owner decision.
+その後：TikTok/Facebook アダプター、他の INFO 互換サーバー、XLSX 設定エディター、アップデーター。
+
+厳格な境界：所有者の別個の明示的な決定なしに、本番の VPN/ネットワーク/ファイアウォール/SSH を変更しません。

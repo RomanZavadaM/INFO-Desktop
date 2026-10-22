@@ -27,11 +27,16 @@
 - Desktop User-Agent source aligned to `0.1.1`;
 - published `v0.1.1` remains immutable; `main` now contains post-release audit corrections and must use a new version for the next published release.
 
+## Аудит 2026-10-22
+`main` = `095bd58`, Release v0.1.1 цілий, контрольні суми збігаються за хешем; знайдено розбіжність імен у `SHA256SUMS-*.txt` (пропуски проти крапок) - виправити в наступному release. Деталі: `PROJECT_STATE.md`.
+
 ## Next
-1. Reconcile private INFO server PR #18 into INFO main.
-2. Define signing/notarization/update policy for subsequent Desktop releases.
-3. Deliberate publish acceptance only with explicit owner authorization.
-4. Telegram preview polish, then TikTok/Facebook adapters.
+1. ~~Reconcile private INFO server PR #18~~ - зроблено 21.10 (INFO `main` `fed3ee98`); LIVE INFO тепер `20261022-1730`.
+2. Acceptance Desktop 0.1.1 на INFO `20261022-1730` (підключення, черга, канали «Новини» і «Тривоги» як типи `stream`/`alert`).
+3. Нові серверні функції для Desktop: «Чому» (пояснення рішення каналу) і «Що зміниться» (проба XLSX-файлу) - `docs/roadmap/ROADMAP.md`.
+4. Політика signing/notarization/updater: чернетка `docs/decisions/SIGNING_UPDATES.md`, чекає рішення власника (витрати).
+5. Deliberate publish acceptance лише з явним дозволом власника.
+6. Telegram preview polish, далі TikTok/Facebook adapters.
 
 ## Новий чат
 > **Продовжуємо INFO Desktop. Відкрий у GitHub `START_HERE.md` і продовжуй строго за ним.**
