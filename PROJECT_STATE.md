@@ -1,3 +1,9 @@
+## 2026-10-24 — Visual editor merged (unreleased)
+- PR #12 merged into `main` as `8daa226f209258af36facd45d91df63bf315343d` after all seven PR checks succeeded (frontend, docs, Rust, Windows, Linux, macOS arm64/x86_64).
+- Rich-text editing, HTML source switch, paste-as-plain-text, selection-aware formatting, recursive HTML sanitization, seven UI localizations. Server draft HTML protocol unchanged.
+- **Stable download remains v0.1.3**; code merged after release. Real Windows WebView2 acceptance of caret, link and quote behavior, paste, save/reopen and switching materials remains before new release. Do not claim this testing happened.
+- INFO server LIVE remains `20261024-1653`, untouched.
+
 ## Checkpoint 2026-10-24 — Desktop v0.1.3 published
 - PR #11 merged into main as `ce75608701f3573b03d1ad130b1eaf24bc07d021`; release workflow run `40104833679` finished success.
 - GitHub Release: https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3 (8 application assets + 4 SHA256SUMS).
