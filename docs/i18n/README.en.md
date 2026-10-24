@@ -1,15 +1,6 @@
 # INFO Desktop
 
-## Release 0.1.2 and upcoming 0.1.3
-
-**0.1.2 is the latest published stable download**. [Download v0.1.2](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.2) for Windows, Linux, macOS Intel or Apple Silicon. The current `main` branch contains an unreleased **0.1.3 candidate** with XLSX export/check/apply/rollback, a 48-hour what-if probe, a topic-keyword editor and safeguards against stale probes. The INFO server `20261024-1653` is installed, but Desktop end-to-end acceptance has not been completed. Editorial save/skip/defer/publish actions use the server API **directly, not Excel**. XLSX configures automatic rules only. No public Telegram SEND has been accepted. The 0.1.3 installers are not published yet.
-
-
-[Українська](../../README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Français](README.fr.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
-
-**INFO Desktop is a cross-platform newsroom workstation for INFO-compatible servers.**
-
-Version **0.1.2** is the first accepted source checkpoint merged into `main`.
+**INFO Desktop 0.1.3 is now released.** [Download v0.1.3](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3) for Windows, Linux, macOS Intel and Apple Silicon. XLSX settings and topics are included; complete end-to-end desktop acceptance is still pending.
 
 ## What it does
 
