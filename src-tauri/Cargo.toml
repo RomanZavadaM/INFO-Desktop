@@ -1,6 +1,6 @@
 [package]
 name="info-desktop"
-version="0.1.3"
+version="0.1.4-1"
 description="Universal desktop newsroom client for INFO-compatible servers"
 authors=["Roman Zavada"]
 edition="2021"
