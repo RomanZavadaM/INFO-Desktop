@@ -1,3 +1,10 @@
+## АКТУАЛЬНЕ ОНОВЛЕННЯ — тестовий реліз 0.1.4-1, 24.10.2026
+- **Опублікований Windows pre-release:** https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4-1 (EXE, MSI, SHA256). Workflow `40124584839`: Windows build і publish SUCCESS.
+- Пряма інсталяція Windows: https://github.com/RomanZavadaM/INFO-Desktop/releases/download/v0.1.4-1/INFO-Desktop_0.1.4-1_x64-setup.exe
+- PR #14 злито в main як `2cd9f97d07354b357e6bcf88b3ba1186e8ab1fb5`: версії та артефакти синхронізовано, Linux RPM виключено з тестового пакування. Windows і Linux PR checks SUCCESS. Платформні macOS роботи можуть ще залишатися в черзі; не заявляти повний multiplatform release до перевірки.
+- **Стабільна версія досі 0.1.3.** Тестова 0.1.4-1 включає візуальний редактор PR #12 та приховану консоль у Windows PR #13, але фактичний Windows UI acceptance на ПК користувача ще не проведено.
+- INFO server LIVE `20261024-1653` без змін. Ніяких Telegram SEND не виконували.
+
 ## ФІНАЛЬНА КОНТРОЛЬНА ТОЧКА — 24.10.2026
 - Усі відкриті на початку завершення PR перевірені; **PR #13 злито в `main`** squash-комітом `7aacfbb1253c3977504d906d09da4fbdc4f99700` після **7/7 SUCCESS** (Rust, frontend, docs, Windows, Linux, macOS arm64/x86_64).
 - Причина зайвого вікна консолі: Windows release EXE не мав `windows_subsystem = "windows"`. Виправлено лише для non-debug build у `src-tauri/src/main.rs`. Це працюватиме **тільки в наступному зібраному інсталяторі**; встановлена v0.1.3 не оновлюється автоматично.
