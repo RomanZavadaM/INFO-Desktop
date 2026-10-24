@@ -1,5 +1,9 @@
 # INFO Desktop — Índice de versiones
 
+## Versión actual — 24 de octubre de 2026
+**Descarga estable:** [v0.1.3](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3), 8 paquetes y 4 archivos SHA256. El editor visual del PR #12 está en `main` pero **aún no está publicado**. Servidor INFO LIVE: `20261024-1653`. [Registro de archivos](../../ARCHIVES_AND_BACKUPS.md).
+
+
 ## 0.1.2
 Release: [v0.1.2](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.2) - 2026-10-22. See [RELEASE_NOTES_0.1.2](RELEASE_NOTES_0.1.2.md).
 
