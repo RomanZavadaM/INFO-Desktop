@@ -26,10 +26,10 @@ export interface SourceMaterial{id?:string|number;source?:string;source_name?:st
 export interface WhyChannel{code:string;mode:string;ok:boolean;reason:string}
 export interface WhyRules{channel:string;has_rules:boolean;ok:boolean|null;reason:string;lines:string[];truncated:boolean}
 export interface Why{item_id:number;event_id:number;title:string;topics:string[];scope:string;channels:WhyChannel[];rules?:WhyRules}
-export interface SettingsStatus{has_pending:boolean;can_rollback:boolean}
+export interface SettingsStatus{has_pending:boolean;can_rollback:boolean;pending_digest?:string;probe_matches_pending?:boolean}
 export interface SettingsExport{filename:string;size:number;base64:string}
-export interface SettingsCheck{ok:boolean;summary:string}
-export interface ProbeStatus{state:"none"|"queued"|"running"|"done"|"error";id?:string;hours?:number;created?:string;finished?:string;text?:string}
+export interface SettingsCheck{ok:boolean;summary:string;pending_digest?:string}
+export interface ProbeStatus{state:"none"|"queued"|"running"|"done"|"error";id?:string;hours?:number;created?:string;finished?:string;text?:string;plan_digest?:string}
 export interface Theme{code:string;title:string;enabled:boolean;words:string[]}
 export interface ThemeTest{matched:string[];words:number}
 export interface ItemDetail extends QueueItem{draft_text?:string;winner_channel?:string;eligible_channels?:string[];event?:{url?:string;first_source?:string;first_published_at?:string;topics?:string[];sources?:string[]};materials?:SourceMaterial[]}
@@ -85,7 +85,7 @@ export class InfoServerClient{
   settingsStatus(){return getJson<SettingsStatus>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/status`,this.deviceId,this.serverCaDer)}
   settingsExport(){return getJson<SettingsExport>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx`,this.deviceId,this.serverCaDer)}
   settingsCheck(base64:string){return postJson<SettingsCheck>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx/check`,this.deviceId,this.serverCaDer,{base64})}
-  settingsApply(){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx/apply`,this.deviceId,this.serverCaDer,{})}
+  settingsApply(expected_digest?:string){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx/apply`,this.deviceId,this.serverCaDer,{expected_digest})}
   settingsRollback(){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx/rollback`,this.deviceId,this.serverCaDer,{})}
   settingsProbe(hours=48){return postJson<{ok:boolean;id:string}>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/probe`,this.deviceId,this.serverCaDer,{hours})}
   settingsProbeStatus(){return getJson<ProbeStatus>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/probe`,this.deviceId,this.serverCaDer)}

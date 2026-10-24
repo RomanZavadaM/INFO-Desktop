@@ -81,3 +81,8 @@ Do not alter production VPN/network/firewall/SSH without explicit owner approval
 - серверна частина - INFO PR (проба, служба `info-xlsx-try`, `/themes`); потребує серверного випуску й Desktop 0.1.3.
 - попередження про наслідки (рішення власника): червоний блок на «Налаштуваннях» і «Темах» та розгорнуті тексти підтверджень (7 мов): зміна правил живих каналів впливає на те, що публікується автоматично; відкат повертає налаштування, але не прибирає вже опубліковані пости; рекомендація спершу зробити пробу.
 
+
+### 2026-10-24 — XLSX safety follow-up (review, not released)
+- Desktop PR #10 together with INFO PR #30: checked XLSX plan digest, probe report tied to that plan, stale-report reset after uploading another file, warning before unprobed apply, guarded apply with expected digest.
+- No production install, public publication, or stable version change.
+- Remaining acceptance: CI for both repositories, install compatible server release, real Desktop import/probe/apply/rollback on a disposable test configuration. Rollback history/provenance and fuller theme/condition editor remain separate unfinished scope.
