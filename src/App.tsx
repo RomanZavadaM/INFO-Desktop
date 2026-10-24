@@ -10,10 +10,12 @@ function safeHtml(raw:string){
  const allowed=new Set(["B","STRONG","I","EM","U","S","BLOCKQUOTE","A","BR","CODE","PRE"]);
  const walk=(node:Element)=>{
   Array.from(node.children).forEach(child=>{
-   if(!allowed.has(child.tagName)){child.replaceWith(...Array.from(child.childNodes));return}
-   Array.from(child.attributes).forEach(a=>{if(child.tagName==="A"&&a.name==="href"){try{const u=new URL(a.value);if(!["http:","https:","tg:"].includes(u.protocol))child.removeAttribute(a.name)}catch{child.removeAttribute(a.name)}}else child.removeAttribute(a.name)});
-   if(child.tagName==="A"){child.setAttribute("target","_blank");child.setAttribute("rel","noreferrer")}
+   const tag=child.tagName;
+   if(["SCRIPT","STYLE","SVG","MATH","IFRAME","OBJECT","EMBED","IMG","FORM"].includes(tag)){child.remove();return}
    walk(child);
+   if(!allowed.has(tag)){child.replaceWith(...Array.from(child.childNodes));return}
+   Array.from(child.attributes).forEach(a=>{if(tag==="A"&&a.name==="href"){try{const u=new URL(a.value);if(!["http:","https:","tg:"].includes(u.protocol))child.removeAttribute(a.name)}catch{child.removeAttribute(a.name)}}else child.removeAttribute(a.name)});
+   if(tag==="A"){child.setAttribute("target","_blank");child.setAttribute("rel","noreferrer")}
   });
  };
  walk(doc.body);
