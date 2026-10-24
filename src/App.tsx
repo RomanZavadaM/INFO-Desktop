@@ -27,7 +27,7 @@ function VisualTextEditor({html,onChange,t}:{html:string;onChange:(value:string)
  const last=useRef<string>("");
  useEffect(()=>{
   if(showHtml||!area.current)return;
-  if(document.activeElement!==area.current && last.current!==html){
+  if(document.activeElement!==area.current && area.current.innerHTML!==safeHtml(html)){
    area.current.innerHTML=safeHtml(html);
    last.current=html;
   }
