@@ -1,15 +1,6 @@
 # INFO Desktop
 
-## Versión 0.1.2 y próxima versión 0.1.3
-
-**0.1.2 es la última versión estable publicada**. [Descargar v0.1.2](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.2) para Windows, Linux y macOS Intel/Apple Silicon. La rama `main` ya incluye un **candidato 0.1.3 sin publicar** con exportación, verificación, aplicación y reversión de XLSX, simulación de 48 horas, editor de palabras clave por tema y protección frente a simulaciones antiguas. INFO `20261024-1653` está instalado, pero falta la aceptación completa de Desktop. Guardar, omitir, aplazar y publicar pasan **directamente por la API**, no por Excel. XLSX solo configura las reglas automáticas. No se ha aceptado una publicación pública de prueba en Telegram.
-
-
-[Українська](../../README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Français](README.fr.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
-
-**INFO Desktop es una estación de trabajo editorial multiplataforma para servidores compatibles con INFO.**
-
-La versión **0.1.2** es el primer punto de control aceptado e integrado en `main`.
+**INFO Desktop 0.1.3 ya está publicado.** [Descargar v0.1.3](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3) para Windows, Linux y macOS Intel/Apple Silicon. Incluye configuración XLSX y temas; todavía falta la aceptación integral en Desktop.
 
 ## Funciones
 
