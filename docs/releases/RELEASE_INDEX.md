@@ -1,5 +1,13 @@
 # INFO Desktop — індекс релізів
 
+## СТАН НА 24.10.2026
+**Для тестування:** [INFO Desktop v0.1.4-1 (pre-release)](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4-1). Перевірено опубліковані Windows EXE, MSI, SHA256; мультиплатформний релізний workflow ще завершується.
+**Стабільна версія:** [v0.1.3](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3). Вона не містить нового візуального редактора; його тестова версія — v0.1.4-1.
+
+---
+Старі записи нижче — історія. Заголовки "поточна версія" в них не є актуальними.
+
+
 ## Перевірений стан 24.10.2026
 **Стабільний Desktop:** [v0.1.3](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3); Windows, Linux та macOS, 12 файлів включно із SHA256. **Візуальний редактор із PR #12 — лише у main, не в опублікованому релізі.** Сервер INFO LIVE — `20261024-1653`. [Архівний реєстр](../ARCHIVES_AND_BACKUPS.md).
 
