@@ -27,6 +27,9 @@ function VisualTextEditor({html,onChange,t}:{html:string;onChange:(value:string)
  const area=useRef<HTMLDivElement|null>(null);
  const[showHtml,setShowHtml]=useState(false);
  const last=useRef<string>("");
+ const selectionRef=useRef<Range|null>(null);
+ function rememberSelection(){const sel=window.getSelection();if(sel?.rangeCount&&area.current?.contains(sel.anchorNode))selectionRef.current=sel.getRangeAt(0).cloneRange()}
+ function restoreSelection(){const sel=window.getSelection();if(!selectionRef.current||!sel)return;sel.removeAllRanges();sel.addRange(selectionRef.current)}
  useEffect(()=>{
   if(showHtml||!area.current)return;
   if(document.activeElement!==area.current && area.current.innerHTML!==safeHtml(html)){
@@ -46,30 +49,31 @@ function VisualTextEditor({html,onChange,t}:{html:string;onChange:(value:string)
   last.current=value;onChange(value);
  }
  function format(command:string){
-  area.current?.focus();
+  area.current?.focus();restoreSelection();
   document.execCommand(command,false);
   serialize();
  }
  function insertLink(){
+  rememberSelection();
   const url=window.prompt(t("editor.link_prompt"),"https://");
   if(!url)return;
   try{const u=new URL(url);if(!["https:","http:"].includes(u.protocol))return}catch{return}
-  area.current?.focus();document.execCommand("createLink",false,url);serialize();
+  area.current?.focus();restoreSelection();document.execCommand("createLink",false,url);serialize();
  }
  return <div className="visual-editor-shell">
   <div className="format-toolbar" role="toolbar" aria-label={t("editor.toolbar")}>
-   <button type="button" onMouseDown={e=>e.preventDefault()} onClick={()=>format("bold")} aria-label="Bold"><b>B</b></button>
+   <button type="button" disabled={showHtml} onMouseDown={e=>{e.preventDefault();rememberSelection()}} onClick={()=>format("bold")} aria-label="Bold"><b>B</b></button>
    <button type="button" onMouseDown={e=>e.preventDefault()} onClick={()=>format("italic")} aria-label="Italic"><i>I</i></button>
    <button type="button" onMouseDown={e=>e.preventDefault()} onClick={()=>format("underline")} aria-label="Underline"><u>U</u></button>
-   <button type="button" onMouseDown={e=>e.preventDefault()} onClick={()=>{area.current?.focus();document.execCommand("formatBlock",false,"blockquote");serialize()}}>{t("format.quote")}</button>
-   <button type="button" onMouseDown={e=>e.preventDefault()} onClick={insertLink}>{t("format.link")}</button>
+   <button type="button" disabled={showHtml} onMouseDown={e=>{e.preventDefault();rememberSelection()}} onClick={()=>{area.current?.focus();restoreSelection();document.execCommand("formatBlock",false,"blockquote");serialize()}}>{t("format.quote")}</button>
+   <button type="button" disabled={showHtml} onMouseDown={e=>{e.preventDefault();rememberSelection()}} onClick={insertLink}>{t("format.link")}</button>
    <button type="button" className="mode-switch" onClick={()=>{if(!showHtml)serialize();setShowHtml(!showHtml)}} aria-pressed={showHtml}>{showHtml?t("editor.visual"):t("editor.html")}</button>
   </div>
   {showHtml
    ?<textarea className="text-editor" value={html} onChange={e=>{last.current=e.target.value;onChange(e.target.value)}} aria-label={t("editor.html")}/>
    :<div ref={area} className="visual-text-editor" contentEditable suppressContentEditableWarning
        role="textbox" aria-label={t("editor.visual")} aria-multiline="true"
-       onInput={serialize} onBlur={serialize} onPaste={e=>{e.preventDefault();document.execCommand("insertText",false,e.clipboardData.getData("text/plain"))}}/>}
+       onInput={serialize} onKeyUp={rememberSelection} onMouseUp={rememberSelection} onBlur={serialize} onPaste={e=>{e.preventDefault();document.execCommand("insertText",false,e.clipboardData.getData("text/plain"))}}/>}
  </div>;
 }
 
