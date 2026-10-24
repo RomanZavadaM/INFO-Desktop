@@ -1,3 +1,12 @@
+## Контрольна точка — INFO Desktop v0.1.4, 24.10.2026
+- Ціль релізу: stable v0.1.4, окремий GitHub Release з 8 пакетами Windows/Linux/macOS та 4 SHA256.
+- Візуальний редактор PR #12, Windows console fix PR #13, timestamp XLSX export PR #15.
+- XLSX HTTP 413: зміну серверного gateway з INFO PR #31 активовано оператором, nginx -t / restart gateway / info check успішні; користувач підтвердив «Перевірка пройдена» на незміненому XLSX. **Налаштування НЕ застосовувалися.** LIVE INFO `20261024-1653`, errors 0.
+- Розвиток Facebook/TikTok та інших платформ визначає інший окремий проєкт; перечитати його оновлений план перед реалізацією, не дублювати платформний роутинг у Desktop.
+- Заборонено тестові SEND/PIN Telegram, зміну LIVE без окремої процедури, видалення резервних копій.
+- Для наступного чату: відкрити `START_HERE.md`, `PROJECT_STATE.md`, `WORKLOG.md`, звірити GitHub `main`, відкриті PR, GitHub Actions і GitHub Release, уточнити фактичну точку.
+- Ручний Windows WebView2 UX тест редактора лишається окремим прийманням навіть після green CI.
+
 ## АКТУАЛЬНЕ ОНОВЛЕННЯ — тестовий реліз 0.1.4-1, 24.10.2026
 - **Опублікований Windows pre-release:** https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4-1 (EXE, MSI, SHA256). Workflow `40124584839`: Windows build і publish SUCCESS.
 - Пряма інсталяція Windows: https://github.com/RomanZavadaM/INFO-Desktop/releases/download/v0.1.4-1/INFO-Desktop_0.1.4-1_x64-setup.exe
