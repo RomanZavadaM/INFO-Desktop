@@ -7,7 +7,8 @@
 
 Windows EXE/MSI, Linux AppImage/DEB, macOS Apple Silicon DMG/ZIP, macOS Intel DMG/ZIP та SHA256SUMS. Відповідні інсталятори **не містять** майбутніх вкладок XLSX і «Теми».
 
-## 0.1.3 — у розробці, не опубліковано
+## 0.1.3 — стабільний GitHub Release, опубліковано 24.10.2026
+**Завантаження:** [v0.1.3](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3)
 У `main` є вкладки XLSX/«Теми», проба 48 год, захист контрольної суми й переклади. Вимагає release, узгодженого з сервером, тестування роботи на справжньому Desktop та перевірки встановлення. INFO LIVE `20261024-1653` підтверджений оператором; Desktop acceptance ще відкритий.
 
 
