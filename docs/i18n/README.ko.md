@@ -1,8 +1,9 @@
 # INFO Desktop
 
-> ⬇️ **INFO Desktop 0.1.3 다운로드**: [**Windows EXE / MSI · Linux AppImage / DEB · macOS Intel / Apple Silicon**](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3)
+**INFO Desktop v0.1.4 안정 버전 — Windows / Linux / macOS:** [설치 파일 다운로드](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4). 시각적 편집기, Windows 콘솔 숨김, 타임스탬프가 포함된 XLSX 내보내기.
 
-**INFO Desktop 0.1.3이 출시되었습니다.** Windows, Linux, macOS Intel/Apple Silicon용 [v0.1.3 다운로드](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3). XLSX 설정과 주제 편집이 포함되지만 실제 Desktop 전체 수용 테스트는 아직 남아 있습니다.
+
+
 
 ## 주요 기능
 

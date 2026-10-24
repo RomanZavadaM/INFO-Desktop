@@ -1,8 +1,9 @@
 # INFO Desktop
 
-> ⬇️ **INFO Desktop 0.1.3 をダウンロード**: [**Windows EXE / MSI · Linux AppImage / DEB · macOS Intel / Apple Silicon**](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3)
+**INFO Desktop v0.1.4 安定版 — Windows / Linux / macOS：** [インストーラーをダウンロード](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4)。ビジュアルエディター、Windows コンソールの非表示、日時付き XLSX エクスポート。
 
-**INFO Desktop 0.1.3 を公開しました。** Windows、Linux、macOS Intel／Apple Silicon 向けの [v0.1.3 をダウンロード](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3)。XLSX 設定とトピック編集を含みますが、実機 Desktop での完全な受入検証は未完了です。
+
+
 
 ## 主な機能
 

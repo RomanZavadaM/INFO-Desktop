@@ -1,12 +1,6 @@
 name: Test release INFO Desktop 0.1.4-1
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'VERSION.txt'
-      - 'docs/releases/RELEASE_NOTES_0.1.4-1.md'
-      - '.github/workflows/release-0.1.4-rc1.yml'
   workflow_dispatch:
 
 permissions:
