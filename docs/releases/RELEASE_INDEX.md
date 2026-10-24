@@ -1,5 +1,17 @@
 # INFO Desktop — індекс релізів
 
+## 0.1.2 — поточний стабільний GitHub Release
+**Дата:** 2026-10-22  
+**Статус:** опублікований  
+**Завантаження:** [v0.1.2](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.2)
+
+Windows EXE/MSI, Linux AppImage/DEB, macOS Apple Silicon DMG/ZIP, macOS Intel DMG/ZIP та SHA256SUMS. Відповідні інсталятори **не містять** майбутніх вкладок XLSX і «Теми».
+
+## 0.1.3 — у розробці, не опубліковано
+У `main` є вкладки XLSX/«Теми», проба 48 год, захист контрольної суми й переклади. Вимагає release, узгодженого з сервером, тестування роботи на справжньому Desktop та перевірки встановлення. INFO LIVE `20261024-1653` підтверджений оператором; Desktop acceptance ще відкритий.
+
+
+
 ## 0.1.1
 **Дата:** 2026-10-20  
 **Статус:** stable GitHub Release published / production-connected acceptance passed  
