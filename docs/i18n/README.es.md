@@ -1,5 +1,7 @@
 # INFO Desktop
 
+> ⬇️ **Descargar INFO Desktop 0.1.3**: [**Windows EXE / MSI · Linux AppImage / DEB · macOS Intel / Apple Silicon**](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3)
+
 **INFO Desktop 0.1.3 ya está publicado.** [Descargar v0.1.3](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3) para Windows, Linux y macOS Intel/Apple Silicon. Incluye configuración XLSX y temas; todavía falta la aceptación integral en Desktop.
 
 ## Funciones
