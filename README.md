@@ -1,5 +1,8 @@
 # INFO Desktop
 
+**Архіви й резервні копії:** [реєстр підтверджених релізів та стану резервування](docs/ARCHIVES_AND_BACKUPS.md). Візуальний редактор після 0.1.3 — у `main`, але ще не в завантажуваних інсталяторах.
+
+
 > ⬇️ **Завантажити INFO Desktop 0.1.3**: [**Windows EXE / MSI · Linux AppImage / DEB · macOS Intel / Apple Silicon**](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3)
 
 **Мови / Languages / Sprachen / Idiomas / Langues / 언어 / 言語**
