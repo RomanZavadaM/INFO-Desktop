@@ -1,11 +1,9 @@
 # INFO Desktop
 
-**INFO Desktop v0.1.4 stable — Windows / Linux / macOS:** [Download installers](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4). Includes the visual editor, hidden Windows release console, and timestamped XLSX downloads.
+**INFO Desktop v0.1.4 estable — Windows / Linux / macOS:** [Descargar instaladores](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4). Editor visual, sin consola de Windows y exportaciones XLSX con fecha y hora.
 
 
-> ⬇️ **Descargar INFO Desktop 0.1.3**: [**Windows EXE / MSI · Linux AppImage / DEB · macOS Intel / Apple Silicon**](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3)
 
-**INFO Desktop 0.1.3 ya está publicado.** [Descargar v0.1.3](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3) para Windows, Linux y macOS Intel/Apple Silicon. Incluye configuración XLSX y temas; todavía falta la aceptación integral en Desktop.
 
 ## Funciones
 
