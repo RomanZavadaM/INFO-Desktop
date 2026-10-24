@@ -81,5 +81,9 @@
   "themes.confirm_save": "Enregistrer les mots de ce thème sur le serveur EN DIRECT ? Les nouvelles actualités seront classées selon les nouveaux mots, ce qui peut changer la publication automatique.",
   "themes.rollback_hint": "Annulation : onglet « Paramètres » - « Annuler la dernière application ».",
   "settings.warning": "Attention : l'application modifie les règles des canaux en direct. Elle décide quelles actualités arrivent dans les canaux Telegram et ce qui est publié automatiquement ; une erreur peut provoquer des publications en trop ou manquantes. Lancez d'abord l'essai 'ce qui change'. L'annulation rétablit les paramètres mais ne retire pas les publications déjà faites.",
-  "themes.warning": "Attention : modifier les mots change les thèmes et canaux que les nouvelles actualités atteindront, donc la publication automatique peut changer. Vérifiez les mots sur des exemples ; l'annulation rétablit les mots mais pas les publications déjà faites."
+  "themes.warning": "Attention : modifier les mots change les thèmes et canaux que les nouvelles actualités atteindront, donc la publication automatique peut changer. Vérifiez les mots sur des exemples ; l'annulation rétablit les mots mais pas les publications déjà faites.",
+  "settings.digest_missing": "Impossible de confirmer la version du XLSX préparé. Actualisez les paramètres.",
+  "settings.confirm_unprobed": "Aucune simulation terminée ne correspond à ce XLSX. Appliquer sans simulation ?",
+  "settings.probe_stale": "Ce rapport peut concerner un autre fichier ou la simulation a échoué. Ne l'utilisez pas pour décider de l'application.",
+  "settings.probe_valid": "Ce rapport correspond au XLSX actuellement vérifié. La simulation n'applique aucun changement."
 }
