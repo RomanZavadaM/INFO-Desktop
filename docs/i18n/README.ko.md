@@ -1,15 +1,6 @@
 # INFO Desktop
 
-## 안정 버전 0.1.2 및 예정된 0.1.3
-
-**현재 공개된 안정 버전은 0.1.2입니다.** Windows, Linux, macOS Intel 및 Apple Silicon용 [v0.1.2 다운로드](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.2). 현재 `main`에는 **미출시 0.1.3 후보**(XLSX 내보내기·검사·적용·되돌리기, 48시간 변경 시뮬레이션, 주제별 키워드 편집 및 오래된 결과 보호)가 포함되어 있습니다. INFO 서버 `20261024-1653`은 설치되었지만 Desktop 전체 수용 테스트는 완료되지 않았습니다. 기사 저장·건너뛰기·연기·게시는 Excel이 아니라 **서버 API를 직접** 사용합니다. XLSX는 자동 규칙 설정 전용입니다. 공개 Telegram 전송은 수용 테스트를 거치지 않았습니다.
-
-
-[Українська](../../README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Français](README.fr.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
-
-**INFO Desktop은 INFO 호환 서버를 위한 크로스플랫폼 뉴스룸 작업 환경입니다.**
-
-버전 **0.1.2**은 `main`에 병합된 첫 번째 승인 소스 체크포인트입니다.
+**INFO Desktop 0.1.3이 출시되었습니다.** Windows, Linux, macOS Intel/Apple Silicon용 [v0.1.3 다운로드](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3). XLSX 설정과 주제 편집이 포함되지만 실제 Desktop 전체 수용 테스트는 아직 남아 있습니다.
 
 ## 주요 기능
 
