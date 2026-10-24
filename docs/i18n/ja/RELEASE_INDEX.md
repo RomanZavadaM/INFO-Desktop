@@ -1,5 +1,9 @@
 # INFO Desktop — リリース一覧
 
+## 現在のリリース — 2026年10月24日
+**安定版:** [v0.1.3](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3)、アプリ配布物8点とSHA256ファイル4点。PR #12 のビジュアル編集機能は `main` に統合済みですが、**まだリリースされていません**。INFO サーバー LIVE: `20261024-1653`。[アーカイブ一覧](../../ARCHIVES_AND_BACKUPS.md)。
+
+
 ## 0.1.2
 Release: [v0.1.2](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.2) - 2026-10-22. See [RELEASE_NOTES_0.1.2](RELEASE_NOTES_0.1.2.md).
 
