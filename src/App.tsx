@@ -61,7 +61,7 @@ function SettingsPanel({client,t,onError}:{client:InfoServerClient;t:(k:string)=
  async function run(fn:()=>Promise<void>){setBusy(true);setMessage("");onError("");try{await fn();await refresh()}catch(e){onError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function download(){await run(async()=>{const x=await client.settingsExport();const url=URL.createObjectURL(new Blob([fromBase64(x.base64)],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));const a=document.createElement("a");a.href=url;a.download=x.filename;a.click();URL.revokeObjectURL(url);setMessage(t("settings.exported"))})}
  async function upload(file:File|undefined){if(!file)return;await run(async()=>{const r=await client.settingsCheck(toBase64(await file.arrayBuffer()));setProbe({state:"none"});setSummary(`${file.name}\n${r.summary}`);setMessage(t("settings.checked"))})}
- async function apply(){if(!status?.pending_digest){onError("Не вдалося підтвердити версію XLSX. Оновіть сторінку налаштувань.");return}if(!(probe.state==="done"&&probe.plan_digest===status.pending_digest)&&!window.confirm("Для цього XLSX немає завершеної актуальної проби. Застосувати без проби?"))return;if(!window.confirm(t("settings.confirm_apply")))return;await run(async()=>{await client.settingsApply(status.pending_digest);setProbe({state:"none"});setSummary("");setMessage(t("settings.applied"))})}
+ async function apply(){if(!status?.pending_digest){onError(t("settings.digest_missing"));return}if(!(probe.state==="done"&&probe.plan_digest===status.pending_digest)&&!window.confirm(t("settings.confirm_unprobed")))return;if(!window.confirm(t("settings.confirm_apply")))return;await run(async()=>{await client.settingsApply(status.pending_digest);setProbe({state:"none"});setSummary("");setMessage(t("settings.applied"))})}
  async function rollback(){if(!window.confirm(t("settings.confirm_rollback")))return;await run(async()=>{await client.settingsRollback();setMessage(t("settings.rolled_back"))})}
  return <section className="settings-panel">
   <h2>{t("settings.title")}</h2>
@@ -72,7 +72,7 @@ function SettingsPanel({client,t,onError}:{client:InfoServerClient;t:(k:string)=
   {summary&&<pre className="why-lines">{summary}</pre>}
   <div className="settings-actions"><button onClick={runProbe} disabled={busy||!status?.has_pending||probe.state==="queued"||probe.state==="running"}>{t("settings.probe")}</button>
    {(probe.state==="queued"||probe.state==="running")&&<span>{t("settings.probe_running")}</span>}</div>
-  {(probe.state==="done"||probe.state==="error")&&!!probe.text&&<><small>{probe.state==="done"&&status?.pending_digest===probe.plan_digest?t("settings.probe_hint"):"Звіт може стосуватися іншого файлу або проба завершилась помилкою. Не використовуйте його для рішення про застосування."}</small><pre className="why-lines">{probe.text}</pre></>}
+  {(probe.state==="done"||probe.state==="error")&&!!probe.text&&<><small>{probe.state==="done"&&status?.pending_digest===probe.plan_digest?t("settings.probe_valid"):t("settings.probe_stale")}</small><pre className="why-lines">{probe.text}</pre></>}
   <div className="settings-actions"><button className="publish" onClick={apply} disabled={busy||!status?.has_pending||!status?.pending_digest||probe.state==="queued"||probe.state==="running"}>{t("settings.apply")}</button>
    <button onClick={rollback} disabled={busy||!status?.can_rollback}>{t("settings.rollback")}</button></div>
   {message&&<div className="notice-banner">{message}</div>}
