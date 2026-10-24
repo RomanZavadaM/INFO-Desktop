@@ -1,5 +1,9 @@
 # INFO Desktop — індекс релізів
 
+## Перевірений стан 24.10.2026
+**Стабільний Desktop:** [v0.1.3](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3); Windows, Linux та macOS, 12 файлів включно із SHA256. **Візуальний редактор із PR #12 — лише у main, не в опублікованому релізі.** Сервер INFO LIVE — `20261024-1653`. [Архівний реєстр](../ARCHIVES_AND_BACKUPS.md).
+
+
 ## 0.1.2 — поточний стабільний GitHub Release
 **Дата:** 2026-10-22  
 **Статус:** опублікований  
