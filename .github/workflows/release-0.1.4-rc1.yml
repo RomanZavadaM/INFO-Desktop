@@ -49,7 +49,7 @@ jobs:
           node-version: '22'
       - uses: dtolnay/rust-toolchain@stable
       - run: npm install
-      - run: npm run tauri build
+      - run: npm run tauri build -- --bundles deb,appimage
       - shell: pwsh
         run: |
           New-Item -ItemType Directory -Path artifact | Out-Null
@@ -110,7 +110,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - run: test "$(uname -m)" = "${{ matrix.arch }}"
       - run: npm install
-      - run: npm run tauri build
+      - run: npm run tauri build -- --bundles deb,appimage
       - run: |
           mkdir artifact
           app=$(find src-tauri/target/release/bundle/macos -maxdepth 1 -name '*.app' -print -quit)
