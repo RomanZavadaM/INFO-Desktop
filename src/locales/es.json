@@ -85,5 +85,9 @@
   "settings.digest_missing": "No se pudo verificar la versión del XLSX preparado. Actualice la configuración.",
   "settings.confirm_unprobed": "No hay una prueba completada que corresponda a este XLSX. ¿Aplicar sin prueba?",
   "settings.probe_stale": "Este informe puede corresponder a otro archivo o la prueba ha fallado. No lo utilice para decidir la aplicación.",
-  "settings.probe_valid": "Este informe corresponde al XLSX verificado actualmente. La prueba no aplica cambios."
+  "settings.probe_valid": "Este informe corresponde al XLSX verificado actualmente. La prueba no aplica cambios.",
+  "editor.visual": "Editor visual",
+  "editor.html": "Código HTML",
+  "editor.toolbar": "Barra de formato",
+  "editor.link_prompt": "URL del enlace (https://...)"
 }

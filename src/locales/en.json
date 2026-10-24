@@ -85,5 +85,9 @@
   "settings.digest_missing": "Could not verify the staged XLSX version. Refresh the settings panel.",
   "settings.confirm_unprobed": "No completed matching probe exists for this XLSX. Apply without a probe?",
   "settings.probe_stale": "This report may belong to another file or the probe failed. Do not rely on it when applying settings.",
-  "settings.probe_valid": "This report matches the currently checked XLSX. The probe does not apply any changes."
+  "settings.probe_valid": "This report matches the currently checked XLSX. The probe does not apply any changes.",
+  "editor.visual": "Visual editor",
+  "editor.html": "HTML source",
+  "editor.toolbar": "Formatting toolbar",
+  "editor.link_prompt": "Link URL (https://...)"
 }

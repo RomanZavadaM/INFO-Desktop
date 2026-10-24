@@ -85,5 +85,9 @@
   "settings.digest_missing": "Impossible de confirmer la version du XLSX préparé. Actualisez les paramètres.",
   "settings.confirm_unprobed": "Aucune simulation terminée ne correspond à ce XLSX. Appliquer sans simulation ?",
   "settings.probe_stale": "Ce rapport peut concerner un autre fichier ou la simulation a échoué. Ne l'utilisez pas pour décider de l'application.",
-  "settings.probe_valid": "Ce rapport correspond au XLSX actuellement vérifié. La simulation n'applique aucun changement."
+  "settings.probe_valid": "Ce rapport correspond au XLSX actuellement vérifié. La simulation n'applique aucun changement.",
+  "editor.visual": "Éditeur visuel",
+  "editor.html": "Code HTML",
+  "editor.toolbar": "Barre de mise en forme",
+  "editor.link_prompt": "Adresse du lien (https://...)"
 }

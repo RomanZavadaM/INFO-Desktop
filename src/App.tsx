@@ -10,15 +10,73 @@ function safeHtml(raw:string){
  const allowed=new Set(["B","STRONG","I","EM","U","S","BLOCKQUOTE","A","BR","CODE","PRE"]);
  const walk=(node:Element)=>{
   Array.from(node.children).forEach(child=>{
-   if(!allowed.has(child.tagName)){child.replaceWith(...Array.from(child.childNodes));return}
-   Array.from(child.attributes).forEach(a=>{if(child.tagName==="A"&&a.name==="href"){try{const u=new URL(a.value);if(!["http:","https:","tg:"].includes(u.protocol))child.removeAttribute(a.name)}catch{child.removeAttribute(a.name)}}else child.removeAttribute(a.name)});
-   if(child.tagName==="A"){child.setAttribute("target","_blank");child.setAttribute("rel","noreferrer")}
+   const tag=child.tagName;
+   if(["SCRIPT","STYLE","SVG","MATH","IFRAME","OBJECT","EMBED","IMG","FORM"].includes(tag)){child.remove();return}
    walk(child);
+   if(!allowed.has(tag)){child.replaceWith(...Array.from(child.childNodes));return}
+   Array.from(child.attributes).forEach(a=>{if(tag==="A"&&a.name==="href"){try{const u=new URL(a.value);if(!["http:","https:","tg:"].includes(u.protocol))child.removeAttribute(a.name)}catch{child.removeAttribute(a.name)}}else child.removeAttribute(a.name)});
+   if(tag==="A"){child.setAttribute("target","_blank");child.setAttribute("rel","noreferrer")}
   });
  };
  walk(doc.body);
  return doc.body.innerHTML;
 }
+
+/** The server retains Telegram-compatible HTML; the editor renders it while editing. */
+function VisualTextEditor({html,onChange,t}:{html:string;onChange:(value:string)=>void;t:(key:string)=>string}){
+ const area=useRef<HTMLDivElement|null>(null);
+ const[showHtml,setShowHtml]=useState(false);
+ const last=useRef<string>("");
+ const selectionRef=useRef<Range|null>(null);
+ function rememberSelection(){const sel=window.getSelection();if(sel?.rangeCount&&area.current?.contains(sel.anchorNode))selectionRef.current=sel.getRangeAt(0).cloneRange()}
+ function restoreSelection(){const sel=window.getSelection();if(!selectionRef.current||!sel)return;sel.removeAllRanges();sel.addRange(selectionRef.current)}
+ useEffect(()=>{
+  if(showHtml||!area.current)return;
+  if(document.activeElement!==area.current && area.current.innerHTML!==safeHtml(html)){
+   area.current.innerHTML=safeHtml(html);
+   last.current=html;
+  }
+ },[html,showHtml]);
+ function serialize(){
+  if(!area.current)return;
+  const clone=area.current.cloneNode(true) as HTMLElement;
+  clone.querySelectorAll("div,p").forEach(n=>{
+   const br=document.createElement("br");
+   n.parentNode?.insertBefore(br,n);
+   n.replaceWith(...Array.from(n.childNodes));
+  });
+  const value=safeHtml(clone.innerHTML).replace(/^(<br>)+/,"");
+  last.current=value;onChange(value);
+ }
+ function format(command:string){
+  area.current?.focus();restoreSelection();
+  document.execCommand(command,false);
+  serialize();
+ }
+ function insertLink(){
+  rememberSelection();
+  const url=window.prompt(t("editor.link_prompt"),"https://");
+  if(!url)return;
+  try{const u=new URL(url);if(!["https:","http:"].includes(u.protocol))return}catch{return}
+  area.current?.focus();restoreSelection();document.execCommand("createLink",false,url);serialize();
+ }
+ return <div className="visual-editor-shell">
+  <div className="format-toolbar" role="toolbar" aria-label={t("editor.toolbar")}>
+   <button type="button" disabled={showHtml} onMouseDown={e=>{e.preventDefault();rememberSelection()}} onClick={()=>format("bold")} aria-label="Bold"><b>B</b></button>
+   <button type="button" onMouseDown={e=>e.preventDefault()} onClick={()=>format("italic")} aria-label="Italic"><i>I</i></button>
+   <button type="button" onMouseDown={e=>e.preventDefault()} onClick={()=>format("underline")} aria-label="Underline"><u>U</u></button>
+   <button type="button" disabled={showHtml} onMouseDown={e=>{e.preventDefault();rememberSelection()}} onClick={()=>{area.current?.focus();restoreSelection();document.execCommand("formatBlock",false,"blockquote");serialize()}}>{t("format.quote")}</button>
+   <button type="button" disabled={showHtml} onMouseDown={e=>{e.preventDefault();rememberSelection()}} onClick={insertLink}>{t("format.link")}</button>
+   <button type="button" className="mode-switch" onClick={()=>{if(!showHtml)serialize();setShowHtml(!showHtml)}} aria-pressed={showHtml}>{showHtml?t("editor.visual"):t("editor.html")}</button>
+  </div>
+  {showHtml
+   ?<textarea className="text-editor" value={html} onChange={e=>{last.current=e.target.value;onChange(e.target.value)}} aria-label={t("editor.html")}/>
+   :<div ref={area} className="visual-text-editor" contentEditable suppressContentEditableWarning
+       role="textbox" aria-label={t("editor.visual")} aria-multiline="true"
+       onInput={serialize} onKeyUp={rememberSelection} onMouseUp={rememberSelection} onBlur={serialize} onPaste={e=>{e.preventDefault();document.execCommand("insertText",false,e.clipboardData.getData("text/plain"))}}/>}
+ </div>;
+}
+
 function HtmlPreview({html}:{html:string}){return <div className="article-text rendered" dangerouslySetInnerHTML={{__html:safeHtml(html)}}/>}
 
 function TelegramPreview({title,html,media,t}:{title:string;html:string;media:MediaDescriptor[];t:(k:string)=>string}){
@@ -122,7 +180,6 @@ export function App(){
  const[editTitle,setEditTitle]=useState("");const[editText,setEditText]=useState("");const[editChannel,setEditChannel]=useState("");
  const[creating,setCreating]=useState(false);const[newTitle,setNewTitle]=useState("");const[newText,setNewText]=useState("");const[newChannel,setNewChannel]=useState("");const[newUrl,setNewUrl]=useState("");
  const[why,setWhy]=useState<Why|null>(null);const[view,setView]=useState<"queue"|"settings"|"themes">("queue");
- const editorRef=useRef<HTMLTextAreaElement|null>(null);
  const client=useMemo(()=>new InfoServerClient(server.trim(),deviceId.trim(),serverCaDer),[server,deviceId,serverCaDer]);
  const visible=useMemo(()=>active==="*"?queue:queue.filter(i=>i.channel===active),[queue,active]);
  useEffect(()=>{setWhy(null);setEditTitle(selected?.title??"");setEditText(selected?.draft_text??"");setEditChannel(selected?.channel??"")},[selected]);
@@ -143,7 +200,6 @@ export function App(){
  async function loadWhy(){if(!selected)return;setBusy(true);setError("");try{setWhy(await client.why(selected.id,editChannel||selected.channel))}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function save(){if(!selected)return;setBusy(true);setError("");setNotice("");try{const r=await client.save(selected.id,{title:editTitle,draft_text:editText,channel:editChannel});setNotice(t("notice.saved"));await load(r.item_id)}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function createNew(){setBusy(true);setError("");setNotice("");try{const r=await client.create({title:newTitle,draft_text:newText,channel:newChannel,url:newUrl});setCreating(false);setNewTitle("");setNewText("");setNewUrl("");setNotice(t("notice.created"));await load(r.item_id)}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
- function wrap(openTag:string,closeTag:string=openTag.replace("<","</")){const el=editorRef.current;if(!el)return;const a=el.selectionStart,b=el.selectionEnd;const value=editText.slice(0,a)+openTag+editText.slice(a,b)+closeTag+editText.slice(b);setEditText(value);requestAnimationFrame(()=>{el.focus();el.setSelectionRange(a+openTag.length,b+openTag.length)})}
  async function importRegistrationFile(file:File|undefined){if(!file)return;setError("");try{const parsed=await importRegistration(await file.text());setRegistration(parsed);const serverUrl=`https://${parsed.server}:${parsed.port}`;setServer(serverUrl);setServerCertificateDer(parsed.server_ca_der);localStorage.setItem("info-desktop-server",serverUrl);localStorage.setItem("info-desktop-server-cert",parsed.server_ca_der);const activated=await activateRegistration(parsed,"INFO Desktop");setDeviceId(activated.device_id);setCredentialExpiry(activated.credential_expires_at);localStorage.setItem("info-desktop-device-id",activated.device_id);localStorage.setItem("info-desktop-credential-expiry",activated.credential_expires_at)}catch(e){setRegistration(null);setError(e instanceof Error?e.message:String(e))}}
  function lang(v:Language){setLanguage(v);localStorage.setItem("info-desktop-language",v)}
  const media=selected?.materials?.flatMap(m=>m.media??[])??[];
@@ -168,8 +224,7 @@ export function App(){
    <article className="detail-pane">{!selected?<div className="empty">{t("item.select")}</div>:<>
     <div className="editor-head"><h2>{t("item.title")} #{selected.id}</h2><select value={editChannel} onChange={e=>setEditChannel(e.target.value)}>{channels.map(c=><option key={c.code} value={c.code}>{c.name}</option>)}</select></div>
     <input className="title-editor" value={editTitle} onChange={e=>setEditTitle(e.target.value)}/>
-    <div className="format-toolbar"><button onClick={()=>wrap("<b>","</b>")}><b>B</b></button><button onClick={()=>wrap("<i>","</i>")}><i>I</i></button><button onClick={()=>wrap("<u>","</u>")}><u>U</u></button><button onClick={()=>wrap("<blockquote>","</blockquote>")}>{t("format.quote")}</button><button onClick={()=>wrap('<a href="https://">',"</a>")}>{t("format.link")}</button></div>
-    <textarea ref={editorRef} className="text-editor" value={editText} onChange={e=>setEditText(e.target.value)}/>
+    <VisualTextEditor key={String(selected.id)} html={editText} onChange={setEditText} t={t}/>
     <div className="preview-label">{t("preview.telegram")}</div><TelegramPreview title={editTitle} html={editText} media={media} t={t}/>
     <div className="actions sticky-actions"><button onClick={save} disabled={busy}>{t("action.save")}</button><button className="publish" onClick={()=>act(async()=>{const saved=await client.save(selected.id,{title:editTitle,draft_text:editText,channel:editChannel});await client.publish(saved.item_id)},t("notice.published"))} disabled={busy}>{t("action.publish")}</button><button className="ghost" onClick={()=>act(()=>client.defer(selected.id,60),t("notice.deferred"))} disabled={busy}>{t("action.defer_hour")}</button><button className="danger" onClick={()=>act(()=>client.skip(selected.id),t("notice.skipped"))} disabled={busy}>{t("action.skip")}</button></div>
     <div className="why-block"><button onClick={loadWhy} disabled={busy}>{t("why.button")}</button></div>{why&&<WhyPanel why={why} t={t}/>}

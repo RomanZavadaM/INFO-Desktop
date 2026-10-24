@@ -85,5 +85,9 @@
   "settings.digest_missing": "準備された XLSX のバージョンを確認できません。設定画面を更新してください。",
   "settings.confirm_unprobed": "この XLSX に対応する完了済みのシミュレーションがありません。実行せずに適用しますか？",
   "settings.probe_stale": "このレポートは別のファイルのものか、シミュレーションに失敗した可能性があります。適用判断に使用しないでください。",
-  "settings.probe_valid": "このレポートは現在検証済みの XLSX に対応しています。シミュレーションは変更を適用しません。"
+  "settings.probe_valid": "このレポートは現在検証済みの XLSX に対応しています。シミュレーションは変更を適用しません。",
+  "editor.visual": "ビジュアル編集",
+  "editor.html": "HTML ソース",
+  "editor.toolbar": "書式ツールバー",
+  "editor.link_prompt": "リンク先 URL (https://...)"
 }
