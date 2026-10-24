@@ -81,5 +81,9 @@
   "themes.confirm_save": "Save this topic's words on the LIVE server? New news will be sorted by the new words, which may change automatic publication.",
   "themes.rollback_hint": "Rollback: 'Settings' tab - 'Roll back the last apply'.",
   "settings.warning": "Warning: applying changes the rules of live channels. It decides which news reach the Telegram channels and what is published automatically; a mistake can cause extra or missed posts. Run the 'what changes' probe first. Rollback restores the settings but does not remove posts already published.",
-  "themes.warning": "Warning: changing words changes which topics and channels new news will reach, so automatic publication may change. Check the words on examples; rollback restores the words but not posts already published."
+  "themes.warning": "Warning: changing words changes which topics and channels new news will reach, so automatic publication may change. Check the words on examples; rollback restores the words but not posts already published.",
+  "settings.digest_missing": "Could not verify the staged XLSX version. Refresh the settings panel.",
+  "settings.confirm_unprobed": "No completed matching probe exists for this XLSX. Apply without a probe?",
+  "settings.probe_stale": "This report may belong to another file or the probe failed. Do not rely on it when applying settings.",
+  "settings.probe_valid": "This report matches the currently checked XLSX. The probe does not apply any changes."
 }

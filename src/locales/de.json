@@ -81,5 +81,9 @@
   "themes.confirm_save": "Wörter dieses Themas auf dem LIVE-Server speichern? Neue Nachrichten werden nach den neuen Wörtern sortiert, was die automatische Veröffentlichung ändern kann.",
   "themes.rollback_hint": "Zurücknehmen: Tab „Einstellungen“ - „Letzte Anwendung zurücknehmen“.",
   "settings.warning": "Achtung: Das Anwenden ändert die Regeln der Live-Kanäle. Es bestimmt, welche Nachrichten in die Telegram-Kanäle gelangen und was automatisch veröffentlicht wird; ein Fehler kann zu zusätzlichen oder fehlenden Beiträgen führen. Führen Sie zuerst die Probe 'Was ändert sich' aus. Das Zurücknehmen stellt die Einstellungen wieder her, entfernt aber bereits veröffentlichte Beiträge nicht.",
-  "themes.warning": "Achtung: Änderungen an den Wörtern bestimmen, zu welchen Themen und Kanälen neue Nachrichten gelangen; die automatische Veröffentlichung kann sich ändern. Prüfen Sie die Wörter an Beispielen; das Zurücknehmen stellt die Wörter wieder her, nicht aber bereits veröffentlichte Beiträge."
+  "themes.warning": "Achtung: Änderungen an den Wörtern bestimmen, zu welchen Themen und Kanälen neue Nachrichten gelangen; die automatische Veröffentlichung kann sich ändern. Prüfen Sie die Wörter an Beispielen; das Zurücknehmen stellt die Wörter wieder her, nicht aber bereits veröffentlichte Beiträge.",
+  "settings.digest_missing": "Die Version der vorbereiteten XLSX konnte nicht bestätigt werden. Bitte Einstellungen neu laden.",
+  "settings.confirm_unprobed": "Für diese XLSX liegt keine abgeschlossene passende Probe vor. Ohne Probe anwenden?",
+  "settings.probe_stale": "Dieser Bericht kann zu einer anderen Datei gehören oder die Probe ist fehlgeschlagen. Nicht als Grundlage zum Anwenden verwenden.",
+  "settings.probe_valid": "Dieser Bericht gehört zur aktuell geprüften XLSX. Die Probe wendet keine Änderungen an."
 }

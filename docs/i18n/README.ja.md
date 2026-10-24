@@ -1,5 +1,10 @@
 # INFO Desktop
 
+## 安定版 0.1.2 と次期 0.1.3
+
+**現在公開中の安定版は 0.1.2 です。** Windows、Linux、macOS Intel／Apple Silicon 向けの [v0.1.2 をダウンロード](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.2)。現在の `main` には **未公開の 0.1.3 候補**（XLSX のエクスポート・検査・適用・ロールバック、48時間の変更シミュレーション、トピック別キーワード編集、古い結果の防止）が含まれています。INFO サーバー `20261024-1653` は導入済みですが、Desktop の完全な受入テストは未完了です。記事の保存・スキップ・延期・公開は Excel を経由せず、**サーバー API に直接**送られます。XLSX は自動ルールの設定専用です。Telegram への公開送信は未検証です。
+
+
 [Українська](../../README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Français](README.fr.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
 
 **INFO Desktop は INFO 互換サーバー向けのクロスプラットフォーム編集ワークステーションです。**
@@ -47,6 +52,6 @@ npm run tauri build
 
 ## リリース状況
 
-`0.1.2` ソースチェックポイントは `main` で承認済みです。公開 GitHub Release インストーラーは次のパッケージング段階です。
+`0.1.2` ソースチェックポイントは `main` で承認済みです。See release status above.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved. Proprietary software.**

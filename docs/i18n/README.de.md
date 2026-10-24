@@ -1,5 +1,10 @@
 # INFO Desktop
 
+## Version 0.1.2 und nächste Version 0.1.3
+
+**0.1.2 ist der neueste veröffentlichte stabile Download**. [v0.1.2 herunterladen](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.2) für Windows, Linux und macOS (Intel/Apple Silicon). Der aktuelle `main`-Zweig enthält einen **noch unveröffentlichten 0.1.3-Kandidaten**: XLSX-Export/Prüfung/Anwendung/Rücksetzung, 48-Stunden-Simulation, Themen-Schlüsselwörter und Schutz vor veralteten Simulationen. INFO-Server `20261024-1653` ist installiert; die vollständige Desktop-Abnahme fehlt noch. Redaktionelle Aktionen (Speichern/Überspringen/Zurückstellen/Veröffentlichen) laufen **direkt über die Server-API**, nicht über Excel. XLSX dient nur zur Konfiguration automatischer Regeln. Kein öffentlicher Telegram-Versand wurde abgenommen.
+
+
 [Українська](../../README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Français](README.fr.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
 
 **INFO Desktop ist ein plattformübergreifender Newsroom-Arbeitsplatz für INFO-kompatible Server.**
@@ -47,6 +52,6 @@ Siehe [Build](../BUILD.md), [Benutzerhandbuch](../guides/USER_MANUAL.md), [Proto
 
 ## Release-Status
 
-Der Quellcode-Checkpoint `0.1.2` ist in `main` akzeptiert. Öffentliche GitHub-Release-Installer sind der nächste Paketierungsschritt.
+Der Quellcode-Checkpoint `0.1.2` ist in `main` akzeptiert. See release status above.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). Alle Rechte vorbehalten. Proprietäre Software.**

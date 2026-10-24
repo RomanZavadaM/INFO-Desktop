@@ -1,0 +1,150 @@
+name: Release INFO Desktop 0.1.3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'VERSION.txt'
+      - 'docs/releases/RELEASE_NOTES_0.1.3.md'
+      - '.github/workflows/release-0.1.3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: info-desktop-release-0.1.3
+  cancel-in-progress: false
+
+env:
+  VERSION: 0.1.3
+  TAG: v0.1.3
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install
+      - run: npm run check
+      - run: npm run test:protocol
+      - run: npm run build
+      - name: Verify synchronized version
+        run: |
+          grep -Fx 'Version: 0.1.3' VERSION.txt
+          node -e "const p=require('./package.json'); if(p.version!=='0.1.3') process.exit(1)"
+          grep -F '"version": "0.1.3"' src-tauri/tauri.conf.json
+          grep -F 'version="0.1.3"' src-tauri/Cargo.toml
+
+  build-windows:
+    needs: verify
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm install
+      - run: npm run tauri build
+      - shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path artifact | Out-Null
+          Get-ChildItem src-tauri/target/release/bundle -Recurse -File |
+            Where-Object { $_.Extension -in '.exe','.msi' } |
+            ForEach-Object { Copy-Item $_.FullName (Join-Path artifact ($_.Name -replace ' ','-')) }
+          if (!(Get-ChildItem artifact -File | Select-Object -First 1)) { throw 'No Windows installer produced' }
+          Get-ChildItem artifact -File | ForEach-Object {
+            "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)"
+          } | Set-Content -Encoding ascii artifact/SHA256SUMS-Windows.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: INFO-Desktop-0.1.3-Windows-x64
+          path: artifact/
+          retention-days: 30
+
+  build-linux:
+    needs: verify
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: dtolnay/rust-toolchain@stable
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      - run: npm install
+      - run: npm run tauri build
+      - run: |
+          mkdir artifact
+          find src-tauri/target/release/bundle -type f \( -name '*.AppImage' -o -name '*.deb' \) | while read -r f; do cp "$f" "artifact/$(basename "$f" | tr ' ' '-')"; done
+          test -n "$(find artifact -type f -print -quit)"
+          (cd artifact && sha256sum * > SHA256SUMS-Linux.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: INFO-Desktop-0.1.3-Linux-x64
+          path: artifact/
+          retention-days: 30
+
+  build-macos:
+    needs: verify
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            arch: arm64
+          - runner: macos-15-intel
+            arch: x86_64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: dtolnay/rust-toolchain@stable
+      - run: test "$(uname -m)" = "${{ matrix.arch }}"
+      - run: npm install
+      - run: npm run tauri build
+      - run: |
+          mkdir artifact
+          app=$(find src-tauri/target/release/bundle/macos -maxdepth 1 -name '*.app' -print -quit)
+          test -n "$app"
+          /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$app" "artifact/INFO-Desktop_0.1.3_macOS_${{ matrix.arch }}_Portable.zip"
+          dmg=$(find src-tauri/target/release/bundle/dmg -maxdepth 1 -name '*.dmg' -print -quit 2>/dev/null || true)
+          if [ -n "$dmg" ]; then cp "$dmg" "artifact/INFO-Desktop_0.1.3_macOS_${{ matrix.arch }}.dmg"; fi
+          (cd artifact && shasum -a 256 * > "SHA256SUMS-macOS-${{ matrix.arch }}.txt")
+      - uses: actions/upload-artifact@v4
+        with:
+          name: INFO-Desktop-0.1.3-macOS-${{ matrix.arch }}
+          path: artifact/
+          retention-days: 30
+
+  release:
+    needs: [build-windows, build-linux, build-macos]
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: INFO-Desktop-0.1.3-*
+          path: release-assets
+          merge-multiple: true
+      - name: Show release assets
+        run: find release-assets -maxdepth 1 -type f -printf '%f\n' | sort
+      - name: Publish GitHub Release
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; replacing assets and notes."
+            gh release upload "$TAG" release-assets/* --clobber
+            gh release edit "$TAG" --title "INFO Desktop 0.1.3" --notes-file docs/releases/RELEASE_NOTES_0.1.3.md
+          else
+            gh release create "$TAG" release-assets/*               --target "$GITHUB_SHA"               --title "INFO Desktop 0.1.3"               --notes-file docs/releases/RELEASE_NOTES_0.1.3.md
+          fi
