@@ -81,5 +81,9 @@
   "themes.confirm_save": "¿Guardar las palabras de este tema en el servidor EN VIVO? Las noticias nuevas se clasificarán con las palabras nuevas, lo que puede cambiar la publicación automática.",
   "themes.rollback_hint": "Revertir: pestaña «Ajustes» - «Revertir la última aplicación».",
   "settings.warning": "Atención: aplicar cambia las reglas de los canales en vivo. Decide qué noticias llegan a los canales de Telegram y qué se publica automáticamente; un error puede provocar publicaciones de más o de menos. Ejecute primero la prueba 'qué cambia'. La reversión restaura los ajustes pero no elimina las publicaciones ya hechas.",
-  "themes.warning": "Atención: cambiar las palabras cambia a qué temas y canales llegarán las noticias nuevas, por lo que puede cambiar la publicación automática. Compruebe las palabras con ejemplos; la reversión restaura las palabras pero no las publicaciones ya hechas."
+  "themes.warning": "Atención: cambiar las palabras cambia a qué temas y canales llegarán las noticias nuevas, por lo que puede cambiar la publicación automática. Compruebe las palabras con ejemplos; la reversión restaura las palabras pero no las publicaciones ya hechas.",
+  "settings.digest_missing": "No se pudo verificar la versión del XLSX preparado. Actualice la configuración.",
+  "settings.confirm_unprobed": "No hay una prueba completada que corresponda a este XLSX. ¿Aplicar sin prueba?",
+  "settings.probe_stale": "Este informe puede corresponder a otro archivo o la prueba ha fallado. No lo utilice para decidir la aplicación.",
+  "settings.probe_valid": "Este informe corresponde al XLSX verificado actualmente. La prueba no aplica cambios."
 }
