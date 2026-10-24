@@ -2,7 +2,11 @@
 
 > ⬇️ **Завантажити INFO Desktop 0.1.3**: [**Windows EXE / MSI · Linux AppImage / DEB · macOS Intel / Apple Silicon**](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3)
 
-## Стан розробки після релізу 0.1.2
+**Мови / Languages / Sprachen / Idiomas / Langues / 언어 / 言語**
+
+[Українська](README.md) · [English](docs/i18n/README.en.md) · [Deutsch](docs/i18n/README.de.md) · [Español](docs/i18n/README.es.md) · [Français](docs/i18n/README.fr.md) · [한국어](docs/i18n/README.ko.md) · [日本語](docs/i18n/README.ja.md)
+
+## Можливості версії 0.1.3
 
 **Ці функції увійшли до опублікованої версії 0.1.3:**
 - вкладка **Налаштування**: експорт XLSX, перевірка без застосування, підтверджене застосування та відкат;
@@ -13,8 +17,6 @@
 **Важливо:** ручні дії редактора (зберегти, пропустити, відкласти, опублікувати) йдуть **Desktop → API INFO**, а не через Excel. XLSX використовується тільки для налаштувань автоматичних правил. Для функцій потрібен сумісний сервер; оператор підтвердив встановлення INFO LIVE `20261024-1653` 24.10.2026. Повне приймання XLSX із встановленого Desktop ще не проведено. Публічну тестову публікацію не виконували.
 
 
-
-[Українська](README.md) · [English](docs/i18n/README.en.md) · [Deutsch](docs/i18n/README.de.md) · [Español](docs/i18n/README.es.md) · [Français](docs/i18n/README.fr.md) · [한국어](docs/i18n/README.ko.md) · [日本語](docs/i18n/README.ja.md)
 
 > Українська — основна й канонічна мова проєкту. Інтерфейс і публічна документація підтримуються сімома мовами за тією самою моделлю, що й у Taxo.
 
