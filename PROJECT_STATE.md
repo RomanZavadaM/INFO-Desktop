@@ -1,3 +1,11 @@
+## АКТУАЛЬНИЙ СТАН — 24.10.2026
+- Стабільний Desktop **v0.1.3**: https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3 (8 інсталяторів/пакетів та 4 SHA256).
+- Візуальний редактор PR #12 злито в main (8daa226f209258af36facd45d91df63bf315343d), але він **не входить** у v0.1.3.
+- INFO server LIVE **20261024-1653** за журналом оператора; відкат `/root/backup/info-20261024-174402/rollback.sh`.
+- Відкрито: приймання Windows WebView2, XLSX end-to-end; не проводити Telegram SEND чи серверних змін без окремої вказівки.
+- Нижчі записи — історичні, навіть якщо містять застарілі твердження про поточну версію.
+- Архівний реєстр: [docs/ARCHIVES_AND_BACKUPS.md](docs/ARCHIVES_AND_BACKUPS.md).
+
 ## 2026-10-24 — Visual editor merged (unreleased)
 - PR #12 merged into `main` as `8daa226f209258af36facd45d91df63bf315343d` after all seven PR checks succeeded (frontend, docs, Rust, Windows, Linux, macOS arm64/x86_64).
 - Rich-text editing, HTML source switch, paste-as-plain-text, selection-aware formatting, recursive HTML sanitization, seven UI localizations. Server draft HTML protocol unchanged.
