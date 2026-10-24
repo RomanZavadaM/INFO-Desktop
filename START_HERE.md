@@ -1,3 +1,9 @@
+## Checkpoint 2026-10-24 — Desktop v0.1.3 published
+- PR #11 merged into main as `ce75608701f3573b03d1ad130b1eaf24bc07d021`; release workflow run `40104833679` finished success.
+- GitHub Release: https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3 (8 application assets + 4 SHA256SUMS).
+- Seven UI languages and seven README variants updated. Server INFO LIVE `20261024-1653` confirmed by operator; full Desktop XLSX acceptance and public Telegram publish test still pending.
+- Older below checkpoints are historical, not current status.
+
 # START_HERE — INFO Desktop
 
 ## Checkpoint 2026-10-24 — XLSX safety
