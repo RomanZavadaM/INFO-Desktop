@@ -1,3 +1,10 @@
+## ВИПУСК ПІДТВЕРДЖЕНО — 2026-10-24
+- **GitHub stable release v0.1.4 опублікований**: https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4 (prerelease=false, published 2026-10-24T20:25:03Z). Release Actions #40128755256: verify, Windows, Linux, macOS arm64/x86_64, publish — ВСЕ SUCCESS.
+- 8 пакетів: Windows EXE/MSI; Linux AppImage/DEB; macOS arm64/x86_64 DMG і Portable ZIP. 4 SHA256SUMS. Прямий Windows EXE: https://github.com/RomanZavadaM/INFO-Desktop/releases/download/v0.1.4/INFO-Desktop_0.1.4_x64-setup.exe
+- PR #15 (timestamp XLSX download) та PR #16 (stable release) злиті в main; перший пройшов 7/7 CI.
+- XLSX HTTP 413 server gateway відновлено; незмінений XLSX перевірено користувачем, **НЕ застосовано**; INFO LIVE `20261024-1653` без змін, errors 0 після restart gateway.
+- Залишається ручне приймання Windows WebView2 UX редактора та швидкості черги, пізніші можливості з окремого платформного проєкту потребують звірення його оновленого плану.
+
 ## Контрольна точка — INFO Desktop v0.1.4, 24.10.2026
 - Ціль релізу: stable v0.1.4, окремий GitHub Release з 8 пакетами Windows/Linux/macOS та 4 SHA256.
 - Візуальний редактор PR #12, Windows console fix PR #13, timestamp XLSX export PR #15.
