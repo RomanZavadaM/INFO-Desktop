@@ -1,0 +1,53 @@
+name: Publish INFO Desktop 0.1.4-1 Windows test installers
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/test-release-windows-0.1.4-1.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm install
+      - run: npm run check
+      - run: npm run test:protocol
+      - run: npm run tauri build -- --bundles nsis,msi
+      - shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path artifact | Out-Null
+          Get-ChildItem src-tauri/target/release/bundle -Recurse -File |
+            Where-Object { $_.Extension -in '.exe','.msi' } |
+            ForEach-Object { Copy-Item $_.FullName (Join-Path artifact ($_.Name -replace ' ','-')) }
+          if (!(Get-ChildItem artifact -File | Select-Object -First 1)) { throw 'No Windows installer produced' }
+          Get-ChildItem artifact -File | ForEach-Object {
+            "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)"
+          } | Set-Content -Encoding ascii artifact/SHA256SUMS-Windows.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: INFO-Desktop-0.1.4-1-Windows-x64
+          path: artifact/
+          retention-days: 30
+  publish-test-release:
+    needs: build-windows
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: INFO-Desktop-0.1.4-1-Windows-x64
+          path: artifact
+      - run: |
+          if gh release view v0.1.4-1 >/dev/null 2>&1; then
+            gh release upload v0.1.4-1 artifact/* --clobber
+            gh release edit v0.1.4-1 --prerelease
+          else
+            gh release create v0.1.4-1 artifact/* --prerelease --target "$GITHUB_SHA" --title "INFO Desktop 0.1.4-1 (test)" --notes-file docs/releases/RELEASE_NOTES_0.1.4-1.md
+          fi
