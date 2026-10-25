@@ -1,5 +1,7 @@
 # INFO Desktop — Product status
 
+Source development after stable v0.1.4: **0.1.5 / development** is unreleased. Stable downloads remain v0.1.4. The 0.1.5 source adds a faster queue workflow, progressive full-queue loading, search/bucket filtering, explicit refresh, Save & next and unsaved-change protection. INFO server/API is unchanged. Manual Windows acceptance of stable v0.1.4 remains pending.
+
 Current stable: **v0.1.4** (24 October 2026).  
 Release: https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4  
 Release workflow **40128755256: SUCCESS**. Eight application packages plus four SHA256 files are published for Windows, Linux and macOS.

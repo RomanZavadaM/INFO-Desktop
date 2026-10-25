@@ -1,5 +1,12 @@
 # INFO Desktop — стан продукту
 
+## Source development після stable v0.1.4
+- Поточна source-версія наступного етапу: **0.1.5 / development**.
+- **0.1.5 ще не є GitHub Release.** Стабільний завантажуваний реліз лишається **v0.1.4**.
+- У source 0.1.5: швидший редакційний цикл без повного queue reload після кожної дії, progressive full-queue loading, пошук і bucket-фільтр, явний refresh, «Зберегти й далі», перехід після Publish/Skip/Defer та unsaved-change guard.
+- INFO server/API не змінювалися.
+- Manual Windows acceptance stable v0.1.4 досі окремо не закрите.
+
 ## Поточний стан — 25.10.2026
 - Версія: **0.1.4**
 - Default branch: `main`
