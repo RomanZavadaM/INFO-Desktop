@@ -46,6 +46,6 @@ npm run tauri build
 
 ## リリース状況
 
-`0.1.2` ソースチェックポイントは `main` で承認済みです。See release status above.
+現在の安定版は **v0.1.4** です。Windows、Linux、macOS 向け GitHub Release は公開済みです。新しいビジュアルエディターの Windows WebView2 手動受入確認は未完了です。
 
 **Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved. Proprietary software.**

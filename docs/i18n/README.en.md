@@ -46,6 +46,6 @@ See [Build](../BUILD.md), [User manual](../guides/USER_MANUAL.md), [Protocol](..
 
 ## Release status
 
-Source checkpoint `0.1.2` is accepted in `main`. See release status above.
+Current stable is **v0.1.4**. GitHub Release is published for Windows, Linux and macOS. Manual Windows WebView2 acceptance of the new visual editor is still pending.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved. Proprietary software.**

@@ -46,6 +46,6 @@ npm run tauri build
 
 ## 릴리스 상태
 
-`0.1.2` 소스 체크포인트는 `main`에서 승인되었습니다. See release status above.
+현재 안정 버전은 **v0.1.4**입니다. Windows, Linux, macOS용 GitHub Release가 게시되었습니다. 새 시각적 편집기의 Windows WebView2 수동 검수는 아직 남아 있습니다.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved. Proprietary software.**

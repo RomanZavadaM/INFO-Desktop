@@ -14,14 +14,16 @@
 - Для наступного чату: відкрити `START_HERE.md`, `PROJECT_STATE.md`, `WORKLOG.md`, звірити GitHub `main`, відкриті PR, GitHub Actions і GitHub Release, уточнити фактичну точку.
 - Ручний Windows WebView2 UX тест редактора лишається окремим прийманням навіть після green CI.
 
-## АКТУАЛЬНЕ ОНОВЛЕННЯ — тестовий реліз 0.1.4-1, 24.10.2026
+## ІСТОРІЯ — тестовий реліз 0.1.4-1, 24.10.2026
+
+> Усе нижче до наступного явно позначеного актуального блоку є історією розвитку. Поточний stable стан визначає верхній блок про v0.1.4 і фактичний GitHub Release.
 - **Опублікований Windows pre-release:** https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4-1 (EXE, MSI, SHA256). Workflow `40124584839`: Windows build і publish SUCCESS.
 - Пряма інсталяція Windows: https://github.com/RomanZavadaM/INFO-Desktop/releases/download/v0.1.4-1/INFO-Desktop_0.1.4-1_x64-setup.exe
 - PR #14 злито в main як `2cd9f97d07354b357e6bcf88b3ba1186e8ab1fb5`: версії та артефакти синхронізовано, Linux RPM виключено з тестового пакування. Windows і Linux PR checks SUCCESS. Платформні macOS роботи можуть ще залишатися в черзі; не заявляти повний multiplatform release до перевірки.
 - **Стабільна версія досі 0.1.3.** Тестова 0.1.4-1 включає візуальний редактор PR #12 та приховану консоль у Windows PR #13, але фактичний Windows UI acceptance на ПК користувача ще не проведено.
 - INFO server LIVE `20261024-1653` без змін. Ніяких Telegram SEND не виконували.
 
-## ФІНАЛЬНА КОНТРОЛЬНА ТОЧКА — 24.10.2026
+## ІСТОРІЯ — стан перед випуском v0.1.4, 24.10.2026
 - Усі відкриті на початку завершення PR перевірені; **PR #13 злито в `main`** squash-комітом `7aacfbb1253c3977504d906d09da4fbdc4f99700` після **7/7 SUCCESS** (Rust, frontend, docs, Windows, Linux, macOS arm64/x86_64).
 - Причина зайвого вікна консолі: Windows release EXE не мав `windows_subsystem = "windows"`. Виправлено лише для non-debug build у `src-tauri/src/main.rs`. Це працюватиме **тільки в наступному зібраному інсталяторі**; встановлена v0.1.3 не оновлюється автоматично.
 - Новий візуальний редактор PR #12 раніше злито, але він також лише у коді `main`; фактичний Windows WebView2 acceptance потрібен перед новим релізом.
@@ -30,7 +32,7 @@
 - Ніяких тестових Telegram SEND, серверних deploy, чистки резервних копій, переміщення Storage Box.
 - Подальші кроки: Windows тест нового редактора, перевірка зникнення консолі з нової debug/release збірки, XLSX end-to-end без застосування, потім рішення щодо випуску наступної версії.
 
-## КОНТРОЛЬНА ТОЧКА — 24.10.2026, завершення сесії
+## ІСТОРІЯ — завершення попередньої сесії 24.10.2026
 - Стабільний реліз **v0.1.3** лишається опублікованим; візуальний редактор PR #12 уже в `main` (merge `8daa226f209258af36facd45d91df63bf315343d`), але в 0.1.3 його немає.
 - Прибирання зайвого консольного вікна Windows: PR #13 `fix/windows-console-hidden-release-20261024`, стандартний `windows_subsystem=windows` лише для release, розробницька консоль збережена. PR зливати лише після повних перевірок; до нового інсталятора виправлення не дійде.
 - Плани інших платформ належать **окремому проєкту** та вже переглянуті там. Не вважати локальні пропозиції Desktop авторитетними; перед розвитком Facebook/TikTok перечитати актуальні рішення того проєкту, звірити ролі Desktop і сервера.
@@ -38,7 +40,7 @@
 - Перед новим Desktop release: Windows WebView2 практична перевірка редактора (виділення/посилання/цитати/вставлення/збереження); перегляд релізних збірок; документація і 7 мов; XLSX end-to-end тільки без apply.
 - Документи: `docs/ARCHIVES_AND_BACKUPS.md`, `docs/releases/HANDOFF_20261024.md`, `docs/roadmap/ROADMAP.md`.
 
-## АКТУАЛЬНИЙ СТАН — 24.10.2026
+## ІСТОРІЯ — стан до stable v0.1.4, 24.10.2026
 - Стабільний Desktop **v0.1.3**: https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3 (8 інсталяторів/пакетів та 4 SHA256).
 - Візуальний редактор PR #12 злито в main (8daa226f209258af36facd45d91df63bf315343d), але він **не входить** у v0.1.3.
 - INFO server LIVE **20261024-1653** за журналом оператора; відкат `/root/backup/info-20261024-174402/rollback.sh`.
@@ -67,9 +69,9 @@
 
 Перед змінами прочитати `PROJECT_RULES.md`, `PROJECT_STATE.md`, `WORKLOG.md`, перевірити фактичний GitHub: main, PR, CI, releases.
 
-## Контрольний стан
+## ІСТОРИЧНИЙ контрольний стан
 - Repository: `RomanZavadaM/INFO-Desktop`
-- Version: `0.1.2`, GitHub Release v0.1.2 опубліковано 2026-10-22 (Windows/Linux/macOS ARM64/Intel + SHA256; відомо: Windows-файл сум має CRLF)
+- Version на той момент: `0.1.2`, GitHub Release v0.1.2 опубліковано 2026-10-22 (Windows/Linux/macOS ARM64/Intel + SHA256; відомо: Windows-файл сум має CRLF)
 - PR #1 merged
 - Production acceptance against INFO `20261020-2040`: passed
 - Manual create: verified end-to-end
@@ -99,7 +101,7 @@
 ## Оновлення 2026-10-22 (ніч)
 Злито в main: вкладка «Налаштування» (XLSX: експорт, перевірка, застосування, відкат; PR #7) разом із серверною частиною INFO (PR #28, схема 32, права `settings.read/write`). Опублікований реліз - 0.1.2; наступний 0.1.3 з вкладкою «Налаштування». Далі: проба з Desktop окремою службою, редактор тем.
 
-## Next
+## ІСТОРИЧНИЙ план на той момент
 1. ~~Reconcile private INFO server PR #18~~ - зроблено 21.10 (INFO `main` `fed3ee98`); LIVE INFO тепер `20261022-1730`.
 2. Acceptance Desktop 0.1.1 на INFO `20261022-1730` (підключення, черга, канали «Новини» і «Тривоги» як типи `stream`/`alert`).
 3. Нові серверні функції для Desktop: «Чому» (пояснення рішення каналу) і «Що зміниться» (проба XLSX-файлу) - `docs/roadmap/ROADMAP.md`.
