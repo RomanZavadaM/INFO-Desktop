@@ -89,5 +89,14 @@
   "editor.visual": "Візуальний редактор",
   "editor.html": "HTML-код",
   "editor.toolbar": "Панель форматування",
-  "editor.link_prompt": "Адреса посилання (https://...)"
+  "editor.link_prompt": "Адреса посилання (https://...)",
+  "queue.search": "Пошук",
+  "queue.search_placeholder": "Заголовок, канал або ID…",
+  "queue.bucket": "Група черги",
+  "queue.bucket_all": "Усі групи",
+  "queue.refresh": "Оновити чергу",
+  "queue.unsaved": "незбережено",
+  "queue.discard_confirm": "Є незбережені зміни. Відкинути їх і перейти далі?",
+  "action.save_next": "Зберегти й далі",
+  "notice.queue_refreshed": "Чергу оновлено"
 }

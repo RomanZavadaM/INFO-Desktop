@@ -1,12 +1,8 @@
 name: Release INFO Desktop 0.1.4
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'VERSION.txt'
-      - 'docs/releases/RELEASE_NOTES_0.1.4.md'
-      - '.github/workflows/release-0.1.4.yml'
+  # v0.1.4 is already published. Keep this historical workflow manual-only so
+  # post-release development cannot accidentally republish the old version.
   workflow_dispatch:
 
 permissions:

@@ -89,5 +89,14 @@
   "editor.visual": "Éditeur visuel",
   "editor.html": "Code HTML",
   "editor.toolbar": "Barre de mise en forme",
-  "editor.link_prompt": "Adresse du lien (https://...)"
+  "editor.link_prompt": "Adresse du lien (https://...)",
+  "queue.search": "Rechercher",
+  "queue.search_placeholder": "Titre, canal ou ID…",
+  "queue.bucket": "Groupe de file",
+  "queue.bucket_all": "Tous les groupes",
+  "queue.refresh": "Actualiser la file",
+  "queue.unsaved": "non enregistré",
+  "queue.discard_confirm": "Des modifications ne sont pas enregistrées. Les abandonner et continuer ?",
+  "action.save_next": "Enregistrer et suivant",
+  "notice.queue_refreshed": "File actualisée"
 }

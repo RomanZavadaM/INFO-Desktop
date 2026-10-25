@@ -1,3 +1,11 @@
+## 25.10.2026 — наступний редакційний цикл
+- Після документаційного узгодження v0.1.4 розпочато source **0.1.5 development**.
+- Причина гальмування в Desktop знайдена в клієнті: після кожного Save/Publish/Skip/Defer виконувався повторний handshake + channels + повний paginated queue load.
+- Виправлення: повне завантаження лишається для connect/manual refresh/create reconciliation; звичайні редакційні дії оновлюють локальну чергу і точково читають item detail.
+- Додані пошук, bucket-фільтр, progressive queue display, save-and-next та захист незбережених змін.
+- INFO server, nginx, VPN, Telegram і Storage Box не змінювалися.
+- Manual Windows acceptance stable v0.1.4 не позначати завершеним без фактичної перевірки користувачем.
+
 ## ВИПУСК ПІДТВЕРДЖЕНО — 2026-10-24
 - **GitHub stable release v0.1.4 опублікований**: https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4 (prerelease=false, published 2026-10-24T20:25:03Z). Release Actions #40128755256: verify, Windows, Linux, macOS arm64/x86_64, publish — ВСЕ SUCCESS.
 - 8 пакетів: Windows EXE/MSI; Linux AppImage/DEB; macOS arm64/x86_64 DMG і Portable ZIP. 4 SHA256SUMS. Прямий Windows EXE: https://github.com/RomanZavadaM/INFO-Desktop/releases/download/v0.1.4/INFO-Desktop_0.1.4_x64-setup.exe

@@ -1,5 +1,7 @@
 # INFO Desktop
 
+**Desarrollo después de stable:** `main` pasa al source **0.1.5 (development)**. Todavía no es un Release; los instaladores descargables siguen siendo el v0.1.4 verificado.
+
 **INFO Desktop v0.1.4 estable — Windows / Linux / macOS:** [Descargar instaladores](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4). Editor visual, sin consola de Windows y exportaciones XLSX con fecha y hora.
 
 

@@ -63,8 +63,8 @@ function VisualTextEditor({html,onChange,t}:{html:string;onChange:(value:string)
  return <div className="visual-editor-shell">
   <div className="format-toolbar" role="toolbar" aria-label={t("editor.toolbar")}>
    <button type="button" disabled={showHtml} onMouseDown={e=>{e.preventDefault();rememberSelection()}} onClick={()=>format("bold")} aria-label="Bold"><b>B</b></button>
-   <button type="button" onMouseDown={e=>e.preventDefault()} onClick={()=>format("italic")} aria-label="Italic"><i>I</i></button>
-   <button type="button" onMouseDown={e=>e.preventDefault()} onClick={()=>format("underline")} aria-label="Underline"><u>U</u></button>
+   <button type="button" disabled={showHtml} onMouseDown={e=>e.preventDefault()} onClick={()=>format("italic")} aria-label="Italic"><i>I</i></button>
+   <button type="button" disabled={showHtml} onMouseDown={e=>e.preventDefault()} onClick={()=>format("underline")} aria-label="Underline"><u>U</u></button>
    <button type="button" disabled={showHtml} onMouseDown={e=>{e.preventDefault();rememberSelection()}} onClick={()=>{area.current?.focus();restoreSelection();document.execCommand("formatBlock",false,"blockquote");serialize()}}>{t("format.quote")}</button>
    <button type="button" disabled={showHtml} onMouseDown={e=>{e.preventDefault();rememberSelection()}} onClick={insertLink}>{t("format.link")}</button>
    <button type="button" className="mode-switch" onClick={()=>{if(!showHtml)serialize();setShowHtml(!showHtml)}} aria-pressed={showHtml}>{showHtml?t("editor.visual"):t("editor.html")}</button>
@@ -73,7 +73,7 @@ function VisualTextEditor({html,onChange,t}:{html:string;onChange:(value:string)
    ?<textarea className="text-editor" value={html} onChange={e=>{last.current=e.target.value;onChange(e.target.value)}} aria-label={t("editor.html")}/>
    :<div ref={area} className="visual-text-editor" contentEditable suppressContentEditableWarning
        role="textbox" aria-label={t("editor.visual")} aria-multiline="true"
-       onInput={serialize} onKeyUp={rememberSelection} onMouseUp={rememberSelection} onBlur={serialize} onPaste={e=>{e.preventDefault();document.execCommand("insertText",false,e.clipboardData.getData("text/plain"))}}/>}
+       onInput={serialize} onKeyUp={rememberSelection} onMouseUp={rememberSelection} onBlur={serialize} onPaste={e=>{e.preventDefault();document.execCommand("insertText",false,e.clipboardData.getData("text/plain"));serialize()}}/>}
  </div>;
 }
 
@@ -180,26 +180,47 @@ export function App(){
  const[editTitle,setEditTitle]=useState("");const[editText,setEditText]=useState("");const[editChannel,setEditChannel]=useState("");
  const[creating,setCreating]=useState(false);const[newTitle,setNewTitle]=useState("");const[newText,setNewText]=useState("");const[newChannel,setNewChannel]=useState("");const[newUrl,setNewUrl]=useState("");
  const[why,setWhy]=useState<Why|null>(null);const[view,setView]=useState<"queue"|"settings"|"themes">("queue");
+ const[queueSearch,setQueueSearch]=useState("");const[queueBucket,setQueueBucket]=useState("*");
  const client=useMemo(()=>new InfoServerClient(server.trim(),deviceId.trim(),serverCaDer),[server,deviceId,serverCaDer]);
- const visible=useMemo(()=>active==="*"?queue:queue.filter(i=>i.channel===active),[queue,active]);
+ const channelCounts=useMemo(()=>{const counts=new Map<string,number>();for(const item of queue)counts.set(item.channel,(counts.get(item.channel)??0)+1);return counts},[queue]);
+ const buckets=useMemo(()=>Array.from(new Set(queue.map(i=>i.bucket).filter((v):v is string=>Boolean(v)))).sort(),[queue]);
+ const visible=useMemo(()=>{const needle=queueSearch.trim().toLocaleLowerCase();return queue.filter(i=>{
+  if(active!=="*"&&i.channel!==active)return false;
+  if(queueBucket!=="*"&&i.bucket!==queueBucket)return false;
+  if(!needle)return true;
+  return [i.id,i.title,i.channel,i.channel_name,i.bucket].some(v=>String(v??"").toLocaleLowerCase().includes(needle));
+ })},[queue,active,queueBucket,queueSearch]);
+ const dirty=Boolean(selected)&&(editTitle!==(selected?.title??"")||editText!==(selected?.draft_text??"")||editChannel!==(selected?.channel??""));
  useEffect(()=>{setWhy(null);setEditTitle(selected?.title??"");setEditText(selected?.draft_text??"");setEditChannel(selected?.channel??"")},[selected]);
+ useEffect(()=>{if(!dirty)return;const beforeUnload=(e:BeforeUnloadEvent)=>{e.preventDefault();e.returnValue=""};window.addEventListener("beforeunload",beforeUnload);return()=>window.removeEventListener("beforeunload",beforeUnload)},[dirty]);
 
+ function confirmDiscard(){return !dirty||window.confirm(t("queue.discard_confirm"))}
+ function nextVisibleAfter(id:string|number){const idx=visible.findIndex(x=>String(x.id)===String(id));if(idx<0)return visible[0]??null;return visible[idx+1]??visible[idx-1]??null}
+ function replaceQueueDetail(detail:ItemDetail){setQueue(prev=>prev.map(x=>String(x.id)===String(detail.id)?{...x,...detail}:x))}
  async function load(prefer?:string|number){
-  const[h,ch,q]=await Promise.all([client.handshake(),client.channels(),client.queueAll()]);
+  const[h,ch,q]=await Promise.all([client.handshake(),client.channels(),client.queueAll(100,100,p=>setQueue(p.items))]);
   setHello(h);setChannels(ch);setQueue(q.items);
   const target=(prefer!==undefined?q.items.find(x=>String(x.id)===String(prefer)):q.items[0])??q.items[0];
   setSelected(target?await client.item(target.id):null);
   if(!newChannel&&ch[0])setNewChannel(ch[0].code);
  }
- async function connect(){if(!server.trim()){setError(t("error.no_server"));return}setBusy(true);setError("");setNotice("");try{
+ async function reloadQueue(prefer?:string|number){
+  const[ch,q]=await Promise.all([client.channels(),client.queueAll(100,100,p=>setQueue(p.items))]);
+  setChannels(ch);setQueue(q.items);
+  const target=(prefer!==undefined?q.items.find(x=>String(x.id)===String(prefer)):undefined)??q.items[0];
+  setSelected(target?await client.item(target.id):null);
+  if(!newChannel&&ch[0])setNewChannel(ch[0].code);
+ }
+ async function refreshQueue(){if(!confirmDiscard())return;setBusy(true);setError("");setNotice("");try{await reloadQueue(selected?.id);setNotice(t("notice.queue_refreshed"))}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
+ async function connect(){if(!server.trim()){setError(t("error.no_server"));return}if(hello&&!confirmDiscard())return;setBusy(true);setError("");setNotice("");try{
    if(deviceId&&credentialExpiry){const exp=new Date(credentialExpiry).getTime();if(Number.isFinite(exp)&&exp<=Date.now()+7*86400000){const rotated=await rotateDeviceCredential(server.trim(),deviceId,serverCaDer);setCredentialExpiry(rotated.credential_expires_at);localStorage.setItem("info-desktop-credential-expiry",rotated.credential_expires_at)}}
    await load();
   }catch(e){setHello(null);setChannels([]);setQueue([]);setSelected(null);setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
- async function open(i:QueueItem){setBusy(true);setError("");try{setSelected(await client.item(i.id))}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
- async function act(fn:()=>Promise<unknown>,message:string){setBusy(true);setError("");setNotice("");try{await fn();setNotice(message);await load()}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
+ async function open(i:QueueItem){if(String(selected?.id)===String(i.id))return;if(!confirmDiscard())return;setBusy(true);setError("");try{setSelected(await client.item(i.id))}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
+ async function actAndAdvance(fn:()=>Promise<unknown>,message:string){if(!selected)return;const currentId=selected.id;const next=nextVisibleAfter(currentId);setBusy(true);setError("");setNotice("");try{await fn();setQueue(prev=>prev.filter(x=>String(x.id)!==String(currentId)));setNotice(message);setSelected(next&&String(next.id)!==String(currentId)?await client.item(next.id):null)}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function loadWhy(){if(!selected)return;setBusy(true);setError("");try{setWhy(await client.why(selected.id,editChannel||selected.channel))}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
- async function save(){if(!selected)return;setBusy(true);setError("");setNotice("");try{const r=await client.save(selected.id,{title:editTitle,draft_text:editText,channel:editChannel});setNotice(t("notice.saved"));await load(r.item_id)}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
- async function createNew(){setBusy(true);setError("");setNotice("");try{const r=await client.create({title:newTitle,draft_text:newText,channel:newChannel,url:newUrl});setCreating(false);setNewTitle("");setNewText("");setNewUrl("");setNotice(t("notice.created"));await load(r.item_id)}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
+ async function save(advance=false){if(!selected)return;const currentId=selected.id;const next=advance?nextVisibleAfter(currentId):null;setBusy(true);setError("");setNotice("");try{const r=await client.save(currentId,{title:editTitle,draft_text:editText,channel:editChannel});const saved=await client.item(r.item_id);replaceQueueDetail(saved);setNotice(t("notice.saved"));setSelected(advance&&next&&String(next.id)!==String(currentId)?await client.item(next.id):saved)}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
+ async function createNew(){setBusy(true);setError("");setNotice("");try{const r=await client.create({title:newTitle,draft_text:newText,channel:newChannel,url:newUrl});setCreating(false);setNewTitle("");setNewText("");setNewUrl("");setNotice(t("notice.created"));await reloadQueue(r.item_id)}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}}
  async function importRegistrationFile(file:File|undefined){if(!file)return;setError("");try{const parsed=await importRegistration(await file.text());setRegistration(parsed);const serverUrl=`https://${parsed.server}:${parsed.port}`;setServer(serverUrl);setServerCertificateDer(parsed.server_ca_der);localStorage.setItem("info-desktop-server",serverUrl);localStorage.setItem("info-desktop-server-cert",parsed.server_ca_der);const activated=await activateRegistration(parsed,"INFO Desktop");setDeviceId(activated.device_id);setCredentialExpiry(activated.credential_expires_at);localStorage.setItem("info-desktop-device-id",activated.device_id);localStorage.setItem("info-desktop-credential-expiry",activated.credential_expires_at)}catch(e){setRegistration(null);setError(e instanceof Error?e.message:String(e))}}
  function lang(v:Language){setLanguage(v);localStorage.setItem("info-desktop-language",v)}
  const media=selected?.materials?.flatMap(m=>m.media??[])??[];
@@ -219,14 +240,14 @@ export function App(){
   {view==="settings"&&hello&&<SettingsPanel client={client} t={t} onError={setError}/>}
   {view==="themes"&&hello&&<ThemesPanel client={client} t={t} onError={setError}/>}
   {view==="queue"&&<section className="workspace">
-   <aside className="channels-pane"><h2>{t("channels.title")}</h2><button className={active==="*"?"channel active":"channel"} onClick={()=>setActive("*")}><span>{t("channels.all")}</span><strong>{queue.length}</strong></button>{channels.map(c=><button className={active===c.code?"channel active":"channel"} key={c.code} onClick={()=>setActive(c.code)}><span>{c.name}</span><strong>{c.pending??queue.filter(i=>i.channel===c.code).length}</strong></button>)}</aside>
-   <section className="queue-pane"><h2>{t("queue.title")}</h2><div className="queue-list">{visible.map(i=><button key={String(i.id)} className={String(selected?.id)===String(i.id)?"queue-row selected":"queue-row"} onClick={()=>open(i)}><span className="row-time">{fmt(i.first_published_at??i.created_at)}</span><span className="row-channel">{i.channel_name??i.channel}</span><span className="row-title">{i.title}</span><span className="row-meta">{i.bucket??""}{typeof i.quality_score==="number"?` · ${i.quality_score.toFixed(1)}`:""}{i.media_count?` · 📎 ${i.media_count}`:""}</span></button>)}</div></section>
+   <aside className="channels-pane"><h2>{t("channels.title")}</h2><button className={active==="*"?"channel active":"channel"} onClick={()=>setActive("*")}><span>{t("channels.all")}</span><strong>{queue.length}</strong></button>{channels.map(c=><button className={active===c.code?"channel active":"channel"} key={c.code} onClick={()=>setActive(c.code)}><span>{c.name}</span><strong>{channelCounts.get(c.code)??0}</strong></button>)}</aside>
+   <section className="queue-pane"><div className="queue-heading"><h2>{t("queue.title")}</h2><span>{visible.length} / {queue.length}</span></div><div className="queue-tools"><input value={queueSearch} onChange={e=>setQueueSearch(e.target.value)} placeholder={t("queue.search_placeholder")} aria-label={t("queue.search")}/><select value={queueBucket} onChange={e=>setQueueBucket(e.target.value)} aria-label={t("queue.bucket")}><option value="*">{t("queue.bucket_all")}</option>{buckets.map(b=><option key={b} value={b}>{b}</option>)}</select><button type="button" onClick={refreshQueue} disabled={busy}>{t("queue.refresh")}</button></div><div className="queue-list">{visible.length?visible.map(i=><button key={String(i.id)} className={String(selected?.id)===String(i.id)?"queue-row selected":"queue-row"} onClick={()=>open(i)} disabled={busy}><span className="row-time">{fmt(i.first_published_at??i.created_at)}</span><span className="row-channel">{i.channel_name??i.channel}</span><span className="row-title">{i.title}</span><span className="row-meta">{i.bucket??""}{typeof i.quality_score==="number"?` · ${i.quality_score.toFixed(1)}`:""}{i.media_count?` · 📎 ${i.media_count}`:""}</span></button>):<div className="empty">{t("queue.empty")}</div>}</div></section>
    <article className="detail-pane">{!selected?<div className="empty">{t("item.select")}</div>:<>
-    <div className="editor-head"><h2>{t("item.title")} #{selected.id}</h2><select value={editChannel} onChange={e=>setEditChannel(e.target.value)}>{channels.map(c=><option key={c.code} value={c.code}>{c.name}</option>)}</select></div>
+    <div className="editor-head"><h2>{t("item.title")} #{selected.id} {dirty&&<span className="dirty-mark">{t("queue.unsaved")}</span>}</h2><select value={editChannel} onChange={e=>setEditChannel(e.target.value)}>{channels.map(c=><option key={c.code} value={c.code}>{c.name}</option>)}</select></div>
     <input className="title-editor" value={editTitle} onChange={e=>setEditTitle(e.target.value)}/>
     <VisualTextEditor key={String(selected.id)} html={editText} onChange={setEditText} t={t}/>
     <div className="preview-label">{t("preview.telegram")}</div><TelegramPreview title={editTitle} html={editText} media={media} t={t}/>
-    <div className="actions sticky-actions"><button onClick={save} disabled={busy}>{t("action.save")}</button><button className="publish" onClick={()=>act(async()=>{const saved=await client.save(selected.id,{title:editTitle,draft_text:editText,channel:editChannel});await client.publish(saved.item_id)},t("notice.published"))} disabled={busy}>{t("action.publish")}</button><button className="ghost" onClick={()=>act(()=>client.defer(selected.id,60),t("notice.deferred"))} disabled={busy}>{t("action.defer_hour")}</button><button className="danger" onClick={()=>act(()=>client.skip(selected.id),t("notice.skipped"))} disabled={busy}>{t("action.skip")}</button></div>
+    <div className="actions sticky-actions"><button onClick={()=>save(false)} disabled={busy}>{t("action.save")}</button><button onClick={()=>save(true)} disabled={busy}>{t("action.save_next")}</button><button className="publish" onClick={()=>actAndAdvance(async()=>{const saved=await client.save(selected.id,{title:editTitle,draft_text:editText,channel:editChannel});await client.publish(saved.item_id)},t("notice.published"))} disabled={busy}>{t("action.publish")}</button><button className="ghost" onClick={()=>actAndAdvance(()=>client.defer(selected.id,60),t("notice.deferred"))} disabled={busy}>{t("action.defer_hour")}</button><button className="danger" onClick={()=>actAndAdvance(()=>client.skip(selected.id),t("notice.skipped"))} disabled={busy}>{t("action.skip")}</button></div>
     <div className="why-block"><button onClick={loadWhy} disabled={busy}>{t("why.button")}</button></div>{why&&<WhyPanel why={why} t={t}/>}
     <div className="detail-meta"><span>{t("item.channel")}: {selected.channel_name??selected.channel}</span><span>{selected.bucket}{typeof selected.quality_score==="number"?` · ${selected.quality_score.toFixed(1)}`:""}</span></div>
     {!!selected.materials?.length&&<section><h3>{t("sources.title")} · {selected.materials.length}</h3>{selected.materials.map((m,n)=><div className="source-card" key={String(m.id??n)}><strong>{m.source_name??m.source??"—"}</strong><span>{m.title??""}</span>{m.url&&<a href={m.url} target="_blank" rel="noreferrer">{m.url}</a>}<p>{m.translated_summary??m.summary??""}</p></div>)}</section>}
