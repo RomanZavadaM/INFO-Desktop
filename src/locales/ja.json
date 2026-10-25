@@ -89,5 +89,14 @@
   "editor.visual": "ビジュアル編集",
   "editor.html": "HTML ソース",
   "editor.toolbar": "書式ツールバー",
-  "editor.link_prompt": "リンク先 URL (https://...)"
+  "editor.link_prompt": "リンク先 URL (https://...)",
+  "queue.search": "検索",
+  "queue.search_placeholder": "タイトル、チャンネル、ID…",
+  "queue.bucket": "キューグループ",
+  "queue.bucket_all": "すべてのグループ",
+  "queue.refresh": "キューを更新",
+  "queue.unsaved": "未保存",
+  "queue.discard_confirm": "未保存の変更があります。破棄して続行しますか？",
+  "action.save_next": "保存して次へ",
+  "notice.queue_refreshed": "キューを更新しました"
 }

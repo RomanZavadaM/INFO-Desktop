@@ -89,5 +89,14 @@
   "editor.visual": "Visueller Editor",
   "editor.html": "HTML-Quelltext",
   "editor.toolbar": "Formatierungsleiste",
-  "editor.link_prompt": "Link-Adresse (https://...)"
+  "editor.link_prompt": "Link-Adresse (https://...)",
+  "queue.search": "Suchen",
+  "queue.search_placeholder": "Titel, Kanal oder ID…",
+  "queue.bucket": "Warteschlangengruppe",
+  "queue.bucket_all": "Alle Gruppen",
+  "queue.refresh": "Warteschlange aktualisieren",
+  "queue.unsaved": "nicht gespeichert",
+  "queue.discard_confirm": "Es gibt nicht gespeicherte Änderungen. Verwerfen und fortfahren?",
+  "action.save_next": "Speichern & weiter",
+  "notice.queue_refreshed": "Warteschlange aktualisiert"
 }

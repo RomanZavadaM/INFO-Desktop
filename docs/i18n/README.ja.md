@@ -1,5 +1,7 @@
 # INFO Desktop
 
+**Stable 後の開発:** `main` は source **0.1.5 (development)** に進みます。まだ Release ではなく、ダウンロード用インストーラーは検証済み v0.1.4 のままです。
+
 **INFO Desktop v0.1.4 安定版 — Windows / Linux / macOS：** [インストーラーをダウンロード](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4)。ビジュアルエディター、Windows コンソールの非表示、日時付き XLSX エクスポート。
 
 

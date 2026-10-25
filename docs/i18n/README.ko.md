@@ -1,5 +1,7 @@
 # INFO Desktop
 
+**안정 버전 이후 개발:** `main`은 source **0.1.5 (development)** 로 이동합니다. 아직 Release가 아니며 다운로드 설치 파일은 검증된 v0.1.4입니다.
+
 **INFO Desktop v0.1.4 안정 버전 — Windows / Linux / macOS:** [설치 파일 다운로드](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4). 시각적 편집기, Windows 콘솔 숨김, 타임스탬프가 포함된 XLSX 내보내기.
 
 

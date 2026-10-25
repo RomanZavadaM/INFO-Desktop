@@ -89,5 +89,14 @@
   "editor.visual": "Visual editor",
   "editor.html": "HTML source",
   "editor.toolbar": "Formatting toolbar",
-  "editor.link_prompt": "Link URL (https://...)"
+  "editor.link_prompt": "Link URL (https://...)",
+  "queue.search": "Search",
+  "queue.search_placeholder": "Title, channel or ID…",
+  "queue.bucket": "Queue group",
+  "queue.bucket_all": "All groups",
+  "queue.refresh": "Refresh queue",
+  "queue.unsaved": "unsaved",
+  "queue.discard_confirm": "There are unsaved changes. Discard them and continue?",
+  "action.save_next": "Save & next",
+  "notice.queue_refreshed": "Queue refreshed"
 }

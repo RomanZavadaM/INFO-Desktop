@@ -57,7 +57,7 @@ export class InfoServerClient{
     if(cursor)params.set("cursor",cursor);
     return getJson<QueuePage>(`${baseUrl(this.server)}/api/info-desktop/v1/queue?${params.toString()}`,this.deviceId,this.serverCaDer)
   }
-  async queueAll(pageSize=100,maxPages=100){
+  async queueAll(pageSize=100,maxPages=100,onProgress?:(page:QueuePage)=>void){
     const items:QueueItem[]=[];
     let cursor:string|undefined;
     let counts:Record<string,number>|undefined;
@@ -68,6 +68,7 @@ export class InfoServerClient{
       if(!counts&&page.counts)counts=page.counts;
       items.push(...page.items);
       const next=page.next_cursor??undefined;
+      onProgress?.({items:[...items],next_cursor:next??null,counts});
       if(!next){finished=true;break}
       if(seen.has(next))throw new Error("Queue pagination cursor repeated");
       seen.add(next);

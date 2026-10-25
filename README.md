@@ -1,5 +1,7 @@
 # INFO Desktop
 
+**Розробка після stable:** гілка `main` переходить на source **0.1.5 (development)**. Це ще не Release; завантажувані інсталятори нижче залишаються перевіреним v0.1.4.
+
 **Стабільна версія 0.1.4 — Windows / Linux / macOS:** [Завантажити інсталятори](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4). Включає візуальний редактор, приховану консоль Windows і XLSX-файли з часом експорту.
 
 

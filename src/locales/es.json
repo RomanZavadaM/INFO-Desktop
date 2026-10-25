@@ -89,5 +89,14 @@
   "editor.visual": "Editor visual",
   "editor.html": "Código HTML",
   "editor.toolbar": "Barra de formato",
-  "editor.link_prompt": "URL del enlace (https://...)"
+  "editor.link_prompt": "URL del enlace (https://...)",
+  "queue.search": "Buscar",
+  "queue.search_placeholder": "Título, canal o ID…",
+  "queue.bucket": "Grupo de cola",
+  "queue.bucket_all": "Todos los grupos",
+  "queue.refresh": "Actualizar cola",
+  "queue.unsaved": "sin guardar",
+  "queue.discard_confirm": "Hay cambios sin guardar. ¿Descartarlos y continuar?",
+  "action.save_next": "Guardar y siguiente",
+  "notice.queue_refreshed": "Cola actualizada"
 }
