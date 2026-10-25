@@ -46,6 +46,6 @@ Siehe [Build](../BUILD.md), [Benutzerhandbuch](../guides/USER_MANUAL.md), [Proto
 
 ## Release-Status
 
-Der Quellcode-Checkpoint `0.1.2` ist in `main` akzeptiert. See release status above.
+Aktuell stabil ist **v0.1.4**. Der GitHub Release für Windows, Linux und macOS ist veröffentlicht. Die manuelle Windows-WebView2-Abnahme des neuen visuellen Editors steht noch aus.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). Alle Rechte vorbehalten. Proprietäre Software.**

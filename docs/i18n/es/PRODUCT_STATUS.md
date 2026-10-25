@@ -1,15 +1,11 @@
 # INFO Desktop — Estado del producto
 
-Version: **0.1.2**  
-Main: accepted  
-Release: **[v0.1.2](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.2)**
+Versión estable actual: **v0.1.4** (24 de octubre de 2026).  
+Release: https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4  
+Workflow de release **40128755256: SUCCESS**. Hay ocho paquetes de aplicación y cuatro archivos SHA256 para Windows, Linux y macOS.
 
-GitHub Release v0.1.2 está publicado con assets para Windows x64, Linux x64, macOS ARM64 y macOS Intel, además de SHA256.
+Implementado: registro seguro de dispositivo, cola/material/fuente/medios completos, edición y creación manual, editor visual de texto enriquecido con modo HTML, flujo XLSX protegido de export/check/probe/apply/rollback, temas/palabras clave, siete idiomas de UI e instaladores multiplataforma.
 
-Implemented: seven UI languages, multilingual documentation, secure device registration, full queue/item/source/media, editing, save/skip/defer, manual create, Telegram-style preview and scoped publish action.
+Verificado: aceptación production-connected anterior de creación manual; el 24 de octubre un XLSX sin cambios pasó la comprobación tras el arreglo separado del gateway. Los ajustes XLSX **no se aplicaron**. INFO Server es otro proyecto; último LIVE confirmado: `20261024-1653`.
 
-Production acceptance against INFO `20261020-2040` passed. No public Telegram SEND was performed.
-
-La política de firma/notarización/actualización queda para una etapa posterior.
-
-Servidor: la versión 0.1.2 se aceptó en LIVE INFO `20261020-2040`; el LIVE INFO actual es `20261022-1730` (la aceptación en él aún no se ha hecho).
+Pendiente: aceptación manual Windows WebView2 de stable 0.1.4, consola de la instalación release, descarga XLSX con timestamp y rendimiento/navegación de la cola.

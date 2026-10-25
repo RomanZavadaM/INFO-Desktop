@@ -1,19 +1,10 @@
 # INFO Desktop — Release-Index
 
-## Aktueller Release — 24. Oktober 2026
-**Stabiler Download:** [v0.1.3](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3), 8 Anwendungspakete und 4 SHA256-Dateien. Der visuelle Editor aus PR #12 ist in `main`, aber **noch nicht veröffentlicht**. INFO-Server LIVE: `20261024-1653`. [Archivregister](../../ARCHIVES_AND_BACKUPS.md).
+## Aktuell stabil
+[v0.1.4](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4) — 24. Oktober 2026. Release-Workflow **40128755256: SUCCESS**. Acht Anwendungspakete plus vier SHA256-Dateien. Enthält visuellen Editor, Windows-Console-Fix und XLSX-Exports mit Zeitstempel. Die manuelle Windows-WebView2-Abnahme steht noch aus.
 
-
-## 0.1.2
-Release: [v0.1.2](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.2) - 2026-10-22. See [RELEASE_NOTES_0.1.2](RELEASE_NOTES_0.1.2.md).
-
-## 0.1.1
-Date: 2026-10-20  
-Status: stable GitHub Release published / production acceptance passed  
-Release: [v0.1.1](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.1)
-
-GitHub Release v0.1.1 ist mit Windows x64, Linux x64, macOS ARM64 und macOS Intel sowie SHA256-Dateien veröffentlicht.
-
-Production acceptance against INFO `20261020-2040` confirmed manual create end-to-end. No public Telegram SEND was performed.
-
-Signing/Notarization/Update-Policy folgt in einem späteren Release-Schritt.
+## Frühere Releases
+- [v0.1.4-1](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4-1) — Pre-Release.
+- [v0.1.3](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.3) — vorheriger Stable.
+- [v0.1.2](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.2) — 22. Oktober 2026.
+- [v0.1.1](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.1) — 20. Oktober 2026.
