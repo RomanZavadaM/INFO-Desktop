@@ -13,3 +13,4 @@
 11. **Версії.** Канонічна версія продукту — SemVer (`MAJOR.MINOR.PATCH`) і має бути однакова у `VERSION.txt`, `package.json`, `src-tauri/Cargo.toml`, `src-tauri/tauri.conf.json`, назвах release artifacts та release notes. Опубліковану версію не перевикористовувати.
 12. **Git.** `main` — працездатний інтегрований стан; development branches + CI; опубліковані releases immutable.
 13. **Ліцензія.** Taxo model: proprietary / All rights reserved; public repository ≠ open source.
+14. **Процес.** Ведемо за `RomanZavadaM/dev-strategy` (редакція v2, прийнято власником 05.11.2026): короткий `START_HERE`, поточний стан замінюється в `PROJECT_STATE`, один актуальний `HANDOFF_CURRENT` з єдиною наступною дією, хроніка в `WORKLOG`; кожна гілка має PR (чернетка від першого пушу); закриття без злиття лише з архівною міткою; факти на GitHub головніші за текст у файлах; звіти власнику простою мовою.
