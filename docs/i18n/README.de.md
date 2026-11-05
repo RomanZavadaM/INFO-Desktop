@@ -1,8 +1,6 @@
 # INFO Desktop
 
-**Entwicklung nach Stable:** `main` wechselt auf Source **0.1.5 (development)**. Das ist noch kein Release; die Download-Installer bleiben beim verifizierten v0.1.4.
-
-**INFO Desktop v0.1.4 stabil — Windows / Linux / macOS:** [Installationsdateien herunterladen](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4). Visueller Editor, keine Windows-Konsole, XLSX-Export mit Zeitstempel.
+**INFO Desktop 0.1.5 stabil — Windows / Linux / macOS:** [Herunterladen](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.5). Schnellerer redaktioneller Ablauf und der neue Konsolenmodus (`info-desktop-cli` für Windows, Linux und macOS). Vorherige stabile Version: [0.1.4](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4).
 
 
 
@@ -22,7 +20,7 @@
 
 ## Konsolenmodus
 
-Das Programm `info-desktop-cli` führt dieselben Aktionen aus wie das Fenster: Warteschlange, „Warum in diesem Kanal“, Erstellen und Bearbeiten, Veröffentlichen, XLSX-Einstellungen (Herunterladen, Prüfen, Probe, Anwenden, Zurücksetzen) und Themen. Es arbeitet auf zwei Wegen: über das geöffnete Fenster (Kontrollkästchen in der App, nur lokal auf diesem Computer, der Schlüssel wird nie weitergegeben) oder eigenständig (das Fenster schreibt das Verbindungsprofil, der Schlüssel bleibt im Anmeldedatenspeicher des Betriebssystems). Die Bestätigung `--yes` ist nur beim Anwenden und Zurücksetzen von Einstellungen nötig. Version 0.1.5, in Entwicklung. Vom Eigentümer unter Windows mit einem Live-Server geprüft: Lesebefehle. Anleitung: [CONSOLE_MANUAL](de/CONSOLE_MANUAL.md).
+Das Programm `info-desktop-cli` führt dieselben Aktionen aus wie das Fenster: Warteschlange, „Warum in diesem Kanal“, Erstellen und Bearbeiten, Veröffentlichen, XLSX-Einstellungen (Herunterladen, Prüfen, Probe, Anwenden, Zurücksetzen) und Themen. Es arbeitet auf zwei Wegen: über das geöffnete Fenster (Kontrollkästchen in der App, nur lokal auf diesem Computer, der Schlüssel wird nie weitergegeben) oder eigenständig (das Fenster schreibt das Verbindungsprofil, der Schlüssel bleibt im Anmeldedatenspeicher des Betriebssystems). Die Bestätigung `--yes` ist nur beim Anwenden und Zurücksetzen von Einstellungen nötig. Version 0.1.5. Vom Eigentümer unter Windows mit einem Live-Server geprüft: Lesebefehle. Anleitung: [CONSOLE_MANUAL](de/CONSOLE_MANUAL.md).
 
 ## Produktionsabnahme
 

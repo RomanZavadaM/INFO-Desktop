@@ -1,8 +1,6 @@
 # INFO Desktop
 
-**안정 버전 이후 개발:** `main`은 source **0.1.5 (development)** 로 이동합니다. 아직 Release가 아니며 다운로드 설치 파일은 검증된 v0.1.4입니다.
-
-**INFO Desktop v0.1.4 안정 버전 — Windows / Linux / macOS:** [설치 파일 다운로드](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4). 시각적 편집기, Windows 콘솔 숨김, 타임스탬프가 포함된 XLSX 내보내기.
+**INFO Desktop 0.1.5 안정 버전 — Windows / Linux / macOS:** [다운로드](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.5). 더 빠른 편집 작업 흐름과 새로운 콘솔 모드(Windows, Linux, macOS용 `info-desktop-cli`). 이전 안정 버전: [0.1.4](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4).
 
 
 
@@ -22,7 +20,7 @@
 
 ## 콘솔 모드
 
-`info-desktop-cli` 프로그램은 창과 같은 작업을 수행합니다: 대기열, "이 채널에 있는 이유", 생성 및 편집, 게시, XLSX 설정(다운로드, 검사, 시험, 적용, 되돌리기), 주제. 두 가지 방식으로 동작합니다: 열려 있는 창을 통해(앱의 체크박스, 이 컴퓨터에서만, 키는 전달되지 않음) 또는 독립적으로(창이 연결 프로필을 기록하고 키는 OS 자격 증명 저장소에 남음). 확인 `--yes`는 설정 적용과 되돌리기에만 필요합니다. 버전 0.1.5, 개발 중. 소유자가 Windows에서 실제 서버로 확인함: 읽기 명령. 설명서: [CONSOLE_MANUAL](ko/CONSOLE_MANUAL.md).
+`info-desktop-cli` 프로그램은 창과 같은 작업을 수행합니다: 대기열, "이 채널에 있는 이유", 생성 및 편집, 게시, XLSX 설정(다운로드, 검사, 시험, 적용, 되돌리기), 주제. 두 가지 방식으로 동작합니다: 열려 있는 창을 통해(앱의 체크박스, 이 컴퓨터에서만, 키는 전달되지 않음) 또는 독립적으로(창이 연결 프로필을 기록하고 키는 OS 자격 증명 저장소에 남음). 확인 `--yes`는 설정 적용과 되돌리기에만 필요합니다. 버전 0.1.5. 소유자가 Windows에서 실제 서버로 확인함: 읽기 명령. 설명서: [CONSOLE_MANUAL](ko/CONSOLE_MANUAL.md).
 
 ## 운영 환경 검증
 

@@ -1,8 +1,6 @@
 # INFO Desktop
 
-**Post-stable development:** `main` moves to source **0.1.5 (development)**. This is not a Release yet; the downloadable installers remain the verified v0.1.4.
-
-**INFO Desktop v0.1.4 stable — Windows / Linux / macOS:** [Download installers](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4). Visual editor, Windows console fix, timestamped XLSX downloads.
+**INFO Desktop 0.1.5 stable — Windows / Linux / macOS:** [Download](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.5). Faster editorial cycle and the new console mode (`info-desktop-cli` for Windows, Linux and macOS). Previous stable: [0.1.4](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4).
 
 
 
@@ -22,7 +20,7 @@
 
 ## Console mode
 
-The `info-desktop-cli` program performs the same actions as the window: queue, "why is this in this channel", create and edit, publish, XLSX settings (download, check, probe, apply, rollback) and themes. It works in two ways: through the open window (a checkbox in the app, local to this computer, the key is never passed) or standalone (the connection profile is written by the window, the key stays in the OS credential store). Confirmation `--yes` is required only for applying and rolling back settings. Version 0.1.5, in development. Verified by the owner on Windows against a live server: read commands. Manual: [CONSOLE_MANUAL](en/CONSOLE_MANUAL.md).
+The `info-desktop-cli` program performs the same actions as the window: queue, "why is this in this channel", create and edit, publish, XLSX settings (download, check, probe, apply, rollback) and themes. It works in two ways: through the open window (a checkbox in the app, local to this computer, the key is never passed) or standalone (the connection profile is written by the window, the key stays in the OS credential store). Confirmation `--yes` is required only for applying and rolling back settings. Version 0.1.5. Verified by the owner on Windows against a live server: read commands. Manual: [CONSOLE_MANUAL](en/CONSOLE_MANUAL.md).
 
 ## Production acceptance
 

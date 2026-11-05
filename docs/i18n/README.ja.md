@@ -1,8 +1,6 @@
 # INFO Desktop
 
-**Stable 後の開発:** `main` は source **0.1.5 (development)** に進みます。まだ Release ではなく、ダウンロード用インストーラーは検証済み v0.1.4 のままです。
-
-**INFO Desktop v0.1.4 安定版 — Windows / Linux / macOS：** [インストーラーをダウンロード](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4)。ビジュアルエディター、Windows コンソールの非表示、日時付き XLSX エクスポート。
+**INFO Desktop 0.1.5 安定版 — Windows / Linux / macOS：** [ダウンロード](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.5)。編集作業の高速化と新しいコンソールモード（Windows、Linux、macOS 用 `info-desktop-cli`）。前回の安定版：[0.1.4](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4)。
 
 
 
@@ -22,7 +20,7 @@
 
 ## コンソールモード
 
-`info-desktop-cli` プログラムはウィンドウと同じ操作を行います：キュー、「このチャンネルにある理由」、作成と編集、公開、XLSX 設定（ダウンロード、検査、試行、適用、ロールバック）、テーマ。2 通りで動作します：開いているウィンドウ経由（アプリのチェックボックス、このコンピューター内のみ、鍵は渡されません）または単独（接続プロファイルはウィンドウが書き込み、鍵は OS の資格情報ストアに残ります）。確認 `--yes` は設定の適用とロールバックにのみ必要です。バージョン 0.1.5、開発中。所有者が Windows で実サーバーを使って確認：読み取りコマンド。マニュアル：[CONSOLE_MANUAL](ja/CONSOLE_MANUAL.md)。
+`info-desktop-cli` プログラムはウィンドウと同じ操作を行います：キュー、「このチャンネルにある理由」、作成と編集、公開、XLSX 設定（ダウンロード、検査、試行、適用、ロールバック）、テーマ。2 通りで動作します：開いているウィンドウ経由（アプリのチェックボックス、このコンピューター内のみ、鍵は渡されません）または単独（接続プロファイルはウィンドウが書き込み、鍵は OS の資格情報ストアに残ります）。確認 `--yes` は設定の適用とロールバックにのみ必要です。バージョン 0.1.5。所有者が Windows で実サーバーを使って確認：読み取りコマンド。マニュアル：[CONSOLE_MANUAL](ja/CONSOLE_MANUAL.md)。
 
 ## 本番環境での受入確認
 

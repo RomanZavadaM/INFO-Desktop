@@ -1,6 +1,6 @@
 # INFO Desktop console mode: short manual
 
-Status: in development (version 0.1.5, not released). Two modes: through the open application window and standalone.
+Status: released in 0.1.5. Two modes: through the open application window and standalone.
 
 ## What it is
 The `info-desktop-cli` program does what the window does: shows the queue, explains routes, creates and edits items, publishes, works with XLSX settings. The device key comes from the same secure OS store as the window's and is never printed.

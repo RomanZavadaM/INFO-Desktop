@@ -1,6 +1,6 @@
 # Modo consola de INFO Desktop: manual breve
 
-Estado: en desarrollo (versión 0.1.5, sin publicar). Dos modos: a través de la ventana abierta de la aplicación y de forma independiente.
+Estado: publicado en 0.1.5. Dos modos: a través de la ventana abierta de la aplicación y de forma independiente.
 
 ## Qué es
 El programa `info-desktop-cli` hace lo que la ventana: muestra la cola, explica rutas, crea y edita elementos, publica, trabaja con los ajustes XLSX. La clave del dispositivo sale del mismo almacén seguro del sistema que la de la ventana y nunca se imprime.

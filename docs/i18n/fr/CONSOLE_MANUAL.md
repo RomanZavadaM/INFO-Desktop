@@ -1,6 +1,6 @@
 # Mode console d'INFO Desktop : manuel court
 
-État : en développement (version 0.1.5, non publiée). Deux modes : via la fenêtre ouverte de l'application et de manière autonome.
+État : publié dans 0.1.5. Deux modes : via la fenêtre ouverte de l'application et de manière autonome.
 
 ## Ce que c'est
 Le programme `info-desktop-cli` fait ce que fait la fenêtre : affiche la file d'attente, explique les routes, crée et modifie des éléments, publie, travaille avec les paramètres XLSX. La clé de l'appareil provient du même magasin sécurisé du système que celle de la fenêtre et n'est jamais affichée.

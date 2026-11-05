@@ -13,4 +13,4 @@ Release workflow **40128755256: SUCCESS**. Windows, Linux, macOS용 앱 패키�
 남은 작업: stable 0.1.4의 Windows WebView2 수동 검수, 설치된 release의 콘솔 동작, timestamp XLSX 다운로드, 대기열 성능과 빠른 탐색.
 
 ## 콘솔 모드
-콘솔 모드(0.1.5, 개발): 연결, 대기열, "이 채널에 있는 이유", 생성 및 편집, 게시, XLSX, 주제 명령 구현; 창 경유 및 독립 모드. 소유자가 Windows에서 실제 서버로 확인함: status, channels, queue list, why(창 경유), status 독립 및 자동. 미확인: 실제 서버에서의 쓰기, XLSX, 주제 명령, macOS, Linux. 창 없는 서버에서의 동작은 소유자의 결정으로 보류되었습니다.
+콘솔 모드(0.1.5): 연결, 대기열, "이 채널에 있는 이유", 생성 및 편집, 게시, XLSX, 주제 명령 구현; 창 경유 및 독립 모드. 소유자가 Windows에서 실제 서버로 확인함: status, channels, queue list, why(창 경유), status 독립 및 자동. 미확인: 실제 서버에서의 쓰기, XLSX, 주제 명령, macOS, Linux. 창 없는 서버에서의 동작은 소유자의 결정으로 보류되었습니다.

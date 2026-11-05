@@ -1,6 +1,6 @@
 # INFO Desktop Konsolenmodus: Kurzanleitung
 
-Status: in Entwicklung (Version 0.1.5, nicht veröffentlicht). Zwei Modi: über das geöffnete Anwendungsfenster und eigenständig.
+Status: veröffentlicht in 0.1.5. Zwei Modi: über das geöffnete Anwendungsfenster und eigenständig.
 
 ## Was es ist
 Das Programm `info-desktop-cli` tut, was das Fenster tut: zeigt die Warteschlange, erklärt Routen, erstellt und bearbeitet Einträge, veröffentlicht, arbeitet mit XLSX-Einstellungen. Der Geräteschlüssel stammt aus demselben geschützten Speicher des Betriebssystems wie beim Fenster und wird nie ausgegeben.
