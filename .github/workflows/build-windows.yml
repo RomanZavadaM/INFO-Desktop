@@ -24,3 +24,12 @@ jobs:
           Get-ChildItem artifact -File | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)" } | Set-Content -Encoding ascii artifact/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with: {name: INFO-Desktop-0.1.5-Windows-x64, path: 'artifact/', retention-days: 14}
+      - working-directory: src-tauri
+        run: cargo build --release -p info-desktop-cli
+      - shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path cli-artifact | Out-Null
+          Copy-Item src-tauri/target/release/info-desktop-cli.exe cli-artifact/
+          "$((Get-FileHash cli-artifact/info-desktop-cli.exe -Algorithm SHA256).Hash.ToLowerInvariant())  info-desktop-cli.exe" | Set-Content -Encoding ascii cli-artifact/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: INFO-Desktop-CLI-0.1.5-Windows-x64, path: 'cli-artifact/', retention-days: 14}
