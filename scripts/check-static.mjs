@@ -23,7 +23,9 @@ for (const lang of languages) {
   }
 }
 
-const native = read(path.join(root, "src-tauri", "src", "lib.rs"));
+// Усі модулі native-шару разом: правила транспорту однакові для вікна й консольного режиму.
+const nativeDir = path.join(root, "src-tauri", "src");
+const native = fs.readdirSync(nativeDir).filter((f) => f.endsWith(".rs")).sort().map((f) => read(path.join(nativeDir, f))).join("\n");
 for (const forbidden of [".put(", ".patch(", ".delete("]) {
   if (native.includes(forbidden)) {
     throw new Error(`Native layer contains forbidden method: ${forbidden}`);

@@ -1,47 +1,20 @@
-mod registration;
+pub mod registration;
+pub mod transport;
 
 use base64::engine::general_purpose::STANDARD as BASE64;
 use base64::Engine;
 use serde::{Deserialize, Serialize};
 use tauri::command;
-use url::Url;
+
+use transport::{checked_url, client_with_cert, ReadonlyResponse};
 
 const MAX_PREVIEW_BYTES: usize = 8 * 1024 * 1024;
-
-#[derive(Serialize)]
-struct ReadonlyResponse {
-    status: u16,
-    body: String,
-}
 
 #[derive(Serialize)]
 struct ReadonlyBinaryResponse {
     status: u16,
     content_type: String,
     body_base64: String,
-}
-
-fn checked_url(url: &str) -> Result<Url, String> {
-    let parsed = Url::parse(url).map_err(|_| "Invalid server URL".to_string())?;
-    if parsed.scheme() != "https" {
-        return Err("INFO Desktop requires https:// server connections".to_string());
-    }
-    Ok(parsed)
-}
-
-fn client_with_cert(server_ca_der: &str) -> Result<reqwest::Client, String> {
-    let cert_bytes = BASE64
-        .decode(server_ca_der.trim())
-        .map_err(|_| "Invalid server CA certificate".to_string())?;
-    let cert = reqwest::Certificate::from_der(&cert_bytes)
-        .map_err(|_| "Invalid server CA certificate DER".to_string())?;
-    reqwest::Client::builder()
-        .user_agent("INFO-Desktop/0.1.2")
-        .redirect(reqwest::redirect::Policy::none())
-        .tls_built_in_root_certs(false)
-        .add_root_certificate(cert)
-        .build()
-        .map_err(|error| error.to_string())
 }
 
 #[command]
@@ -115,19 +88,7 @@ async fn device_get(
     device_id: String,
     server_ca_der: String,
 ) -> Result<ReadonlyResponse, String> {
-    let parsed = checked_url(&url)?;
-    let secret = registration::device_secret(&device_id)?;
-    let response = client_with_cert(&server_ca_der)?
-        .get(parsed)
-        .header(reqwest::header::ACCEPT, "application/json")
-        .header("X-INFO-Device", device_id)
-        .bearer_auth(secret)
-        .send()
-        .await
-        .map_err(|error| error.to_string())?;
-    let status = response.status().as_u16();
-    let body = response.text().await.map_err(|error| error.to_string())?;
-    Ok(ReadonlyResponse { status, body })
+    transport::device_get(&url, &device_id, &server_ca_der).await
 }
 
 #[command]
@@ -137,21 +98,7 @@ async fn device_post(
     server_ca_der: String,
     body: String,
 ) -> Result<ReadonlyResponse, String> {
-    let parsed = checked_url(&url)?;
-    let secret = registration::device_secret(&device_id)?;
-    let response = client_with_cert(&server_ca_der)?
-        .post(parsed)
-        .header(reqwest::header::CONTENT_TYPE, "application/json")
-        .header(reqwest::header::ACCEPT, "application/json")
-        .header("X-INFO-Device", device_id)
-        .bearer_auth(secret)
-        .body(body)
-        .send()
-        .await
-        .map_err(|error| error.to_string())?;
-    let status = response.status().as_u16();
-    let body = response.text().await.map_err(|error| error.to_string())?;
-    Ok(ReadonlyResponse { status, body })
+    transport::device_post(&url, &device_id, &server_ca_der, body).await
 }
 
 #[command]
