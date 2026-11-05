@@ -1,8 +1,6 @@
 # INFO Desktop
 
-**Desarrollo después de stable:** `main` pasa al source **0.1.5 (development)**. Todavía no es un Release; los instaladores descargables siguen siendo el v0.1.4 verificado.
-
-**INFO Desktop v0.1.4 estable — Windows / Linux / macOS:** [Descargar instaladores](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4). Editor visual, sin consola de Windows y exportaciones XLSX con fecha y hora.
+**INFO Desktop 0.1.5 estable — Windows / Linux / macOS:** [Descargar](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.5). Ciclo editorial más rápido y el nuevo modo consola (`info-desktop-cli` para Windows, Linux y macOS). Versión estable anterior: [0.1.4](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4).
 
 
 
@@ -22,7 +20,7 @@
 
 ## Modo consola
 
-El programa `info-desktop-cli` realiza las mismas acciones que la ventana: cola, «por qué en este canal», crear y editar, publicar, ajustes XLSX (descargar, comprobar, prueba, aplicar, revertir) y temas. Funciona de dos maneras: a través de la ventana abierta (casilla en la aplicación, solo en este equipo, la clave nunca se transmite) o de forma independiente (la ventana escribe el perfil de conexión, la clave queda en el almacén de credenciales del sistema). La confirmación `--yes` solo hace falta para aplicar y revertir ajustes. Versión 0.1.5, en desarrollo. Verificado por el propietario en Windows con un servidor real: comandos de lectura. Manual: [CONSOLE_MANUAL](es/CONSOLE_MANUAL.md).
+El programa `info-desktop-cli` realiza las mismas acciones que la ventana: cola, «por qué en este canal», crear y editar, publicar, ajustes XLSX (descargar, comprobar, prueba, aplicar, revertir) y temas. Funciona de dos maneras: a través de la ventana abierta (casilla en la aplicación, solo en este equipo, la clave nunca se transmite) o de forma independiente (la ventana escribe el perfil de conexión, la clave queda en el almacén de credenciales del sistema). La confirmación `--yes` solo hace falta para aplicar y revertir ajustes. Versión 0.1.5. Verificado por el propietario en Windows con un servidor real: comandos de lectura. Manual: [CONSOLE_MANUAL](es/CONSOLE_MANUAL.md).
 
 ## Aceptación en producción
 

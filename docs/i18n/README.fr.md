@@ -1,8 +1,6 @@
 # INFO Desktop
 
-**Développement après stable :** `main` passe au source **0.1.5 (development)**. Ce n'est pas encore un Release ; les installateurs téléchargeables restent le v0.1.4 vérifié.
-
-**INFO Desktop v0.1.4 stable — Windows / Linux / macOS :** [Télécharger les installateurs](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4). Éditeur visuel, console Windows masquée et exports XLSX horodatés.
+**INFO Desktop 0.1.5 stable — Windows / Linux / macOS :** [Télécharger](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.5). Cycle éditorial plus rapide et nouveau mode console (`info-desktop-cli` pour Windows, Linux et macOS). Version stable précédente : [0.1.4](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4).
 
 
 
@@ -22,7 +20,7 @@
 
 ## Mode console
 
-Le programme `info-desktop-cli` effectue les mêmes actions que la fenêtre : file d'attente, « pourquoi dans ce canal », création et modification, publication, paramètres XLSX (téléchargement, vérification, essai, application, annulation) et thèmes. Il fonctionne de deux façons : via la fenêtre ouverte (case dans l'application, uniquement sur cet ordinateur, la clé n'est jamais transmise) ou de manière autonome (la fenêtre écrit le profil de connexion, la clé reste dans le magasin d'identifiants du système). La confirmation `--yes` n'est requise que pour appliquer et annuler les paramètres. Version 0.1.5, en développement. Vérifié par le propriétaire sous Windows avec un serveur réel : commandes de lecture. Manuel : [CONSOLE_MANUAL](fr/CONSOLE_MANUAL.md).
+Le programme `info-desktop-cli` effectue les mêmes actions que la fenêtre : file d'attente, « pourquoi dans ce canal », création et modification, publication, paramètres XLSX (téléchargement, vérification, essai, application, annulation) et thèmes. Il fonctionne de deux façons : via la fenêtre ouverte (case dans l'application, uniquement sur cet ordinateur, la clé n'est jamais transmise) ou de manière autonome (la fenêtre écrit le profil de connexion, la clé reste dans le magasin d'identifiants du système). La confirmation `--yes` n'est requise que pour appliquer et annuler les paramètres. Version 0.1.5. Vérifié par le propriétaire sous Windows avec un serveur réel : commandes de lecture. Manuel : [CONSOLE_MANUAL](fr/CONSOLE_MANUAL.md).
 
 ## Validation en production
 

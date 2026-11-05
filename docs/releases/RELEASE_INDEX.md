@@ -1,11 +1,11 @@
 # INFO Desktop — індекс релізів
 
-## Unreleased source — 0.1.5 development
-У складі 0.1.5 готується **консольний режим** (`info-desktop-cli`, пакет для Windows, Linux, macOS ARM64 та Intel): інструкція `docs/guides/CONSOLE_MANUAL.md`, проєкт `docs/architecture/CONSOLE_MODE.md`, чернетка нотаток `docs/releases/RELEASE_NOTES_0.1.5.md`, ручний випускний процес `.github/workflows/release-0.1.5.yml` (**не запускався**; запуск лише за словом власника після приймання на Windows).
+## Поточний stable — 05.11.2026
+**[v0.1.5](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.5)** — опубліковано 05.11.2026 (21:39 UTC), Release Actions **42112086751 — SUCCESS** (verify, Windows, Linux, macOS ARM64, macOS Intel, publish).
+12 пакетів і 4 файли SHA256: Windows EXE/MSI, Linux AppImage/DEB, macOS ARM64 і Intel DMG та Portable ZIP, консоль `info-desktop-cli` для Windows (EXE), Linux і macOS (tar.gz).
+Контрольну суму `INFO-Desktop-CLI_0.1.5_Windows_x64.exe` звірено зі скачаним файлом. У складі: швидший редакторський цикл і консольний режим (`docs/guides/CONSOLE_MANUAL.md`). Примітки: `docs/releases/RELEASE_NOTES_0.1.5.md`.
 
-Source після stable v0.1.4 переведено на **0.1.5 / development**. Це не опублікований реліз і не заміна stable v0.1.4. Етап містить оптимізацію черги, пошук/фільтр, «Зберегти й далі» та захист незбережених змін. Публікацію 0.1.5 робити лише окремою release-процедурою після перевірок і практичного приймання.
-
-## Поточний stable — 25.10.2026
+## Попередній stable — v0.1.4, 25.10.2026
 **[v0.1.4](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4)** — опубліковано 24.10.2026.  
 Release Actions **40128755256 — SUCCESS**. 8 застосункових пакетів + 4 SHA256SUMS:
 Windows EXE/MSI, Linux AppImage/DEB, macOS ARM64 DMG/Portable ZIP, macOS Intel x86_64 DMG/Portable ZIP.
