@@ -11,3 +11,6 @@ Implementado: registro seguro de dispositivo, cola/material/fuente/medios comple
 Verificado: aceptación production-connected anterior de creación manual; el 24 de octubre un XLSX sin cambios pasó la comprobación tras el arreglo separado del gateway. Los ajustes XLSX **no se aplicaron**. INFO Server es otro proyecto; último LIVE confirmado: `20261024-1653`.
 
 Pendiente: aceptación manual Windows WebView2 de stable 0.1.4, consola de la instalación release, descarga XLSX con timestamp y rendimiento/navegación de la cola.
+
+## Modo consola
+Modo consola (0.1.5, desarrollo): implementados comandos de conexión, cola, «por qué en este canal», crear y editar, publicar, XLSX y temas; modos a través de la ventana e independiente. Verificado por el propietario en Windows con un servidor real: status, channels, queue list, why (a través de la ventana), status independiente y automático. Sin verificar: comandos de escritura, XLSX y temas en un servidor real, macOS, Linux. El funcionamiento en un servidor sin ventana queda aplazado por decisión del propietario.

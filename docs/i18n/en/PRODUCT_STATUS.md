@@ -11,3 +11,6 @@ Implemented: secure device registration, full queue/item/source/media workflow, 
 Verified: production-connected manual-create acceptance was completed earlier; on 24 October an unchanged XLSX passed check after the separate gateway fix. XLSX settings were **not applied**. INFO server is a separate project; last confirmed LIVE is `20261024-1653`.
 
 Still pending: manual Windows WebView2 acceptance of stable 0.1.4, installed release console behavior, timestamped XLSX download, and queue performance/fast navigation.
+
+## Console mode
+Console mode (0.1.5, development): implemented commands for connection, queue, "why in this channel", create and edit, publish, XLSX and themes; window-bridged and standalone modes. Verified by the owner on Windows against a live server: status, channels, queue list, why (through the window), status standalone and automatic. Not verified: write, XLSX and themes commands on a live server, macOS, Linux. Operation on a server without a window is postponed by the owner's decision.

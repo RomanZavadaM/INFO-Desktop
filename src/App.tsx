@@ -2,6 +2,8 @@ import {useEffect,useMemo,useRef,useState} from "react";
 import {Channel,Handshake,InfoServerClient,ItemDetail,MediaDescriptor,ProbeStatus,QueueItem,SettingsStatus,Theme,Why} from "./protocol";
 import {defaultLanguage,Language,languages,translator} from "./i18n";
 import pkg from "../package.json";
+import {invoke} from "@tauri-apps/api/core";
+import {listen} from "@tauri-apps/api/event";
 import {activateRegistration,importRegistration,RegistrationSummary,rotateDeviceCredential} from "./registration";
 
 function fmt(v?:string){if(!v)return"";const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleString()}
@@ -181,6 +183,7 @@ export function App(){
  const[creating,setCreating]=useState(false);const[newTitle,setNewTitle]=useState("");const[newText,setNewText]=useState("");const[newChannel,setNewChannel]=useState("");const[newUrl,setNewUrl]=useState("");
  const[why,setWhy]=useState<Why|null>(null);const[view,setView]=useState<"queue"|"settings"|"themes">("queue");
  const[queueSearch,setQueueSearch]=useState("");const[queueBucket,setQueueBucket]=useState("*");
+ const[consoleAllowed,setConsoleAllowed]=useState(()=>localStorage.getItem("info-desktop-console")==="1");const[consoleLast,setConsoleLast]=useState("");
  const client=useMemo(()=>new InfoServerClient(server.trim(),deviceId.trim(),serverCaDer),[server,deviceId,serverCaDer]);
  const channelCounts=useMemo(()=>{const counts=new Map<string,number>();for(const item of queue)counts.set(item.channel,(counts.get(item.channel)??0)+1);return counts},[queue]);
  const buckets=useMemo(()=>Array.from(new Set(queue.map(i=>i.bucket).filter((v):v is string=>Boolean(v)))).sort(),[queue]);
@@ -193,6 +196,8 @@ export function App(){
  const dirty=Boolean(selected)&&(editTitle!==(selected?.title??"")||editText!==(selected?.draft_text??"")||editChannel!==(selected?.channel??""));
  useEffect(()=>{setWhy(null);setEditTitle(selected?.title??"");setEditText(selected?.draft_text??"");setEditChannel(selected?.channel??"")},[selected]);
  useEffect(()=>{if(!dirty)return;const beforeUnload=(e:BeforeUnloadEvent)=>{e.preventDefault();e.returnValue=""};window.addEventListener("beforeunload",beforeUnload);return()=>window.removeEventListener("beforeunload",beforeUnload)},[dirty]);
+ useEffect(()=>{if(!server.trim()||!deviceId.trim()||!serverCaDer)return;invoke("console_bridge_sync",{enabled:consoleAllowed,server:server.trim(),deviceId:deviceId.trim(),serverCaDer}).catch(()=>{})},[consoleAllowed,server,deviceId,serverCaDer]);
+ useEffect(()=>{let off:(()=>void)|undefined;let dead=false;listen<{method:string;path:string;status:number}>("console-activity",e=>setConsoleLast(`${e.payload.method} ${e.payload.path} \u2192 ${e.payload.status}`)).then(f=>{if(dead)f();else off=f}).catch(()=>{});return()=>{dead=true;off?.()}},[]);
 
  function confirmDiscard(){return !dirty||window.confirm(t("queue.discard_confirm"))}
  function nextVisibleAfter(id:string|number){const idx=visible.findIndex(x=>String(x.id)===String(id));if(idx<0)return visible[0]??null;return visible[idx+1]??visible[idx-1]??null}
@@ -233,7 +238,7 @@ export function App(){
    <label className="import-button">{t("registration.import")}<input className="file-input" type="file" accept=".registration,.info-registration,.txt,text/plain" onChange={e=>importRegistrationFile(e.target.files?.[0])}/></label>
    <input placeholder={t("server.address")} value={server} onChange={e=>setServer(e.target.value)}/><button onClick={connect} disabled={busy}>{busy?t("status.connecting"):t("server.connect")}</button></div>
    <select value={language} onChange={e=>lang(e.target.value as Language)}>{Object.entries(languages).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}</select></header>
-  <section className="server-strip"><span className={hello?"dot online":"dot"}/><span>{hello?`${hello.instance_name??hello.server_name??"INFO"} · ${hello.server_version??"?"}`:t("status.disconnected")}</span><span className="queue-count">{t("queue.title")}: {queue.length}</span></section>
+  <section className="server-strip"><span className={hello?"dot online":"dot"}/><span>{hello?`${hello.instance_name??hello.server_name??"INFO"} · ${hello.server_version??"?"}`:t("status.disconnected")}</span><span className="queue-count">{t("queue.title")}: {queue.length}</span><label className="console-toggle" title={t("console.hint")}><input type="checkbox" checked={consoleAllowed} onChange={e=>{setConsoleAllowed(e.target.checked);localStorage.setItem("info-desktop-console",e.target.checked?"1":"0")}}/>{t("console.allow")}{consoleAllowed&&consoleLast&&<small> · {t("console.last")}: {consoleLast}</small>}</label></section>
   {registration&&<div className="registration-banner"><strong>{t("registration.valid")}</strong><span>{registration.server}:{registration.port}</span><span>{t("registration.expires")}: {fmt(registration.expires_at)}</span><span>{deviceId?t("registration.device_ready"):""}</span></div>}
   {notice&&<div className="notice-banner">{notice}</div>}{error&&<div className="error-banner">{error}</div>}
   {creating&&<section className="create-panel"><h2>{t("create.new")}</h2><input placeholder={t("create.title")} value={newTitle} onChange={e=>setNewTitle(e.target.value)}/><select value={newChannel} onChange={e=>setNewChannel(e.target.value)}>{channels.map(c=><option key={c.code} value={c.code}>{c.name}</option>)}</select><input placeholder={t("create.source_url")} value={newUrl} onChange={e=>setNewUrl(e.target.value)}/><textarea placeholder={t("create.text")} value={newText} onChange={e=>setNewText(e.target.value)}/><div className="actions"><button onClick={createNew} disabled={busy}>{t("create.submit")}</button><button className="ghost" onClick={()=>setCreating(false)}>{t("action.cancel")}</button></div></section>}

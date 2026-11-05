@@ -20,6 +20,10 @@
 - exposes a scoped publish action for authorized devices;
 - supports seven UI languages.
 
+## Console mode
+
+The `info-desktop-cli` program performs the same actions as the window: queue, "why is this in this channel", create and edit, publish, XLSX settings (download, check, probe, apply, rollback) and themes. It works in two ways: through the open window (a checkbox in the app, local to this computer, the key is never passed) or standalone (the connection profile is written by the window, the key stays in the OS credential store). Confirmation `--yes` is required only for applying and rolling back settings. Version 0.1.5, in development. Verified by the owner on Windows against a live server: read commands. Manual: [CONSOLE_MANUAL](en/CONSOLE_MANUAL.md).
+
 ## Production acceptance
 
 On 20 October 2026 INFO Desktop was connected to LIVE INFO `20261020-2040`. A real Lviv item was created through Desktop and appeared in the editorial queue and Telegram editorial bot. This verified Desktop → API → database → editorial queue. No public Telegram SEND was performed during that acceptance.

@@ -9,3 +9,6 @@ Desktop is **not a second server**: it has no direct database access and does no
 Transport: `info-desktop-protocol/1`, TLS, authenticated GET + scoped POST, OS secure credential storage. The current production gateway remains VPN-only.
 
 Production acceptance on 20 October 2026 against INFO 20261020-2040 confirmed manual create end-to-end. No public Telegram SEND was performed.
+
+## Console mode
+The console `info-desktop-cli` (crate `src-tauri/cli`) and the window share the crate `src-tauri/core` (registration, transport, paths, profile, local bridge) and the same protocol `info-desktop-protocol/1`; the protocol did not change. Through the open window the console works with the user's consent: a local 127.0.0.1 entry and a one-time session password, the device key is never passed. Standalone, the console uses the connection profile (written by the window) and the key from the OS credential store. The check `scripts/check-static.mjs` enforces that all native modules keep a single editorial POST and two credential POSTs.

@@ -1,47 +1,24 @@
-mod registration;
 
 use base64::engine::general_purpose::STANDARD as BASE64;
 use base64::Engine;
 use serde::{Deserialize, Serialize};
 use tauri::command;
-use url::Url;
+
+use info_desktop_core::registration;
+use info_desktop_core::transport;
+use info_desktop_core::{paths, profile, session};
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, Mutex};
+use tauri::{AppHandle, Emitter, State};
+use transport::{checked_url, client_with_cert, ReadonlyResponse};
 
 const MAX_PREVIEW_BYTES: usize = 8 * 1024 * 1024;
-
-#[derive(Serialize)]
-struct ReadonlyResponse {
-    status: u16,
-    body: String,
-}
 
 #[derive(Serialize)]
 struct ReadonlyBinaryResponse {
     status: u16,
     content_type: String,
     body_base64: String,
-}
-
-fn checked_url(url: &str) -> Result<Url, String> {
-    let parsed = Url::parse(url).map_err(|_| "Invalid server URL".to_string())?;
-    if parsed.scheme() != "https" {
-        return Err("INFO Desktop requires https:// server connections".to_string());
-    }
-    Ok(parsed)
-}
-
-fn client_with_cert(server_ca_der: &str) -> Result<reqwest::Client, String> {
-    let cert_bytes = BASE64
-        .decode(server_ca_der.trim())
-        .map_err(|_| "Invalid server CA certificate".to_string())?;
-    let cert = reqwest::Certificate::from_der(&cert_bytes)
-        .map_err(|_| "Invalid server CA certificate DER".to_string())?;
-    reqwest::Client::builder()
-        .user_agent("INFO-Desktop/0.1.2")
-        .redirect(reqwest::redirect::Policy::none())
-        .tls_built_in_root_certs(false)
-        .add_root_certificate(cert)
-        .build()
-        .map_err(|error| error.to_string())
 }
 
 #[command]
@@ -115,19 +92,7 @@ async fn device_get(
     device_id: String,
     server_ca_der: String,
 ) -> Result<ReadonlyResponse, String> {
-    let parsed = checked_url(&url)?;
-    let secret = registration::device_secret(&device_id)?;
-    let response = client_with_cert(&server_ca_der)?
-        .get(parsed)
-        .header(reqwest::header::ACCEPT, "application/json")
-        .header("X-INFO-Device", device_id)
-        .bearer_auth(secret)
-        .send()
-        .await
-        .map_err(|error| error.to_string())?;
-    let status = response.status().as_u16();
-    let body = response.text().await.map_err(|error| error.to_string())?;
-    Ok(ReadonlyResponse { status, body })
+    transport::device_get(&url, &device_id, &server_ca_der).await
 }
 
 #[command]
@@ -137,21 +102,7 @@ async fn device_post(
     server_ca_der: String,
     body: String,
 ) -> Result<ReadonlyResponse, String> {
-    let parsed = checked_url(&url)?;
-    let secret = registration::device_secret(&device_id)?;
-    let response = client_with_cert(&server_ca_der)?
-        .post(parsed)
-        .header(reqwest::header::CONTENT_TYPE, "application/json")
-        .header(reqwest::header::ACCEPT, "application/json")
-        .header("X-INFO-Device", device_id)
-        .bearer_auth(secret)
-        .body(body)
-        .send()
-        .await
-        .map_err(|error| error.to_string())?;
-    let status = response.status().as_u16();
-    let body = response.text().await.map_err(|error| error.to_string())?;
-    Ok(ReadonlyResponse { status, body })
+    transport::device_post(&url, &device_id, &server_ca_der, body).await
 }
 
 #[command]
@@ -256,10 +207,109 @@ async fn rotate_device_credential(
     })
 }
 
+/// З'єднання, яким користується консоль через відкрите вікно (адреса, номер пристрою, довірений сертифікат; ключ береться зі сховища ОС).
+struct Connection {
+    base: String,
+    device_id: String,
+    server_ca_der: String,
+}
+
+#[derive(Default)]
+struct ConsoleState {
+    connection: Arc<Mutex<Option<Connection>>>,
+    shared: Mutex<Option<Arc<session::Shared>>>,
+    port: Mutex<u16>,
+}
+
+const LOCK_ERROR: &str = "Internal lock error";
+
+/// Виконує запит консолі тим самим транспортом, що й вікно; кожну дію показує у вікні (подія `console-activity`).
+fn console_perform(app: AppHandle, connection: Arc<Mutex<Option<Connection>>>) -> Arc<session::Perform> {
+    Arc::new(move |method: &str, path: &str, body: &str| {
+        let conn = match connection.lock() {
+            Ok(guard) => guard.as_ref().map(|c| (c.base.clone(), c.device_id.clone(), c.server_ca_der.clone())),
+            Err(_) => None,
+        };
+        let (status, text) = match conn {
+            None => (599u16, "Window is not connected to a server".to_string()),
+            Some((base, device_id, ca)) => {
+                let url = format!("{}{}{}", base, profile::API, path);
+                let result = if method == "POST" {
+                    tauri::async_runtime::block_on(transport::device_post(&url, &device_id, &ca, body.to_string()))
+                } else {
+                    tauri::async_runtime::block_on(transport::device_get(&url, &device_id, &ca))
+                };
+                match result {
+                    Ok(r) => (r.status, r.body),
+                    Err(e) => (599u16, e),
+                }
+            }
+        };
+        let _ = app.emit("console-activity", serde_json::json!({"method": method, "path": path, "status": status}));
+        (status, text)
+    })
+}
+
+/// Вікно повідомляє нативному шару про з'єднання й дозвіл консолі. Профіль з'єднання (без секретів) завжди оновлюється для автономної
+/// консолі; вхід для консолі через вікно відкривається лише коли дозволено (локальна адреса 127.0.0.1, пароль сеансу у файлі сеансу).
+#[command]
+fn console_bridge_sync(
+    app: AppHandle,
+    state: State<'_, ConsoleState>,
+    enabled: bool,
+    server: String,
+    device_id: String,
+    server_ca_der: String,
+) -> Result<(), String> {
+    let dir = paths::config_dir()?;
+    let session_file = session::session_path(&dir);
+    let mut shared_slot = state.shared.lock().map_err(|_| LOCK_ERROR.to_string())?;
+    if server.trim().is_empty() || device_id.trim().is_empty() || server_ca_der.trim().is_empty() {
+        *state.connection.lock().map_err(|_| LOCK_ERROR.to_string())? = None;
+        if let Some(shared) = shared_slot.as_ref() {
+            shared.enabled.store(false, Ordering::SeqCst);
+        }
+        session::remove_session(&session_file);
+        return Ok(());
+    }
+    let prof = profile::Profile::from_server_url(&server, &device_id, &server_ca_der)?;
+    profile::save_profile(&dir.join("connection.json"), &prof)?;
+    *state.connection.lock().map_err(|_| LOCK_ERROR.to_string())? = Some(Connection {
+        base: format!("https://{}:{}", prof.server, prof.port),
+        device_id: prof.device_id.clone(),
+        server_ca_der: prof.server_ca_der.clone(),
+    });
+    if !enabled {
+        if let Some(shared) = shared_slot.as_ref() {
+            shared.enabled.store(false, Ordering::SeqCst);
+        }
+        session::remove_session(&session_file);
+        return Ok(());
+    }
+    if shared_slot.is_none() {
+        let shared = Arc::new(session::Shared { token: session::new_token()?, enabled: AtomicBool::new(false) });
+        let port = session::spawn_listener(shared.clone(), console_perform(app.clone(), state.connection.clone()))?;
+        *state.port.lock().map_err(|_| LOCK_ERROR.to_string())? = port;
+        *shared_slot = Some(shared);
+    }
+    let shared = shared_slot.as_ref().cloned().ok_or_else(|| LOCK_ERROR.to_string())?;
+    shared.enabled.store(true, Ordering::SeqCst);
+    let port = *state.port.lock().map_err(|_| LOCK_ERROR.to_string())?;
+    session::write_session(&session_file, &session::SessionInfo { port, token: shared.token.clone() })
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![import_registration_text, activate_registration, rotate_device_credential, device_get, device_post, device_get_preview])
-        .run(tauri::generate_context!())
-        .expect("error while running INFO Desktop");
+    let app = tauri::Builder::default()
+        .manage(ConsoleState::default())
+        .invoke_handler(tauri::generate_handler![import_registration_text, activate_registration, rotate_device_credential, device_get, device_post, device_get_preview, console_bridge_sync])
+        .build(tauri::generate_context!())
+        .expect("error while building INFO Desktop");
+    app.run(|_app, event| {
+        if let tauri::RunEvent::Exit = event {
+            if let Ok(dir) = paths::config_dir() {
+                session::remove_session(&session::session_path(&dir));
+            }
+        }
+    });
 }

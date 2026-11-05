@@ -20,6 +20,10 @@
 - publication limitée par les scopes;
 - sept langues d’interface.
 
+## Mode console
+
+Le programme `info-desktop-cli` effectue les mêmes actions que la fenêtre : file d'attente, « pourquoi dans ce canal », création et modification, publication, paramètres XLSX (téléchargement, vérification, essai, application, annulation) et thèmes. Il fonctionne de deux façons : via la fenêtre ouverte (case dans l'application, uniquement sur cet ordinateur, la clé n'est jamais transmise) ou de manière autonome (la fenêtre écrit le profil de connexion, la clé reste dans le magasin d'identifiants du système). La confirmation `--yes` n'est requise que pour appliquer et annuler les paramètres. Version 0.1.5, en développement. Vérifié par le propriétaire sous Windows avec un serveur réel : commandes de lecture. Manuel : [CONSOLE_MANUAL](fr/CONSOLE_MANUAL.md).
+
 ## Validation en production
 
 Le 20 octobre 2026, INFO Desktop a été connecté à LIVE INFO `20261020-2040`. Un véritable article de Lviv a été créé depuis Desktop et est apparu dans la file éditoriale ainsi que dans le bot Telegram éditorial. Le chemin Desktop → API → base de données → file éditoriale a donc été validé. Aucun SEND Telegram public n’a été effectué pendant ce test.

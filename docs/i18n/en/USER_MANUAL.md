@@ -21,3 +21,6 @@ The "Settings" button in the header: "Download current settings" saves the XLSX;
 ### Probe and topics
 "Probe: what changes in 48 h" starts a calculation on the server (a few minutes) and shows a per-channel report. The "Topics" tab: choose a topic, edit the words (`word*` - beginning of a word, `word!` - exactly this form), check them on a sample headline and save; rollback is in "Settings".
 
+## Console mode
+
+Console mode (`info-desktop-cli`) does the same as the window: queue, route explanations, creating and editing items, publishing, XLSX settings and themes. It works through the open window (checkbox "Let the console work through this window") or standalone. Full manual: [CONSOLE_MANUAL](CONSOLE_MANUAL.md).

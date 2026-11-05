@@ -9,6 +9,8 @@
 - [Огляд системи](SYSTEM_OVERVIEW.md)
 - [Стан продукту](PRODUCT_STATUS.md)
 - [Керівництво користувача](guides/USER_MANUAL.md)
+- [Консольний режим: інструкція](guides/CONSOLE_MANUAL.md) (переклади: `i18n/<мова>/CONSOLE_MANUAL.md`)
+- [Консольний режим: проєкт і стан](architecture/CONSOLE_MODE.md)
 - [Протокол INFO Desktop](protocol/INFO_DESKTOP_PROTOCOL.md)
 - [Реєстрація пристрою](protocol/INFO_DESKTOP_REGISTRATION.md)
 - [Індекс релізів](releases/RELEASE_INDEX.md)

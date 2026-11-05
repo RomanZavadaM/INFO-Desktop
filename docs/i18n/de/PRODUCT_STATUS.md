@@ -11,3 +11,6 @@ Implementiert: sichere Geräteregistrierung, vollständige Warteschlange/Artikel
 Verifiziert: frühere production-connected Abnahme der manuellen Erstellung; am 24. Oktober bestand eine unveränderte XLSX-Datei nach dem separaten Gateway-Fix die Prüfung. XLSX-Einstellungen wurden **nicht angewendet**. INFO Server ist ein separates Projekt; zuletzt bestätigtes LIVE: `20261024-1653`.
 
 Offen: manuelle Windows-WebView2-Abnahme von stable 0.1.4, Verhalten der installierten Release-Konsole, timestamped XLSX-Download sowie Performance und Navigation der Warteschlange.
+
+## Konsolenmodus
+Konsolenmodus (0.1.5, Entwicklung): Befehle für Verbindung, Warteschlange, „Warum in diesem Kanal“, Erstellen und Bearbeiten, Veröffentlichen, XLSX und Themen umgesetzt; Modus über das Fenster und eigenständig. Vom Eigentümer unter Windows mit einem Live-Server geprüft: status, channels, queue list, why (über das Fenster), status eigenständig und automatisch. Nicht geprüft: Schreib-, XLSX- und Themenbefehle auf einem Live-Server, macOS, Linux. Der Betrieb auf einem Server ohne Fenster ist auf Entscheidung des Eigentümers zurückgestellt.

@@ -1,6 +1,8 @@
 # INFO Desktop — індекс релізів
 
 ## Unreleased source — 0.1.5 development
+У складі 0.1.5 готується **консольний режим** (`info-desktop-cli`, пакет для Windows, Linux, macOS ARM64 та Intel): інструкція `docs/guides/CONSOLE_MANUAL.md`, проєкт `docs/architecture/CONSOLE_MODE.md`, чернетка нотаток `docs/releases/RELEASE_NOTES_0.1.5.md`, ручний випускний процес `.github/workflows/release-0.1.5.yml` (**не запускався**; запуск лише за словом власника після приймання на Windows).
+
 Source після stable v0.1.4 переведено на **0.1.5 / development**. Це не опублікований реліз і не заміна stable v0.1.4. Етап містить оптимізацію черги, пошук/фільтр, «Зберегти й далі» та захист незбережених змін. Публікацію 0.1.5 робити лише окремою release-процедурою після перевірок і практичного приймання.
 
 ## Поточний stable — 25.10.2026

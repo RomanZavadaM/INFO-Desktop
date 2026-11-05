@@ -21,3 +21,6 @@ Die Schaltfläche „Einstellungen“ in der Kopfzeile: „Aktuelle Einstellunge
 ### Probe und Themen
 „Probe: was ändert sich in 48 Std.“ startet eine Berechnung auf dem Server (einige Minuten) und zeigt einen Bericht je Kanal. Tab „Themen“: Thema wählen, Wörter bearbeiten (`Wort*` - Wortanfang, `Wort!` - genau diese Form), an einer Beispielüberschrift prüfen und speichern; Zurücknehmen unter „Einstellungen“.
 
+## Konsolenmodus
+
+Der Konsolenmodus (`info-desktop-cli`) macht dasselbe wie das Fenster: Warteschlange, Routenerklärungen, Erstellen und Bearbeiten von Einträgen, Veröffentlichen, XLSX-Einstellungen und Themen. Er arbeitet über das geöffnete Fenster (Kontrollkästchen „Konsole über dieses Fenster arbeiten lassen“) oder eigenständig. Vollständige Anleitung: [CONSOLE_MANUAL](CONSOLE_MANUAL.md).

@@ -20,6 +20,10 @@
 - berechtigungsgebundene Veröffentlichung;
 - sieben Oberflächensprachen.
 
+## Konsolenmodus
+
+Das Programm `info-desktop-cli` führt dieselben Aktionen aus wie das Fenster: Warteschlange, „Warum in diesem Kanal“, Erstellen und Bearbeiten, Veröffentlichen, XLSX-Einstellungen (Herunterladen, Prüfen, Probe, Anwenden, Zurücksetzen) und Themen. Es arbeitet auf zwei Wegen: über das geöffnete Fenster (Kontrollkästchen in der App, nur lokal auf diesem Computer, der Schlüssel wird nie weitergegeben) oder eigenständig (das Fenster schreibt das Verbindungsprofil, der Schlüssel bleibt im Anmeldedatenspeicher des Betriebssystems). Die Bestätigung `--yes` ist nur beim Anwenden und Zurücksetzen von Einstellungen nötig. Version 0.1.5, in Entwicklung. Vom Eigentümer unter Windows mit einem Live-Server geprüft: Lesebefehle. Anleitung: [CONSOLE_MANUAL](de/CONSOLE_MANUAL.md).
+
 ## Produktionsabnahme
 
 Am 20.10.2026 wurde INFO Desktop mit LIVE INFO `20261020-2040` verbunden. Ein echter Lwiw-Beitrag wurde über Desktop erstellt und erschien in der Redaktionswarteschlange sowie im Telegram-Redaktionsbot. Damit wurde Desktop → API → Datenbank → Redaktionswarteschlange bestätigt. Während dieses Tests wurde kein öffentlicher Telegram-SEND ausgeführt.
