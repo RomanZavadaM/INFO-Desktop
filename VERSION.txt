@@ -1,3 +1,3 @@
 Version: 0.1.5
 Runtime-SemVer: 0.1.5
-Release-Channel: development
+Release-Channel: stable
