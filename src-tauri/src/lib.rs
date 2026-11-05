@@ -1,11 +1,11 @@
-pub mod registration;
-pub mod transport;
 
 use base64::engine::general_purpose::STANDARD as BASE64;
 use base64::Engine;
 use serde::{Deserialize, Serialize};
 use tauri::command;
 
+use info_desktop_core::registration;
+use info_desktop_core::transport;
 use transport::{checked_url, client_with_cert, ReadonlyResponse};
 
 const MAX_PREVIEW_BYTES: usize = 8 * 1024 * 1024;
