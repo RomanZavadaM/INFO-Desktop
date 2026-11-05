@@ -30,3 +30,11 @@ jobs:
           shasum -a 256 artifact/*.zip > artifact/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with: {name: 'INFO-Desktop-0.1.5-macOS-${{ matrix.arch }}', path: 'artifact/', retention-days: 14}
+      - working-directory: src-tauri
+        run: cargo build --release -p info-desktop-cli
+      - run: |
+          mkdir cli-artifact
+          tar -C src-tauri/target/release -czf "cli-artifact/INFO-Desktop-CLI_0.1.5_macOS_${{ matrix.arch }}.tar.gz" info-desktop-cli
+          (cd cli-artifact && shasum -a 256 * > SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with: {name: 'INFO-Desktop-CLI-0.1.5-macOS-${{ matrix.arch }}', path: 'cli-artifact/', retention-days: 14}
