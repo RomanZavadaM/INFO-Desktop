@@ -3,11 +3,12 @@
 
 use base64::engine::general_purpose::STANDARD as BASE64;
 use base64::Engine;
+use info_desktop_core::paths;
+use info_desktop_core::session::{self, BridgeRequest, SessionInfo};
 use info_desktop_core::transport;
-use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
-pub const API: &str = "/api/info-desktop/v1";
+pub use info_desktop_core::profile::{load_profile, save_profile, Profile, API};
 
 pub const EXIT_OK: i32 = 0;
 pub const EXIT_FAILED: i32 = 1;
@@ -17,7 +18,11 @@ pub const EXIT_REFUSED: i32 = 4;
 
 pub const USAGE: &str = "INFO Desktop, консольний режим
 
-Використання: info-desktop-cli [--profile ФАЙЛ] КОМАНДА
+Використання: info-desktop-cli [--mode auto|app|alone] [--profile ФАЙЛ] КОМАНДА
+
+Режим: auto (за замовчуванням) користується з'єднанням відкритого вікна застосунку, якщо в ньому дозволено консоль;
+інакше працює сама за профілем з'єднання. app вимагає відкритого вікна, alone працює лише за профілем.
+Явний --profile без --mode означає alone.
 
 З'єднання:
   profile show                       показати профіль з'єднання (без ключів)
@@ -53,20 +58,6 @@ pub const USAGE: &str = "INFO Desktop, консольний режим
 Підтвердження --yes потрібне лише для застосування й відкату налаштувань.
 Коди завершення: 0 успіх, 1 помилка, 2 неправильні аргументи, 3 немає зв'язку або ключа, 4 сервер відмовив.";
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Profile {
-    pub server: String,
-    pub port: u16,
-    pub device_id: String,
-    pub server_ca_der: String,
-}
-
-impl Profile {
-    pub fn url(&self, path: &str) -> String {
-        format!("https://{}:{}{}{}", self.server.trim(), self.port, API, path)
-    }
-}
-
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Text {
     Inline(String),
@@ -99,9 +90,17 @@ pub enum Command {
     ThemesSave { topic: String, words: Text },
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Mode {
+    Auto,
+    App,
+    Alone,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Cli {
     pub profile: Option<String>,
+    pub mode: Mode,
     pub command: Command,
 }
 
@@ -178,6 +177,14 @@ fn number(value: Option<String>, name: &str, default: u32, min: u32, max: u32) -
 pub fn parse_args(args: &[String]) -> Result<Cli, String> {
     let mut rest: Vec<String> = args.to_vec();
     let profile = take_opt(&mut rest, "--profile")?;
+    let mode = match take_opt(&mut rest, "--mode")?.as_deref() {
+        Some("auto") => Mode::Auto,
+        Some("app") => Mode::App,
+        Some("alone") => Mode::Alone,
+        Some(_) => return Err("--mode: auto, app або alone".to_string()),
+        None if profile.is_some() => Mode::Alone,
+        None => Mode::Auto,
+    };
     let first = pop(&mut rest).unwrap_or_default();
     let command = match first.as_str() {
         "profile" => match pop(&mut rest).as_deref() {
@@ -285,7 +292,7 @@ pub fn parse_args(args: &[String]) -> Result<Cli, String> {
     if let Some(extra) = rest.first() {
         return Err(format!("Зайвий аргумент: {extra}"));
     }
-    Ok(Cli { profile, command })
+    Ok(Cli { profile, mode, command })
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -380,6 +387,7 @@ pub fn apply_decision(status_body: &str, without_probe: bool, yes: bool) -> Resu
 
 pub fn exit_for_status(status: u16) -> i32 {
     match status {
+        599 => EXIT_NO_CONNECTION, // умовний код: вікно застосунку не змогло зв'язатися із сервером
         200..=299 => EXIT_OK,
         400..=499 => EXIT_REFUSED,
         _ => EXIT_FAILED,
@@ -398,43 +406,13 @@ pub fn profile_path_from(
     if let Some(p) = env("INFO_DESKTOP_PROFILE").filter(|v| !v.trim().is_empty()) {
         return Ok(PathBuf::from(p));
     }
-    let base = match os {
-        "windows" => env("APPDATA").map(PathBuf::from),
-        "macos" => env("HOME").map(|h| PathBuf::from(h).join("Library").join("Application Support")),
-        _ => env("XDG_CONFIG_HOME")
-            .filter(|v| !v.trim().is_empty())
-            .map(PathBuf::from)
-            .or_else(|| env("HOME").map(|h| PathBuf::from(h).join(".config"))),
-    };
-    base.map(|b| b.join("info-desktop").join("connection.json"))
-        .ok_or_else(|| "Не вдалося визначити теку конфігурації; вкажіть --profile ФАЙЛ".to_string())
+    paths::config_dir_from(env, os)
+        .map(|d| d.join("connection.json"))
+        .map_err(|_| "Не вдалося визначити теку конфігурації; вкажіть --profile ФАЙЛ".to_string())
 }
 
 pub fn profile_path(explicit: Option<&str>) -> Result<PathBuf, String> {
-    let os = if cfg!(windows) {
-        "windows"
-    } else if cfg!(target_os = "macos") {
-        "macos"
-    } else {
-        "linux"
-    };
-    profile_path_from(explicit, &|k| std::env::var(k).ok(), os)
-}
-
-pub fn load_profile(path: &std::path::Path) -> Result<Profile, String> {
-    let text = std::fs::read_to_string(path)
-        .map_err(|_| format!("Немає профілю з'єднання: {} (команда profile set)", path.display()))?;
-    serde_json::from_str(&text).map_err(|_| "Профіль з'єднання пошкоджений".to_string())
-}
-
-pub fn save_profile(path: &std::path::Path, profile: &Profile) -> Result<(), String> {
-    if let Some(dir) = path.parent() {
-        std::fs::create_dir_all(dir).map_err(|e| e.to_string())?;
-    }
-    let text = serde_json::to_string_pretty(profile).map_err(|e| e.to_string())?;
-    let tmp = path.with_extension("json.tmp");
-    std::fs::write(&tmp, text).map_err(|e| e.to_string())?;
-    std::fs::rename(&tmp, path).map_err(|e| e.to_string())
+    profile_path_from(explicit, &|k| std::env::var(k).ok(), paths::current_os())
 }
 
 fn pretty(body: &str) -> String {
@@ -451,16 +429,115 @@ fn finish(result: Result<transport::ReadonlyResponse, String>) -> (i32, String) 
     }
 }
 
-async fn call(profile: &Profile, req: &Req) -> (i32, String) {
-    match req {
-        Req::Get(path) => finish(transport::device_get(&profile.url(path), &profile.device_id, &profile.server_ca_der).await),
-        Req::Post(path, body) => {
-            finish(transport::device_post(&profile.url(path), &profile.device_id, &profile.server_ca_der, body.clone()).await)
+enum Backend {
+    Direct(Profile),
+    Bridge(SessionInfo),
+}
+
+async fn call(backend: &Backend, req: &Req) -> (i32, String) {
+    match backend {
+        Backend::Direct(profile) => match req {
+            Req::Get(path) => finish(transport::device_get(&profile.url(path), &profile.device_id, &profile.server_ca_der).await),
+            Req::Post(path, body) => {
+                finish(transport::device_post(&profile.url(path), &profile.device_id, &profile.server_ca_der, body.clone()).await)
+            }
+        },
+        Backend::Bridge(info) => {
+            let (method, path, body) = match req {
+                Req::Get(p) => ("GET", p.clone(), String::new()),
+                Req::Post(p, b) => ("POST", p.clone(), b.clone()),
+            };
+            let request = BridgeRequest { token: info.token.clone(), method: method.to_string(), path, body };
+            let info = info.clone();
+            match tokio::task::spawn_blocking(move || session::call(&info, &request)).await {
+                Ok(Ok(resp)) if resp.error.is_empty() => (exit_for_status(resp.status), pretty(&resp.body)),
+                Ok(Ok(resp)) => (
+                    if resp.status == 503 { EXIT_NO_CONNECTION } else { exit_for_status(resp.status) },
+                    format!("Вікно застосунку: {}", resp.error),
+                ),
+                Ok(Err(e)) => (EXIT_NO_CONNECTION, e),
+                Err(_) => (EXIT_FAILED, "Внутрішня помилка виконання".to_string()),
+            }
         }
     }
 }
 
-async fn run_remote(command: &Command, profile: &Profile) -> (i32, String) {
+/// Що обрати для зв'язку з сервером: відкрите вікно (спільне з'єднання), власне з'єднання за профілем чи нічого.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Pick {
+    Bridge,
+    Direct,
+    NeedWindow,
+    NeedProfile,
+    Nothing,
+}
+
+pub fn choose_backend(mode: Mode, window_alive: bool, has_profile: bool) -> Pick {
+    match mode {
+        Mode::App => {
+            if window_alive {
+                Pick::Bridge
+            } else {
+                Pick::NeedWindow
+            }
+        }
+        Mode::Alone => {
+            if has_profile {
+                Pick::Direct
+            } else {
+                Pick::NeedProfile
+            }
+        }
+        Mode::Auto => {
+            if window_alive {
+                Pick::Bridge
+            } else if has_profile {
+                Pick::Direct
+            } else {
+                Pick::Nothing
+            }
+        }
+    }
+}
+
+async fn window_is_alive(info: &SessionInfo) -> bool {
+    let request = BridgeRequest { token: info.token.clone(), method: "PING".to_string(), path: String::new(), body: String::new() };
+    let info = info.clone();
+    match tokio::task::spawn_blocking(move || session::call(&info, &request)).await {
+        Ok(Ok(resp)) => resp.status == 200 && resp.error.is_empty(),
+        _ => false,
+    }
+}
+
+async fn select_backend(mode: Mode, profile_file: &std::path::Path) -> Result<Backend, (i32, String)> {
+    let session_info = paths::config_dir().ok().and_then(|d| session::read_session(&session::session_path(&d)));
+    let alive = match (&session_info, mode) {
+        (Some(info), Mode::Auto) | (Some(info), Mode::App) => window_is_alive(info).await,
+        _ => false,
+    };
+    let profile = load_profile(profile_file);
+    match choose_backend(mode, alive, profile.is_ok()) {
+        Pick::Bridge => match session_info {
+            Some(info) => Ok(Backend::Bridge(info)),
+            None => Err((EXIT_FAILED, "Внутрішня помилка вибору з'єднання".to_string())),
+        },
+        Pick::Direct => match profile {
+            Ok(p) => Ok(Backend::Direct(p)),
+            Err(e) => Err((EXIT_NO_CONNECTION, e)),
+        },
+        Pick::NeedWindow => Err((
+            EXIT_NO_CONNECTION,
+            "Застосунок не запущено або консоль не дозволена (галка в налаштуваннях вікна)".to_string(),
+        )),
+        Pick::NeedProfile => Err((EXIT_NO_CONNECTION, profile.err().unwrap_or_default())),
+        Pick::Nothing => Err((
+            EXIT_NO_CONNECTION,
+            "Немає ні відкритого вікна застосунку з дозволом консолі, ні профілю з'єднання (підключіться у вікні або profile set)".to_string(),
+        )),
+    }
+}
+
+async fn run_remote(command: &Command, profile: &Backend) -> (i32, String) {
     let read = |p: &str| std::fs::read_to_string(p).map_err(|_| format!("Не вдалося прочитати файл: {p}"));
     match build_request(command, &read) {
         Err(e) => return (EXIT_FAILED, e),
@@ -558,9 +635,9 @@ pub async fn execute(cli: &Cli) -> (i32, String) {
                 Err(e) => (EXIT_FAILED, e),
             }
         }
-        other => match load_profile(&path) {
-            Ok(profile) => run_remote(other, &profile).await,
-            Err(e) => (EXIT_NO_CONNECTION, e),
+        other => match select_backend(cli.mode, &path).await {
+            Ok(backend) => run_remote(other, &backend).await,
+            Err((code, text)) => (code, text),
         },
     }
 }
@@ -592,7 +669,11 @@ mod tests {
     #[test]
     fn parses_simple_commands_and_global_profile_flag() {
         let cli = parse_args(&args(&["--profile", "p.json", "status"])).unwrap();
-        assert_eq!(cli, Cli { profile: Some("p.json".into()), command: Command::Status });
+        assert_eq!(cli, Cli { profile: Some("p.json".into()), mode: Mode::Alone, command: Command::Status });
+        assert_eq!(parse_args(&args(&["status"])).unwrap().mode, Mode::Auto);
+        assert_eq!(parse_args(&args(&["--mode", "app", "status"])).unwrap().mode, Mode::App);
+        assert_eq!(parse_args(&args(&["--profile", "p.json", "--mode", "auto", "status"])).unwrap().mode, Mode::Auto);
+        assert!(parse_args(&args(&["--mode", "bad", "status"])).is_err());
         assert_eq!(parse_args(&args(&["channels"])).unwrap().command, Command::Channels);
         assert_eq!(parse_args(&args(&["profile", "show"])).unwrap().command, Command::ProfileShow);
     }
@@ -774,6 +855,22 @@ mod tests {
         assert_eq!(exit_for_status(403), EXIT_REFUSED);
         assert_eq!(exit_for_status(409), EXIT_REFUSED);
         assert_eq!(exit_for_status(503), EXIT_FAILED);
+    }
+
+    #[test]
+    fn backend_choice_rules() {
+        assert_eq!(choose_backend(Mode::Auto, true, true), Pick::Bridge);
+        assert_eq!(choose_backend(Mode::Auto, false, true), Pick::Direct);
+        assert_eq!(choose_backend(Mode::Auto, false, false), Pick::Nothing);
+        assert_eq!(choose_backend(Mode::App, false, true), Pick::NeedWindow);
+        assert_eq!(choose_backend(Mode::App, true, false), Pick::Bridge);
+        assert_eq!(choose_backend(Mode::Alone, true, true), Pick::Direct);
+        assert_eq!(choose_backend(Mode::Alone, true, false), Pick::NeedProfile);
+    }
+
+    #[test]
+    fn window_error_code_means_no_connection() {
+        assert_eq!(exit_for_status(599), EXIT_NO_CONNECTION);
     }
 
     #[test]
