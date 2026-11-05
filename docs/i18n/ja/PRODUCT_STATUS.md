@@ -11,3 +11,6 @@ Release workflow **40128755256: SUCCESS**。Windows、Linux、macOS 向けのア
 検証済み: 以前の production-connected 手動作成受入確認。10月24日には別途 gateway 修正後、未変更の XLSX がチェックに成功しました。XLSX 設定は**適用していません**。INFO Server は別プロジェクトで、最後に確認された LIVE は `20261024-1653` です。
 
 未完了: stable 0.1.4 の Windows WebView2 手動受入確認、インストール済み release のコンソール動作、timestamp 付き XLSX ダウンロード、キュー性能と高速ナビゲーション。
+
+## コンソールモード
+コンソールモード（0.1.5、開発）：接続、キュー、「このチャンネルにある理由」、作成と編集、公開、XLSX、テーマのコマンドを実装；ウィンドウ経由と単独モード。所有者が Windows で実サーバーを使って確認：status、channels、queue list、why（ウィンドウ経由）、status の単独および自動。未確認：実サーバーでの書き込み、XLSX、テーマのコマンド、macOS、Linux。ウィンドウのないサーバーでの動作は所有者の決定により保留されています。

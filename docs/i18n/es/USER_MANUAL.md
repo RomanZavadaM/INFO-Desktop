@@ -21,3 +21,6 @@ El botón «Ajustes» en la cabecera: «Descargar los ajustes actuales» guarda 
 ### Prueba y temas
 «Prueba: qué cambia en 48 h» inicia un cálculo en el servidor (unos minutos) y muestra un informe por canal. Pestaña «Temas»: elija un tema, edite las palabras (`palabra*` - inicio de palabra, `palabra!` - exactamente esta forma), compruébelas con un titular de ejemplo y guárdelas; la reversión está en «Ajustes».
 
+## Modo consola
+
+El modo consola (`info-desktop-cli`) hace lo mismo que la ventana: cola, explicación de rutas, crear y editar elementos, publicar, ajustes XLSX y temas. Funciona a través de la ventana abierta (casilla «Permitir que la consola funcione a través de esta ventana») o de forma independiente. Manual completo: [CONSOLE_MANUAL](CONSOLE_MANUAL.md).

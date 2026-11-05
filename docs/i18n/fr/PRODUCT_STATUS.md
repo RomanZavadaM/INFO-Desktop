@@ -11,3 +11,6 @@ Implémenté : enregistrement sécurisé du périphérique, file/article/source/
 Vérifié : validation production-connected antérieure de la création manuelle ; le 24 octobre, un XLSX inchangé a passé la vérification après la correction séparée de la passerelle. Les réglages XLSX **n'ont pas été appliqués**. INFO Server est un projet séparé ; dernier LIVE confirmé : `20261024-1653`.
 
 À faire : validation manuelle Windows WebView2 de stable 0.1.4, comportement de la console du build installé, téléchargement XLSX horodaté et performances/navigation de la file.
+
+## Mode console
+Mode console (0.1.5, développement) : commandes de connexion, file d'attente, « pourquoi dans ce canal », création et modification, publication, XLSX et thèmes implémentées ; modes via la fenêtre et autonome. Vérifié par le propriétaire sous Windows avec un serveur réel : status, channels, queue list, why (via la fenêtre), status autonome et automatique. Non vérifié : commandes d'écriture, XLSX et thèmes sur un serveur réel, macOS, Linux. Le fonctionnement sur un serveur sans fenêtre est reporté sur décision du propriétaire.

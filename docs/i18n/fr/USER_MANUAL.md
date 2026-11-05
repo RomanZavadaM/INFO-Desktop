@@ -21,3 +21,6 @@ Le bouton « Paramètres » dans l'en-tête : « Télécharger les paramètres a
 ### Essai et thèmes
 « Essai : ce qui change en 48 h » lance un calcul sur le serveur (quelques minutes) et affiche un rapport par canal. Onglet « Thèmes » : choisissez un thème, modifiez les mots (`mot*` - début de mot, `mot!` - exactement cette forme), vérifiez-les sur un titre d'exemple et enregistrez ; l'annulation est dans « Paramètres ».
 
+## Mode console
+
+Le mode console (`info-desktop-cli`) fait comme la fenêtre : file d'attente, explication des routes, création et modification d'éléments, publication, paramètres XLSX et thèmes. Il fonctionne via la fenêtre ouverte (case « Autoriser la console à passer par cette fenêtre ») ou de manière autonome. Manuel complet : [CONSOLE_MANUAL](CONSOLE_MANUAL.md).

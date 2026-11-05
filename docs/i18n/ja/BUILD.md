@@ -13,3 +13,15 @@ npm run tauri build
 ```
 
 CI artifact does not by itself prove platform support; a real launch/smoke test is required.
+
+## コンソールモード
+
+コンソールは Tauri とウィンドウ用のシステムライブラリなしでビルドできます：
+
+```bash
+cd src-tauri
+cargo build --release -p info-desktop-cli
+cargo test --workspace --lib
+```
+
+GitHub Actions ではコンソールがウィンドウと共に Windows、Linux、macOS（ARM64 と Intel）向けにビルドされ、リリースワークフロー `release-0.1.5.yml` がチェックサム付きの個別ファイルとしてパッケージ化します。リリースは所有者の明示的な指示があるときのみ行います。
