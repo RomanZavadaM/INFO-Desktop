@@ -30,6 +30,11 @@ export interface SettingsStatus{has_pending:boolean;can_rollback:boolean;pending
 export interface SettingsExport{filename:string;size:number;base64:string}
 export interface SettingsCheck{ok:boolean;summary:string;pending_digest?:string}
 export interface ProbeStatus{state:"none"|"queued"|"running"|"done"|"error";id?:string;hours?:number;created?:string;finished?:string;text?:string;plan_digest?:string}
+export interface FirstSetupField{key:string;label:string;hint:string;example:string;required?:boolean;max?:number;default?:string;set?:boolean;secret?:boolean}
+export interface FirstSetupChannel{code:string;title:string;type:string;topics:string}
+export interface FirstSetupForm{instance:FirstSetupField[];access:FirstSetupField[];channels:FirstSetupChannel[];channel_hints:{telegram:string;join_url:string};note:string}
+export interface FirstSetupAnswers{instance:Record<string,string>;access:Record<string,string>;channels:{code:string;title:string;telegram:string;join_url:string;enabled:boolean;auto:boolean}[]}
+export type FirstSetupResult={ok:true;summary:string}|{ok:false;errors:Record<string,string>}
 export interface Theme{code:string;title:string;enabled:boolean;words:string[]}
 export interface ThemeTest{matched:string[];words:number}
 export interface ItemDetail extends QueueItem{draft_text?:string;winner_channel?:string;eligible_channels?:string[];event?:{url?:string;first_source?:string;first_published_at?:string;topics?:string[];sources?:string[]};materials?:SourceMaterial[]}
@@ -44,6 +49,13 @@ async function postJson<T>(url:string,deviceId:string,serverCaDer:string,payload
   const r=await invoke<{status:number;body:string}>("device_post",{url,deviceId,serverCaDer,body:JSON.stringify(payload??{})});
   if(r.status<200||r.status>=300){let detail="";try{const j=JSON.parse(r.body) as {error?:string;detail?:string};detail=String(j.detail??j.error??"")}catch{};throw new Error(detail?`HTTP ${r.status}: ${detail}`:`HTTP ${r.status}`)}
   return r.body?JSON.parse(r.body) as T:{} as T;
+}
+async function postFirstSetup(url:string,deviceId:string,serverCaDer:string,payload:unknown):Promise<FirstSetupResult>{
+  const r=await invoke<{status:number;body:string}>("device_post",{url,deviceId,serverCaDer,body:JSON.stringify(payload??{})});
+  if(r.status>=200&&r.status<300){const j=JSON.parse(r.body) as {summary?:string};return {ok:true,summary:String(j.summary??"")}}
+  let j:{error?:string;errors?:Record<string,string>;detail?:string}={};try{j=JSON.parse(r.body)}catch{}
+  if(r.status===400&&j.errors)return {ok:false,errors:j.errors};
+  throw new Error(`HTTP ${r.status}${j.error?`: ${j.error}`:""}${j.detail?` ${j.detail}`:""}`)
 }
 function baseUrl(server:string){return server.replace(/\/+$/,"")}
 function absoluteUrl(server:string,path:string){return /^https?:\/\//i.test(path)?path:`${baseUrl(server)}${path.startsWith("/")?path:`/${path}`}`}
@@ -90,6 +102,8 @@ export class InfoServerClient{
   settingsRollback(){return postJson<{ok:boolean}>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/xlsx/rollback`,this.deviceId,this.serverCaDer,{})}
   settingsProbe(hours=48){return postJson<{ok:boolean;id:string}>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/probe`,this.deviceId,this.serverCaDer,{hours})}
   settingsProbeStatus(){return getJson<ProbeStatus>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/probe`,this.deviceId,this.serverCaDer)}
+  firstSetupForm(){return getJson<FirstSetupForm>(`${baseUrl(this.server)}/api/info-desktop/v1/settings/first-setup`,this.deviceId,this.serverCaDer)}
+  firstSetupSubmit(answers:FirstSetupAnswers){return postFirstSetup(`${baseUrl(this.server)}/api/info-desktop/v1/settings/first-setup`,this.deviceId,this.serverCaDer,{answers})}
   themes(){return getJson<{themes:Theme[]}>(`${baseUrl(this.server)}/api/info-desktop/v1/themes`,this.deviceId,this.serverCaDer)}
   themesTest(words:string[],text:string){return postJson<ThemeTest>(`${baseUrl(this.server)}/api/info-desktop/v1/themes/test`,this.deviceId,this.serverCaDer,{words,text})}
   themesSave(topic:string,words:string[]){return postJson<{ok:boolean;topic:string;words:number}>(`${baseUrl(this.server)}/api/info-desktop/v1/themes/save`,this.deviceId,this.serverCaDer,{topic,words})}
