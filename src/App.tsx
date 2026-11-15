@@ -235,7 +235,7 @@ export function App(){
   <header className="topbar"><div className="brand"><strong>INFO Desktop</strong><span>{t("app.editor")}</span><small className="app-version">v{pkg.version}</small></div><div className="connection">
    <button className="new-button" onClick={()=>setCreating(v=>!v)}>+ {t("create.new")}</button>
    <button onClick={()=>setView(v=>v==="settings"?"queue":"settings")} disabled={!hello}>{view==="settings"?t("settings.back"):t("settings.open")}</button>
-   <button onClick={()=>setView(v=>v==="firstsetup"?"queue":"firstsetup")} disabled={!hello}>{view==="firstsetup"?t("settings.back"):t("firstsetup.open")}</button>
+   <button onClick={()=>setView(v=>v==="firstsetup"?"queue":"firstsetup")}>{view==="firstsetup"?t("settings.back"):t("firstsetup.open")}</button>
    <button onClick={()=>setView(v=>v==="themes"?"queue":"themes")} disabled={!hello}>{view==="themes"?t("settings.back"):t("themes.open")}</button>
    <label className="import-button">{t("registration.import")}<input className="file-input" type="file" accept=".registration,.info-registration,.txt,text/plain" onChange={e=>importRegistrationFile(e.target.files?.[0])}/></label>
    <input placeholder={t("server.address")} value={server} onChange={e=>setServer(e.target.value)}/><button onClick={connect} disabled={busy}>{busy?t("status.connecting"):t("server.connect")}</button></div>
@@ -245,7 +245,7 @@ export function App(){
   {notice&&<div className="notice-banner">{notice}</div>}{error&&<div className="error-banner">{error}</div>}
   {creating&&<section className="create-panel"><h2>{t("create.new")}</h2><input placeholder={t("create.title")} value={newTitle} onChange={e=>setNewTitle(e.target.value)}/><select value={newChannel} onChange={e=>setNewChannel(e.target.value)}>{channels.map(c=><option key={c.code} value={c.code}>{c.name}</option>)}</select><input placeholder={t("create.source_url")} value={newUrl} onChange={e=>setNewUrl(e.target.value)}/><textarea placeholder={t("create.text")} value={newText} onChange={e=>setNewText(e.target.value)}/><div className="actions"><button onClick={createNew} disabled={busy}>{t("create.submit")}</button><button className="ghost" onClick={()=>setCreating(false)}>{t("action.cancel")}</button></div></section>}
   {view==="settings"&&hello&&<SettingsPanel client={client} t={t} onError={setError}/>}
-  {view==="firstsetup"&&hello&&<FirstSetupPanel client={client} t={t} onError={setError} onReady={()=>setNotice(t("firstsetup.ready"))}/>}
+  {view==="firstsetup"&&<FirstSetupPanel t={t} onError={setError} onSaved={()=>setNotice(t("firstsetup.ready"))}/>}
   {view==="themes"&&hello&&<ThemesPanel client={client} t={t} onError={setError}/>}
   {view==="queue"&&<section className="workspace">
    <aside className="channels-pane"><h2>{t("channels.title")}</h2><button className={active==="*"?"channel active":"channel"} onClick={()=>setActive("*")}><span>{t("channels.all")}</span><strong>{queue.length}</strong></button>{channels.map(c=><button className={active===c.code?"channel active":"channel"} key={c.code} onClick={()=>setActive(c.code)}><span>{c.name}</span><strong>{channelCounts.get(c.code)??0}</strong></button>)}</aside>
