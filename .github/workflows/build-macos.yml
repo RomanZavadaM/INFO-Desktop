@@ -26,15 +26,15 @@ jobs:
           mkdir artifact
           app=$(find src-tauri/target/release/bundle/macos -maxdepth 1 -name '*.app' -print -quit)
           test -n "$app"
-          /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$app" "artifact/INFO-Desktop_0.1.5_macOS_${{ matrix.arch }}_Portable.zip"
+          /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$app" "artifact/INFO-Desktop_0.1.6_macOS_${{ matrix.arch }}_Portable.zip"
           shasum -a 256 artifact/*.zip > artifact/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
-        with: {name: 'INFO-Desktop-0.1.5-macOS-${{ matrix.arch }}', path: 'artifact/', retention-days: 14}
+        with: {name: 'INFO-Desktop-0.1.6-macOS-${{ matrix.arch }}', path: 'artifact/', retention-days: 14}
       - working-directory: src-tauri
         run: cargo build --release -p info-desktop-cli
       - run: |
           mkdir cli-artifact
-          tar -C src-tauri/target/release -czf "cli-artifact/INFO-Desktop-CLI_0.1.5_macOS_${{ matrix.arch }}.tar.gz" info-desktop-cli
+          tar -C src-tauri/target/release -czf "cli-artifact/INFO-Desktop-CLI_0.1.6_macOS_${{ matrix.arch }}.tar.gz" info-desktop-cli
           (cd cli-artifact && shasum -a 256 * > SHA256SUMS.txt)
       - uses: actions/upload-artifact@v4
-        with: {name: 'INFO-Desktop-CLI-0.1.5-macOS-${{ matrix.arch }}', path: 'cli-artifact/', retention-days: 14}
+        with: {name: 'INFO-Desktop-CLI-0.1.6-macOS-${{ matrix.arch }}', path: 'cli-artifact/', retention-days: 14}
