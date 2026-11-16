@@ -1,38 +1,37 @@
 # INFO Desktop
 
-**INFO Desktop 0.1.5 안정 버전 — Windows / Linux / macOS:** [다운로드](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.5). 더 빠른 편집 작업 흐름과 새로운 콘솔 모드(Windows, Linux, macOS용 `info-desktop-cli`). 이전 안정 버전: [0.1.4](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.4).
+**INFO Desktop 0.1.6 안정판 — Windows / Linux / macOS:** [다운로드](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.6). 신규: 최초 설정 양식. 이전 안정판: [0.1.5](https://github.com/RomanZavadaM/INFO-Desktop/releases/tag/v0.1.5).
 
+## 기능
 
+- `info-desktop-protocol/1`로 실제 INFO 서버에 연결, 기기 1회 등록;
+- 기기 비밀 값은 운영체제의 보안 저장소에만 보관;
+- 채널, 전체 대기열, 항목 상세, 출처, 번역, 캐시된 미디어;
+- 제목·본문·채널 편집; 저장, 건너뛰기, 보류, 게시;
+- 수동 항목 생성, Telegram 스타일 미리보기;
+- Excel(XLSX)로 설정: 내보내기, 적용 없이 검사, “48시간 내 변경 사항” 시험, 확인 후 적용, 되돌리기;
+- 주제: 키워드 편집과 예시 텍스트로 검사;
+- **최초 설정 양식**(0.1.6부터), 콘솔 모드, 7개 인터페이스 언어.
 
+## 최초 설정 양식
 
-## 주요 기능
-
-- `info-desktop-protocol/1`을 통한 실제 INFO 서버 연결;
-- 일회용 기기 등록 파일;
-- 재사용 기기 비밀키를 OS 보안 저장소에만 저장;
-- 채널, 전체 대기열, 기사 상세, 출처 및 캐시 미디어 조회;
-- 제목, 본문, 대상 채널 편집;
-- 저장, 건너뛰기, 연기;
-- 새 기사 수동 생성;
-- Telegram 스타일 게시 미리보기;
-- 권한 scope 기반 게시;
-- 7개 UI 언어.
+상단 막대의 “최초 설정” 버튼은 서버에 연결하지 않아도 동작합니다. 양식은 편집부 이름, 봇 제목, 접근 값, 채널을 묻고, 각 입력란 아래에 설명과 예시가 있으며 형식(봇 토큰, ID, 채널 주소 `@이름`, t.me 링크, 사이트, 시간대)을 즉시 검사합니다. 결과는 사용자 컴퓨터의 `info-first-setup.xlsx` 파일이며 **서버로 아무것도 전송되지 않습니다**. 파일을 서버(예: `/var/lib/info/inbox/`)에 두고 `info menu`의 1번 항목으로 불러온 뒤, 접근 값이 들어 있으므로 삭제하세요. INFO 서버 `20261116-1300` 이상이 필요합니다. 자세한 내용: [FIRST_SETUP_FORM](../FIRST_SETUP_FORM.md).
 
 ## 콘솔 모드
 
-`info-desktop-cli` 프로그램은 창과 같은 작업을 수행합니다: 대기열, "이 채널에 있는 이유", 생성 및 편집, 게시, XLSX 설정(다운로드, 검사, 시험, 적용, 되돌리기), 주제. 두 가지 방식으로 동작합니다: 열려 있는 창을 통해(앱의 체크박스, 이 컴퓨터에서만, 키는 전달되지 않음) 또는 독립적으로(창이 연결 프로필을 기록하고 키는 OS 자격 증명 저장소에 남음). 확인 `--yes`는 설정 적용과 되돌리기에만 필요합니다. 버전 0.1.5. 소유자가 Windows에서 실제 서버로 확인함: 읽기 명령. 설명서: [CONSOLE_MANUAL](ko/CONSOLE_MANUAL.md).
+`info-desktop-cli` 프로그램은 창과 같은 작업을 수행합니다: 대기열, “이 채널에 있는 이유”, 생성·편집, 게시, XLSX 설정(다운로드, 검사, 시험, 적용, 되돌리기), 주제. 두 가지 방식으로 동작합니다: 열린 창을 통해(앱의 체크박스, 이 컴퓨터에서만, 키는 전달되지 않음) 또는 단독으로(연결 프로필은 창이 기록하고 키는 OS 저장소에 유지). 확인 `--yes`는 설정 적용과 되돌리기에만 필요합니다. 설명서: [CONSOLE_MANUAL](ko/CONSOLE_MANUAL.md).
 
-## 운영 환경 검증
+## 검증된 내용
 
-2026년 10월 20일 INFO Desktop을 LIVE INFO `20261020-2040`에 연결했습니다. 실제 Lviv 기사를 Desktop에서 생성했고 편집 대기열과 Telegram 편집 봇에 나타나는 것을 확인했습니다. Desktop → API → 데이터베이스 → 편집 대기열 경로가 검증되었습니다. 이 검증에서는 공개 Telegram SEND를 수행하지 않았습니다.
+2026년 10월 20일 Desktop을 실제 INFO 서버 `20261020-2040`에 연결해 실제 항목을 Desktop으로 만들고 편집 대기열과 Telegram 편집 봇에서 확인했습니다(Desktop → API → 데이터베이스 → 대기열). 공개 Telegram 게시는 수행하지 않았습니다. 콘솔 읽기 명령은 소유자가 Windows에서 확인했습니다. 최초 설정 양식은 자동 빌드로만 검증되었으며, 생성된 파일을 Excel에서 열고 서버에 불러오는 것은 아직 확인되지 않았습니다.
 
 ## 플랫폼
 
-Windows 10/11 x64 · macOS ARM64 · macOS Intel x86_64 · Linux x64. Windows 7은 필수 지원 대상이 아닙니다.
+Windows 10/11 x64 · macOS ARM64 · macOS Intel x86_64 · Linux x64. Windows 7은 필수 대상이 아닙니다.
 
 ## 보안
 
-SQLite 직접 접근 없음, 애플리케이션 프로토콜로 SSH 사용 안 함, 저장소에 운영 비밀정보 없음. 기기 권한은 scope로 제한되며 현재 gateway는 VPN-only입니다.
+SQLite 직접 접근 없음, SSH를 응용 프로토콜로 사용하지 않음, 저장소에 운영 비밀 값 없음. 기기 자격 증명은 범위가 제한되며 INFO 게이트웨이는 VPN으로만 접근할 수 있습니다.
 
 ## 기술 및 빌드
 
@@ -46,10 +45,10 @@ npm run build
 npm run tauri build
 ```
 
-[Build](../BUILD.md), [사용자 매뉴얼](../guides/USER_MANUAL.md), [프로토콜](../protocol/INFO_DESKTOP_PROTOCOL.md), [등록](../protocol/INFO_DESKTOP_REGISTRATION.md), [릴리스 인덱스](../releases/RELEASE_INDEX.md)를 참조하세요.
+[빌드](../BUILD.md), [사용자 설명서](../guides/USER_MANUAL.md), [프로토콜](../protocol/INFO_DESKTOP_PROTOCOL.md), [등록](../protocol/INFO_DESKTOP_REGISTRATION.md), [릴리스 색인](../releases/RELEASE_INDEX.md)을 참조하세요.
 
 ## 릴리스 상태
 
-현재 안정 버전은 **v0.1.4**입니다. Windows, Linux, macOS용 GitHub Release가 게시되었습니다. 새 시각적 편집기의 Windows WebView2 수동 검수는 아직 남아 있습니다.
+현재 안정판은 **v0.1.6**입니다. Windows, Linux, macOS 패키지는 GitHub Releases에 게시되어 있습니다.
 
 **Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved. Proprietary software.**
