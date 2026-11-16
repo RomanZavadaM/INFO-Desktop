@@ -36,6 +36,11 @@ jobs:
       - run: npm run check
       - run: npm run build
       - run: npm run test:protocol
+      - name: Зразок файла першого налаштування
+        run: |
+          npx esbuild scripts/first-setup-sample.ts --bundle --platform=node --format=esm --outfile="$RUNNER_TEMP/gen.mjs"
+          node "$RUNNER_TEMP/gen.mjs" "$RUNNER_TEMP/sample"
+          test -s "$RUNNER_TEMP/sample/sample.xlsx"
   rust:
     runs-on: ubuntu-22.04
     steps:
