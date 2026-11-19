@@ -22,6 +22,7 @@ El programa `info-desktop-cli` hace lo que la ventana: muestra la cola, explica 
 |---|---|
 | Lista de canales | `channels` |
 | Informe de diagnóstico del servidor (solo lectura, si el servidor lo prepara) | `diagnostics` |
+| Filas publicadas de un canal para conciliar con una exportación (solo lectura) | `published --channel КОД [--hours N]` |
 | Cola | `queue list [--limit N] [--cursor N] [--channel CÓDIGO] [--bucket GRUPO]` |
 | Elemento con fuentes | `queue show ID` |
 | Por qué está en este canal | `why ID --channel CÓDIGO [--scope route\|auto\|digest\|instant\|relevance]` |

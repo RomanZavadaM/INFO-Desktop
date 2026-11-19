@@ -14,6 +14,7 @@ Credentials are device secrets and must not be committed to Git or packaged into
 
 - `GET /queue/{id}/why?channel=&scope=` - explica las decisiones de los canales para el evento (scope `item.read`, solo lectura): `channels` (código, modo, ok, motivo) y `rules` (árbol de condiciones XLSX del canal elegido)
 - `GET /diagnostics` - informe de diagnóstico que prepara un servicio aparte del servidor (scope `queue.read`, solo lectura); sin informe, `available=false`
+- `GET /published?channel=&hours=&limit=&offset=` - filas publicadas de la cola de un canal en las últimas horas (scope `queue.read`, solo lectura): número de mensaje de Telegram, estado, hora, título y texto; para conciliar con una exportación del canal
 
 - Ajustes XLSX (scopes `settings.read`, `settings.write`): `GET /settings/status`, `GET /settings/xlsx`, `POST /settings/xlsx/check`, `POST /settings/xlsx/apply`, `POST /settings/xlsx/rollback` - exportar, comprobar sin aplicar, aplicar con reversión de un paso; mismo formato y reglas que el bot de Telegram y `info menu`.
 

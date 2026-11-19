@@ -24,6 +24,7 @@
 |---|---|
 | Список каналів | `channels` |
 | Звіт діагностики сервера (лише читання; якщо сервер його готує) | `diagnostics` |
+| Опубліковані рядки каналу для звірки з експортом (лише читання) | `published --channel КОД [--hours N]` |
 | Черга | `queue list [--limit N] [--cursor N] [--channel КОД] [--bucket ГРУПА]` |
 | Матеріал з джерелами | `queue show НОМЕР` |
 | Чому матеріал у цьому каналі | `why НОМЕР --channel КОД [--scope route\|auto\|digest\|instant\|relevance]` |

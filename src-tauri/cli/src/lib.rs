@@ -30,6 +30,8 @@ pub const USAGE: &str = "INFO Desktop, консольний режим
                                      зберегти профіль; ФАЙЛ містить значення server_ca_der з реєстраційного файлу
   status | channels                  перевірка зв'язку | список каналів
   diagnostics                        звіт діагностики, який підготував сервер (лише читання)
+  published --channel КОД [--hours N] [--limit N] [--offset N]
+                                     опубліковані рядки каналу за останні години (за замовчуванням 72, до 720) для звірки з експортом; лише читання
 
 Черга:
   queue list [--limit N] [--cursor N] [--channel КОД] [--bucket ГРУПА]
@@ -72,6 +74,7 @@ pub enum Command {
     Status,
     Channels,
     Diagnostics,
+    Published { channel: String, hours: u32, limit: u32, offset: u32 },
     QueueList { limit: u32, cursor: u32, channel: String, bucket: String },
     QueueShow { id: u64 },
     Why { id: u64, channel: String, scope: String },
@@ -211,6 +214,13 @@ pub fn parse_args(args: &[String]) -> Result<Cli, String> {
         "status" => Command::Status,
         "channels" => Command::Channels,
         "diagnostics" => Command::Diagnostics,
+        "published" => {
+            let channel = code_value(&need(take_opt(&mut rest, "--channel")?, "--channel")?, "--channel")?;
+            let hours = number(take_opt(&mut rest, "--hours")?, "--hours", 72, 1, 720)?;
+            let limit = number(take_opt(&mut rest, "--limit")?, "--limit", 500, 1, 2000)?;
+            let offset = number(take_opt(&mut rest, "--offset")?, "--offset", 0, 0, u32::MAX)?;
+            Command::Published { channel, hours, limit, offset }
+        }
         "queue" => match pop(&mut rest).as_deref() {
             Some("list") => {
                 let limit = number(take_opt(&mut rest, "--limit")?, "--limit", 100, 1, 500)?;
@@ -326,6 +336,9 @@ pub fn build_request(command: &Command, read: &dyn Fn(&str) -> Result<String, St
         Command::Status => Ok(Some(Req::Get("/status".to_string()))),
         Command::Channels => Ok(Some(Req::Get("/channels".to_string()))),
         Command::Diagnostics => Ok(Some(Req::Get("/diagnostics".to_string()))),
+        Command::Published { channel, hours, limit, offset } => Ok(Some(Req::Get(format!(
+            "/published?channel={channel}&hours={hours}&limit={limit}&offset={offset}"
+        )))),
         Command::QueueList { limit, cursor, channel, bucket } => {
             let mut path = format!("/queue?limit={limit}&cursor={cursor}&bucket={bucket}");
             if !channel.is_empty() {
@@ -684,6 +697,15 @@ mod tests {
     }
 
     #[test]
+    fn published_requires_channel_and_checks_ranges() {
+        assert!(parse_args(&args(&["published"])).is_err());
+        assert!(parse_args(&args(&["published", "--channel", "war", "--hours", "0"])).is_err());
+        assert!(parse_args(&args(&["published", "--channel", "war", "--hours", "721"])).is_err());
+        assert!(parse_args(&args(&["published", "--channel", "war", "--limit", "2001"])).is_err());
+        assert!(parse_args(&args(&["published", "--channel", "war", "--hours", "x"])).is_err());
+    }
+
+    #[test]
     fn parses_queue_list_with_defaults_and_options() {
         assert_eq!(
             parse_args(&args(&["queue", "list"])).unwrap().command,
@@ -781,6 +803,14 @@ mod tests {
         assert_eq!(req(&["why", "3", "--channel", "usa", "--scope", "auto"]), Req::Get("/queue/3/why?channel=usa&scope=auto".into()));
         assert_eq!(req(&["settings", "status"]), Req::Get("/settings/status".into()));
         assert_eq!(req(&["diagnostics"]), Req::Get("/diagnostics".into()));
+        assert_eq!(
+            req(&["published", "--channel", "war"]),
+            Req::Get("/published?channel=war&hours=72&limit=500&offset=0".into())
+        );
+        assert_eq!(
+            req(&["published", "--channel", "war", "--hours", "24", "--limit", "50", "--offset", "100"]),
+            Req::Get("/published?channel=war&hours=24&limit=50&offset=100".into())
+        );
         assert_eq!(req(&["settings", "probe", "--hours", "24"]), Req::Post("/settings/probe".into(), "{\"hours\":24}".into()));
         assert_eq!(req(&["themes", "list"]), Req::Get("/themes".into()));
         assert_eq!(req(&["status"]), Req::Get("/status".into()));
