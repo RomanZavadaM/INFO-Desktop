@@ -144,8 +144,7 @@ Do not alter production VPN/network/firewall/SSH without explicit owner approval
 
 ### 2026-10-22 (ніч): реліз 0.1.2 опубліковано
 - Release `v0.1.2` опубліковано workflow (verify, Windows, Linux, macOS ARM64 і Intel, release - success); 8 файлів + 4 `SHA256SUMS-*.txt`;
-- перевірка за іменами: Linux і macOS (обидві архітектури) - OK; Windows - хеші збігаються, але `SHA256SUMS-Windows.txt` має CRLF (PowerShell), на Linux `sha256sum -c` потребує `tr -d '
-'`; виправити в наступному релізі (LF у Windows-кроці);
+- перевірка за іменами: Linux і macOS (обидві архітектури) - OK; Windows - хеші збігаються, але `SHA256SUMS-Windows.txt` має CRLF (PowerShell), на Linux `sha256sum -c` потребує `tr -d ''`; виправити в наступному релізі (LF у Windows-кроці);
 - файли тепер `INFO-Desktop_0.1.2_*` (без пропусків), імена в сумах збігаються з Release.
 
 ### 2026-10-22 (ніч): вкладка «Налаштування» (XLSX)
