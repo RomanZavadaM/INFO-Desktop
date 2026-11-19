@@ -22,6 +22,7 @@ Run `info-desktop-cli` without arguments for the full help.
 |---|---|
 | List channels | `channels` |
 | Server diagnostics report (read-only; only if the server prepares one) | `diagnostics` |
+| Published rows of a channel for reconciling with an export (read-only) | `published --channel КОД [--hours N]` |
 | Queue | `queue list [--limit N] [--cursor N] [--channel CODE] [--bucket GROUP]` |
 | Item with sources | `queue show ID` |
 | Why is it in this channel | `why ID --channel CODE [--scope route\|auto\|digest\|instant\|relevance]` |

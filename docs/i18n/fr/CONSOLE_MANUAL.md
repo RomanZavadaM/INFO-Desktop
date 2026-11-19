@@ -22,6 +22,7 @@ Le programme `info-desktop-cli` fait ce que fait la fenêtre : affiche la file d
 |---|---|
 | Liste des canaux | `channels` |
 | Rapport de diagnostic du serveur (lecture seule, si le serveur le prépare) | `diagnostics` |
+| Lignes publiées d'un canal pour rapprocher d'un export (lecture seule) | `published --channel КОД [--hours N]` |
 | File d'attente | `queue list [--limit N] [--cursor N] [--channel CODE] [--bucket GROUPE]` |
 | Élément avec sources | `queue show ID` |
 | Pourquoi dans ce canal | `why ID --channel CODE [--scope route\|auto\|digest\|instant\|relevance]` |

@@ -22,6 +22,7 @@ Das Programm `info-desktop-cli` tut, was das Fenster tut: zeigt die Warteschlang
 |---|---|
 | Kanäle auflisten | `channels` |
 | Diagnosebericht des Servers (nur lesend, falls der Server einen erstellt) | `diagnostics` |
+| Veröffentlichte Zeilen eines Kanals zum Abgleich mit einem Export (nur lesend) | `published --channel КОД [--hours N]` |
 | Warteschlange | `queue list [--limit N] [--cursor N] [--channel CODE] [--bucket GRUPPE]` |
 | Eintrag mit Quellen | `queue show ID` |
 | Warum in diesem Kanal | `why ID --channel CODE [--scope route\|auto\|digest\|instant\|relevance]` |

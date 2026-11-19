@@ -13,6 +13,7 @@
 - `GET /status`
 - `GET /channels`
 - `GET /diagnostics` - звіт діагностики, який готує сервер окремою службою (scope `queue.read`, лише читання); без звіту `available=false`
+- `GET /published?channel=&hours=&limit=&offset=` - опубліковані рядки черги каналу за останні години (scope `queue.read`, лише читання): номер повідомлення Telegram, стан, час, заголовок і текст допису; для звірки з експортом каналу
 - `GET /queue`
 - `GET /queue/{id}`
 - `GET /queue/{id}/why?channel=&scope=` - пояснення рішення каналів для події (scope `item.read`, лише читання): `channels` (код, режим, ok, причина) і `rules` (дерево умов XLSX для вибраного каналу)

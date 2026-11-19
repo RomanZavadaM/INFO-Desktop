@@ -14,6 +14,7 @@ Credentials are device secrets and must not be committed to Git or packaged into
 
 - `GET /queue/{id}/why?channel=&scope=` - イベントに対するチャンネルの判断を説明します（スコープ `item.read`、読み取り専用）：`channels`（コード、モード、ok、理由）と `rules`（選択したチャンネルの XLSX 条件ツリー）
 - `GET /diagnostics` - サーバーの別サービスが作成する診断レポート（scope `queue.read`、読み取り専用）。レポートが無い場合は `available=false`
+- `GET /published?channel=&hours=&limit=&offset=` - チャンネルの直近の公開済みキュー行（scope `queue.read`、読み取り専用）：Telegram メッセージ番号、状態、時刻、タイトル、本文。チャンネルのエクスポートとの突き合わせ用
 
 - XLSX 設定（スコープ `settings.read`、`settings.write`）：`GET /settings/status`、`GET /settings/xlsx`、`POST /settings/xlsx/check`、`POST /settings/xlsx/apply`、`POST /settings/xlsx/rollback` - エクスポート、適用なしの確認、1 段階のロールバック付き適用；Telegram ボットや `info menu` と同じ形式とルール。
 

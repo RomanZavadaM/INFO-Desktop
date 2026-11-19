@@ -22,6 +22,7 @@
 |---|---|
 | チャンネル一覧 | `channels` |
 | サーバーの診断レポート（読み取り専用、サーバーが作成している場合） | `diagnostics` |
+| エクスポートとの突き合わせ用に、チャンネルの公開済み行を表示（読み取り専用） | `published --channel КОД [--hours N]` |
 | キュー | `queue list [--limit N] [--cursor N] [--channel コード] [--bucket グループ]` |
 | 出典付きの項目 | `queue show ID` |
 | このチャンネルにある理由 | `why ID --channel コード [--scope route\|auto\|digest\|instant\|relevance]` |

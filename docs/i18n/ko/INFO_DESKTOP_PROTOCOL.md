@@ -14,6 +14,7 @@ Credentials are device secrets and must not be committed to Git or packaged into
 
 - `GET /queue/{id}/why?channel=&scope=` - 이벤트에 대한 채널 결정을 설명합니다(scope `item.read`, 읽기 전용): `channels`(코드, 모드, ok, 이유)와 `rules`(선택한 채널의 XLSX 조건 트리)
 - `GET /diagnostics` - 서버의 별도 서비스가 만드는 진단 보고서(scope `queue.read`, 읽기 전용). 보고서가 없으면 `available=false`
+- `GET /published?channel=&hours=&limit=&offset=` - 채널의 최근 게시된 큐 행(scope `queue.read`, 읽기 전용): Telegram 메시지 번호, 상태, 시간, 제목, 본문. 채널 내보내기와 대조용
 
 - XLSX 설정(scope `settings.read`, `settings.write`): `GET /settings/status`, `GET /settings/xlsx`, `POST /settings/xlsx/check`, `POST /settings/xlsx/apply`, `POST /settings/xlsx/rollback` - 내보내기, 적용 없이 확인, 한 단계 되돌리기가 있는 적용; Telegram 봇 및 `info menu`와 같은 형식과 규칙.
 
