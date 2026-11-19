@@ -29,6 +29,7 @@ pub const USAGE: &str = "INFO Desktop, консольний режим
   profile set --server АДРЕСА --port ПОРТ --device-id НОМЕР --ca-file ФАЙЛ
                                      зберегти профіль; ФАЙЛ містить значення server_ca_der з реєстраційного файлу
   status | channels                  перевірка зв'язку | список каналів
+  diagnostics                        звіт діагностики, який підготував сервер (лише читання)
 
 Черга:
   queue list [--limit N] [--cursor N] [--channel КОД] [--bucket ГРУПА]
@@ -70,6 +71,7 @@ pub enum Command {
     ProfileSet { server: String, port: u16, device_id: String, ca_file: String },
     Status,
     Channels,
+    Diagnostics,
     QueueList { limit: u32, cursor: u32, channel: String, bucket: String },
     QueueShow { id: u64 },
     Why { id: u64, channel: String, scope: String },
@@ -208,6 +210,7 @@ pub fn parse_args(args: &[String]) -> Result<Cli, String> {
         },
         "status" => Command::Status,
         "channels" => Command::Channels,
+        "diagnostics" => Command::Diagnostics,
         "queue" => match pop(&mut rest).as_deref() {
             Some("list") => {
                 let limit = number(take_opt(&mut rest, "--limit")?, "--limit", 100, 1, 500)?;
@@ -322,6 +325,7 @@ pub fn build_request(command: &Command, read: &dyn Fn(&str) -> Result<String, St
     match command {
         Command::Status => Ok(Some(Req::Get("/status".to_string()))),
         Command::Channels => Ok(Some(Req::Get("/channels".to_string()))),
+        Command::Diagnostics => Ok(Some(Req::Get("/diagnostics".to_string()))),
         Command::QueueList { limit, cursor, channel, bucket } => {
             let mut path = format!("/queue?limit={limit}&cursor={cursor}&bucket={bucket}");
             if !channel.is_empty() {
@@ -675,6 +679,7 @@ mod tests {
         assert_eq!(parse_args(&args(&["--profile", "p.json", "--mode", "auto", "status"])).unwrap().mode, Mode::Auto);
         assert!(parse_args(&args(&["--mode", "bad", "status"])).is_err());
         assert_eq!(parse_args(&args(&["channels"])).unwrap().command, Command::Channels);
+        assert_eq!(parse_args(&args(&["diagnostics"])).unwrap().command, Command::Diagnostics);
         assert_eq!(parse_args(&args(&["profile", "show"])).unwrap().command, Command::ProfileShow);
     }
 
@@ -775,6 +780,7 @@ mod tests {
         assert_eq!(req(&["defer", "3", "--minutes", "15"]), Req::Post("/queue/3/defer".into(), "{\"minutes\":15}".into()));
         assert_eq!(req(&["why", "3", "--channel", "usa", "--scope", "auto"]), Req::Get("/queue/3/why?channel=usa&scope=auto".into()));
         assert_eq!(req(&["settings", "status"]), Req::Get("/settings/status".into()));
+        assert_eq!(req(&["diagnostics"]), Req::Get("/diagnostics".into()));
         assert_eq!(req(&["settings", "probe", "--hours", "24"]), Req::Post("/settings/probe".into(), "{\"hours\":24}".into()));
         assert_eq!(req(&["themes", "list"]), Req::Get("/themes".into()));
         assert_eq!(req(&["status"]), Req::Get("/status".into()));
