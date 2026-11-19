@@ -21,6 +21,7 @@
 | 작업 | 명령 |
 |---|---|
 | 채널 목록 | `channels` |
+| 서버 진단 보고서(읽기 전용, 서버가 만드는 경우) | `diagnostics` |
 | 대기열 | `queue list [--limit N] [--cursor N] [--channel 코드] [--bucket 그룹]` |
 | 출처가 있는 항목 | `queue show ID` |
 | 이 채널에 있는 이유 | `why ID --channel 코드 [--scope route\|auto\|digest\|instant\|relevance]` |

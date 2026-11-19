@@ -21,6 +21,7 @@ Run `info-desktop-cli` without arguments for the full help.
 | Task | Command |
 |---|---|
 | List channels | `channels` |
+| Server diagnostics report (read-only; only if the server prepares one) | `diagnostics` |
 | Queue | `queue list [--limit N] [--cursor N] [--channel CODE] [--bucket GROUP]` |
 | Item with sources | `queue show ID` |
 | Why is it in this channel | `why ID --channel CODE [--scope route\|auto\|digest\|instant\|relevance]` |
